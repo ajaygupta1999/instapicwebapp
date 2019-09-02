@@ -9,13 +9,13 @@ var express                 = require("express"),
 	passportLocalMongoose   = require("passport-local-mongoose"),
     bodyParser              = require("body-parser"),
 	Comments                = require("./models/comments.js");
-   	    
+ // mongodb://localhost:27017/photos_app  	    
 app.use(express.static("style"));
 app.use(methodOverride("_method"));
 app.use(flash());
 var Photos = require("./models/photos.js");
-// mongoose.connect("mongodb://localhost:27017/photos_app", { useNewUrlParser: true });
-mongoose.connect("mongodb+srv://Ajay:ajay@1999@instapic-lqskv.mongodb.net/test?retryWrites=true&w=majority", { useNewUrlParser: true , useCreateIndex : true});
+mongoose.connect(process.env.DATABASEURL, { useNewUrlParser: true });
+// mongoose.connect("mongodb+srv://Ajay:ajay@1999@instapic-lqskv.mongodb.net/test?retryWrites=true&w=majority", { useNewUrlParser: true , useCreateIndex : true});
 app.use(bodyParser.urlencoded({ extended : true}));
 
 // AUTH CONFIG ==================================
