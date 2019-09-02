@@ -1,0 +1,242 @@
+.show-container {
+	margin-top:0px;
+}
+.show-container .userdetails 
+{
+	padding:0px 2%;
+	display:flex;
+	justify-content:space-between;
+}
+.show-container .userdetails .user-img-name
+{
+	display:flex;
+	padding:9px 12px;
+}
+
+.show-container .userdetails .user-img-name .userimg
+{
+	width:36px;
+	height:36px;
+	margin-right:8px;
+		
+}
+
+.show-container .userdetails .user-img-name .userimg img
+{
+	width:100%;
+	height:100%;
+	border-radius:18px;
+	object-fit:cover;
+}
+
+.show-container .userdetails .user-img-name .username h5 
+{
+	
+    display: block;
+    padding: 5px 3px;
+    margin-bottom: 0px;
+}
+
+.show-container .userdetails .heart .like-button
+{
+	display:flex;
+	padding:9px 12px;
+	align-items:start;
+}
+
+.none .img-session .img-box img {
+	width:0px;
+	height:0px;
+} 
+
+.landscape .img-session 
+{
+	margin:0px 1%;
+	width :98%;
+	height:482px;
+}
+
+.landscape .img-session .img-box
+{
+	display:flex;
+    margin:auto auto;
+    width:723px;
+	height:482px;
+	vertical-align: center;
+}
+
+.landscape .img-session .img-box img
+{
+	width:100%;
+	height:100%;
+}
+
+.landscape .description {
+	margin-top:15px;
+	margin-left:50px;
+	display:flex;
+	justify-content:center;	
+}
+
+.landscape .description p
+{
+    font-size : 19px;
+	font-weight:600;
+	letter-spacing:1px;
+}
+
+.text {
+	margin:0px;
+	padding:0px;
+}
+
+.text p
+{
+   font-weight:800;
+   font-size:20px;
+	margin:0px 30px;;
+	padding:0px;
+	letter-spacing:1px;
+}
+
+#user-container 
+{
+	margin-top:10px;
+}
+
+/*======================  */
+/* FOR POTRATE IMAGES    */
+/*======================  */
+.potrate .img-session 
+{
+	margin:1%;
+	width :98%;
+	height:480px;
+}
+
+.potrate .img-session .img-box
+{
+   display: flex;
+   margin:auto auto;
+   width: 350px;
+   height:480px;
+   vertical-align: center;
+
+}
+
+.potrate .img-session .img-box img 
+{
+	width:100%;
+	height:100%;
+	
+}
+
+.potrate .description {
+	margin-top:15px;
+	display:flex;
+	justify-content:center;	
+}
+
+.potrate .description p
+{
+    font-size : 19px;
+	font-weight:600;
+	
+}
+/*=========================  */
+
+
+/*===================  */
+/*FOR SQUARE IMAGE     */
+/*===================  */
+.square .img-session 
+{
+	margin:0 1%;
+	width :98%;
+	height:450px;
+}
+
+.square .img-session .img-box
+{
+   display: flex;
+   margin:auto auto;
+   width: 450px;
+   height:450px;
+   vertical-align: center;
+
+}
+
+.square .img-session .img-box img 
+{
+	width:100%;
+	height:100%;
+	
+}
+
+.square .description {
+	margin-top:15px;
+	margin-left:50px;
+	display:flex;
+	justify-content:center;	
+}
+
+.square .description p
+{
+    font-size : 19px;
+	font-weight:600;
+	letter-spacing:1px;
+}
+/*=======================  */
+
+.selectedimg {
+	display:none;
+}
+
+.pop-up-seecomment
+{
+	display : flex;
+	justify-content:space-between;
+}
+
+.pop-up-seecomment #comments-author {
+	font-size:24px;
+	font-weight:800;
+	margin-bottom:0;
+	padding-bottom:0;
+}
+
+#comments-text {
+	font-size:20px;
+	font-weight:600;
+	margin-bottom:12px;
+	margin-left:28px;
+	padding-top:0px;
+}
+
+#comment-input
+{
+	border:1px solid blue;
+	border-radius: 5px;
+}
+
+#commentsTitle  {
+	margin-top:30px;
+	font-size: 23px;
+    font-weight: 900;
+	width:100%;
+}
+
+#see-comments
+{
+	margin-left:5px;	
+}
+
+#delete-photo {
+	margin-left: 4px;
+    border-radius: 3px;
+} 
+
+#comment-user-icon
+{
+	margin-right:10px;
+}

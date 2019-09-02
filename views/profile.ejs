@@ -1,0 +1,67 @@
+<% include ./partials/header %>
+
+
+ <div class="userprofile">
+	 <div class="userimage">
+		 <div class="img">
+			 <img src="<%= user.avatar %>">
+		 </div>
+	 </div>
+	 <div class="userdetails">
+		 <h3><%= user.fullname %></h3>
+		 <span><i class="far fa-calendar-alt"></i> <%= user.created.toDateString() %></span>
+		 <p>
+			<%= user.description %>
+		 </p>
+	 </div> 
+</div>
+  
+<div class="related-post">
+	<div class="content">
+		<h5>
+			Your Posts
+		</h5>
+	</div>	
+</div>
+
+<div class="container1" id="user-container">
+	   	<div class="row">
+          <% photo.forEach(function(photo){ %>
+			<div class=" col-xs-12 col-sm-6 col-lg-3">
+	   			<a href="/instapic/<%=photo._id%>"> 
+				<div class="img-boxs">
+					<div class="imges">
+					   <img src="<%= photo.img%>">
+	   				</div>
+	   				<div class="content">
+                      <div class="user">
+                      	<div class="userimage">
+                      		<img src="<%=user.avatar%>">
+                      	</div>
+                      	<div class="username">
+                      		<h5><%=user.fullname.substring(0 , 20)%>.</h5>
+                      	</div> 
+						  <div class="likes">
+							  <button type="button" class="btn btn-warning">
+								  <i class="fas fa-heart"></i> <%= photo.likes.length %>
+							  </button>
+						  </div>
+                      </div>
+	   				  <div class="discription">
+	   					   <P><%= photo.description.substring(0 , 65)%>..</P>
+	   				  </div>
+	   				</div>
+					
+	   			</div>
+				</a>
+	   		</div>
+			
+			<% })%>
+	</div>
+</div>
+ 
+
+
+
+
+<% include ./partials/footer %>

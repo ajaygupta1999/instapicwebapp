@@ -1,0 +1,57 @@
+<% include ./partials/header %>
+
+ <div class="userprofile">
+	 <div class="userimage">
+		 <div class="img">
+			 <img src="https://lh3.googleusercontent.com/LE7RaXAGaycbaylE-2ZPeeVsRQUX5TLL5G5-YndsEJHfRObDsAu5upSiXxzTxLGR3uMHFN_aP7jZF6pLCeRO3DdQL49uObQ-apj-xEOe_f_kbu0qsaL8HeclZhh3jVVFhZRx9lpUCFRPr5XOFglKGQUt_C5yMQhHpM68P49taTpccPId8wzvxaT-Ys9BGQ1D3xcAeZ6rm9ufpsYvMI110NrPtTgw60uamNB9rOYh4L4eJg7i4stqLtN_zJ-RdKV_JvL6JR6o9THIC5MR9e1W2voRXaMB3jeEZbePsTx-uBpZsAuja1x5SLSqjvut3jRs_trtYe8wiY-vczNP2F5xeo3bevBmm18OTmgxqXY7loTbeen7ieCY2V4zzsoQNkYUEfYaVAwu3VaXK4raI72m7IddSCHXbLhb5B_8BNyXiFUgRRG-GX2bkt926Zlrv4YFaXlMguspMAqFiV90RT_2jv0D7Wa3wyvOm8xXTEq4AQ_438gONM4N29pMjn8bjll19K7869aEL1Qv35M_WnQGQkvewJbcm71TqTpN2Qg2weGNiLDkQIwcBxw-AqRkYltOoHF5qMTd6hMW_dAz-_tZR5p80DAeJNwAalqZocO1c-pxrnHTY_PKd7sL71fkxQUZF5BOK49IO92A_Y0lEjadsdvBpejewP0=s270-no">
+		 </div>
+	 </div>
+	 <div class="userdetails">
+		 <h3>Ajay Gupta</h3>
+		 <span><i class="far fa-calendar-alt"></i> 12-13-2019</span>
+		 <p>
+			 some text about yourself
+		 </p>
+	 </div> 
+</div>
+  
+<div class="related-post">
+	<div class="content">
+		<h5>
+			Your Posts
+		</h5>
+	</div>	
+</div>
+
+<div class="container1" id="user-container">
+	   	<div class="row">
+          <% foundphotos.forEach(function(photo){ %>
+			<div class=" col-xs-12 col-sm-6 col-lg-3">
+	   			<a href="/instapic/<%=photo._id%>"> 
+				<div class="img-boxs">
+					<div class="imges">
+					   <img src="<%= photo.img%>">
+	   				</div>
+	   				<div class="content">
+                      <div class="user">
+                      	<div class="userimage">
+                      		<img src="<%= photo.userimage %>">
+                      	</div>
+                      	<div class="username">
+                      		<h5><%=photo.username %></h5>
+                      	</div> 	
+                      </div>
+	   				  <div class="discription">
+	   					   <P><%= photo.description%></P>
+	   				  </div>
+	   				</div>
+					
+	   			</div>
+				</a>
+	   		</div>
+			
+			<% })%>
+	</div>
+</div>
+ 
+<% include ./partials/footer %>

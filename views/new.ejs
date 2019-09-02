@@ -1,0 +1,19 @@
+
+<% include ./partials/header %>
+<div class="container" id="instapic-new">
+	<form action="/instapic" method="POST">
+        <center><h1 class="new-h1">Add New Photo</h1></center>
+		<div class="form-group">
+          <label for="Image"  class="label">Image</label>
+          <input type="text" class="form-control" id="Image" aria-describedby="emailHelp" placeholder="Image URL"  name="img" required>
+        </div>
+		<div class="form-group">
+          <label for="COMMENTS"  class="label">Something About Image</label>
+			<textarea class="form-control" id="exampleFormControlTextarea1" rows="4" placeholder="Write Something About Image " name="description" required></textarea>
+        </div>
+		<button typr="submit" class="btn btn-primary btn-md btn-block">submit</button>
+		<a href="/instapic">Go back</a>
+</form>
+</div>
+	
+<% include ./partials/footer %>
