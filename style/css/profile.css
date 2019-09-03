@@ -1,5 +1,5 @@
 .userprofile {
-	margin:155px 10% 110px;
+	margin:155px auto 110px;
 	display:flex;
 	justify-content:center;
 }
@@ -19,9 +19,9 @@
 }
 .userprofile .userdetails {
 	display:block;
-	padding-left:6%;
+	padding-left:3.5;
 	margin-top:15px;
-	width:50%;
+	width:35%;
 }
 
 .userprofile .userdetails h3 {
