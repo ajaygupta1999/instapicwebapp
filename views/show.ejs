@@ -79,7 +79,7 @@
 		  <div class="row" >
            <% foundphoto.likes.forEach(function(like) { %>
                         <div class="col-12">
-							<h5><i class="fas fa-user"></i><a href="/user/<%= like._id%>"><%= like.fullname %></a></h5>
+							<h5><i class="fas fa-user" id="pop-up-like-usericon"></i><a href="/user/<%= like._id%>"><%= like.fullname %></a></h5>
 						</div>
                          <% }) %>
             	</div> 
