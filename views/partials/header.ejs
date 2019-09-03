@@ -53,7 +53,7 @@
 			  <li class="nav-item"><a class="nav-link" href="/login" id="login-link">Login<i class="fas fa-user-circle"></i> </a></li> 
 		     <li class="nav-item"><a class="nav-link" href="/register" id="login-link">Sign up<i class="fas fa-sign-in-alt"></i></a></li>
 			<% } else { %>
-			 <li class="nav-item"><a class="nav-link" href="/user/<%= CurrentUser._id %>" id="login-link"><img id="navbar-avatar" src="<%= CurrentUser.avatar  %>"><%= CurrentUser.fullname %></a></li>
+			 <li class="nav-item"><a class="nav-link" href="/user/<%= CurrentUser._id %>" id="login-link"><img id="navbar-avatar" src="<%= CurrentUser.avatar  %>"><%= CurrentUser.fullname.substring(0 , 6) %>..</a></li>
 			 <li class="nav-item"><a id="logout-link" class="nav-link" href="/logout" id="login-link">Log out<i class="fas fa-sign-out-alt"></i></a></li> 
 			<% } %>	
 		 </ul>
