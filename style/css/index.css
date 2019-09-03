@@ -225,3 +225,13 @@ margin-top:3px;
 	margin-right:12px;
 } 
 
+#search-input-box{
+	background:#d9b4d3;
+	border:1px solid #007bff;
+}
+
+#search-box-form {
+	margin-left :4%;
+	width : 35%;
+}
+

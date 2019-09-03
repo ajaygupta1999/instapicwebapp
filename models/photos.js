@@ -8,7 +8,8 @@ var photosSchema = new mongoose.Schema({
 			type : mongoose.Schema.Types.ObjectId,
 			ref : "User"
 		     },
-		    username : "string"
+		    username : "string",
+		    fullname : "string"
 	    },
 	comments : [{
 		type : mongoose.Schema.Types.ObjectId,

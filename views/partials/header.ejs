@@ -29,7 +29,7 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
-          <ul class="navbar-nav mr-auto">
+          <ul class="navbar-nav">
             <li class="nav-item active">
               <a class="nav-link" href="/instapic">Home<span class="sr-only">(current)</span></a>
             </li>
@@ -37,6 +37,17 @@
               <a class="nav-link" href="/instapic/new">Add Post</a>
             </li>   
           </ul>
+			
+			<!-- Search box	 -->
+		    <form action="/instapic" method="GET" id="search-box-form">
+			     <div class="input-group mb-1 mt-1" id="seach-input">
+                    <input type="text" class="form-control" placeholder="Search User" aria-           label="Recipient's username" aria-describedby="basic-addon2" name="search" id="search-input-box">
+                    <div class="input-group-append">
+                       <button class="btn btn-primary" type="submit">Seach</button>
+                    </div>
+                 </div>
+			</form>	
+			
           <ul class="navbar-nav ml-auto">
 			<% if(!CurrentUser){  %>
 			  <li class="nav-item"><a class="nav-link" href="/login" id="login-link">Login<i class="fas fa-user-circle"></i> </a></li> 

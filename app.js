@@ -58,16 +58,31 @@ app.get("/" ,  function(req ,res){
 
 // HOME PAGE
 app.get("/instapic" , function(req ,res){
-	  // FIND ALL THE PHOTO    
+	 if(req.query.search){
+		 // variable for holding search
+		 var regex = new RegExp(escapeRegex(req.query.search), 'gi');
+		// finding all photo and populating users
+				  // find all photo having description === search
+				 Photos.find({"author.fullname" : regex}).populate({path : "author.id"}).exec(function(err , foundphotos){
+					 if(err){
+						 console.log(err);
+					 } else {
+						 res.render("index.ejs" , { photos : foundphotos});
+					 }
+				 });
+	 } else {
+		 // FIND ALL THE PHOTO    
 		  Photos.find({}).sort({_id: -1}).populate({path : "author.id"}).exec(function(err , allphoto){
 			if(err){
 			console.log(err);
 		     }else {
 			   res.render("index.ejs" , { photos : allphoto});
 				}
-			});	
-	 
+		});	
+	 }
+	
 });
+
 //===================
 
 // CREATING NEW POST
@@ -313,6 +328,10 @@ app.get("/user/:id", function(req,res){
 		}
 	});
 });
+
+function escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+}; 
 
  
 function isloggedin(req ,res , next){
