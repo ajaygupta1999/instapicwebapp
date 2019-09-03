@@ -96,7 +96,8 @@ app.post("/instapic" ,isloggedin, function(req,res){
 	var description = req.body.description;
 	var author = {
 		id : req.user._id,
-		username : req.user.username
+		username : req.user.username,
+		fullname : req.user.fullname
 	};
 	var photos = {
 		img : img,
