@@ -1,0 +1,87 @@
+#creator-imgbox
+{
+	width: 175px;
+    height: 175px;
+}
+
+#creator-imgbox img 
+{
+	border-radius : 87.5px;
+}
+
+#creators-page-links
+{
+	display: flex;
+	margin:0px auto;
+	padding:0px;
+	justify-content: start;
+}
+
+#creators-page-links li 
+{
+	list-style: none;
+	color:#fff;
+	padding:0 10px;
+}
+
+#creator-p {
+	margin-bottom : 8px;
+}
+
+#instagram-icon , #facebook-icon , #twitter-icon 
+{
+	font-size : 1.25rem;
+	color: #253acf;
+	font-weight : 500;
+}
+
+.fa-envelope {
+    margin-right:3px;	
+	font-size : 1rem;
+	color: #d70606d1;
+}
+
+#login-link-2 
+{
+	margin-top:4px;
+}
+
+#userprofile
+{
+	margin-bottom : 30px;
+	margin-top:100px;
+}
+
+.hr-creator 
+{
+    margin:0 auto;
+	width:50%;
+}
+
+.hr-creator hr 
+{
+	background: #3449dd70;
+}
+
+.creator-description {
+	margin : 30px auto;
+	width:50%;
+}
+
+#creater-tag
+{
+    margin-bottom : 10px;
+	font-weight:900;	
+	font-size : 1.5rem;
+	color:#253acf;
+}
+
+.creator-description p 
+{
+	font-weight : 600;
+}
+
+span 
+{
+	font-weight: 700;
+}

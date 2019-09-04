@@ -330,6 +330,11 @@ app.get("/user/:id", function(req,res){
 	});
 });
 
+// CREATOR SESSION
+app.get("/creator" , function(req ,res){
+	res.render("creator.ejs");
+});
+
 function escapeRegex(text) {
     return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 }; 
