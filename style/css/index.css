@@ -1,4 +1,3 @@
-
 #body
 {
   font-family: 'Muli', sans-serif;
@@ -14,16 +13,15 @@
     background: radial-gradient(circle, rgba(238,174,202,1) 6%, rgba(148,187,233,0.8295693277310925) 100%);
 	font-weight:600;
 	color:#02a2de;	
+	display: flex;
+    justify-content: center
 }
 
 #nav-container
 {
-	width:100%;
-	display:flex;
-	align-items: center;
-	margin:0px 6%;		
+	margin:0px;
+	padding:0px;
 }
-
 
 .fa-instagram , .fa-user , .fa-calendar-alt 
 {
@@ -42,11 +40,6 @@
 	padding:10px 0px;
 	margin-right:10px;
 	color:#317fb6;
-}
-
-#pop-up-like-usericon
-{
-	margin-right:8px;
 }
 
 .navbar a.navbar-brand
@@ -248,4 +241,3 @@ margin-top:3px;
 	margin-left :4%;
 	width : 30%;
 }
-
