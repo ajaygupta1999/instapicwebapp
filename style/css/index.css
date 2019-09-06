@@ -16,6 +16,15 @@
 	color:#02a2de;	
 }
 
+#nav-container
+{
+	width:100%;
+	display:flex;
+	align-items: center;
+	margin:0px 6%;		
+}
+
+
 .fa-instagram , .fa-user , .fa-calendar-alt 
 {
 	margin-right:5px;
