@@ -1,4 +1,6 @@
-.show-container {
+
+.show-container
+{
 	margin-top:0px;
 }
 .show-container .userdetails 
@@ -7,6 +9,7 @@
 	display:flex;
 	justify-content:space-between;
 }
+
 .show-container .userdetails .user-img-name
 {
 	display:flex;
@@ -82,7 +85,7 @@
 {
     font-size : 19px;
 	font-weight:600;
-	letter-spacing:1px;
+	
 }
 
 .text {
@@ -184,7 +187,7 @@
 {
     font-size : 19px;
 	font-weight:600;
-	letter-spacing:1px;
+	
 }
 /*=======================  */
 
