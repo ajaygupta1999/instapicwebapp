@@ -5,6 +5,7 @@ var express                 = require("express"),
     mongoose                = require("mongoose"),
 	passport                = require("passport"),
 	User                    = require("./models/user.js"),
+	Notification            = require("./models/notificatio.js"),
 	LocalStrategy           = require("passport-local"),
 	passportLocalMongoose   = require("passport-local-mongoose"),
     bodyParser              = require("body-parser"),
@@ -30,11 +31,26 @@ app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-app.use(function(req ,res ,next){
-	res.locals.CurrentUser = req.user;
-	res.locals.error     = req.flash("error"); 
-	res.locals.success     = req.flash("success"); 
-	next();
+// app.use(function(req ,res ,next){
+// 	res.locals.CurrentUser = req.user;
+// 	res.locals.error     = req.flash("error"); 
+// 	res.locals.success     = req.flash("success"); 
+// 	next();
+// });
+
+app.use(async function(req, res, next){
+   res.locals.CurrentUser = req.user;
+   if(req.user) {
+    try {
+      let user = await User.findById(req.user._id).populate("notifications", null, { isRead: false }).exec();
+      res.locals.notifications = user.notifications.reverse();
+    } catch(err) {
+      console.log(err.message);
+    }
+   }
+   res.locals.error = req.flash("error");
+   res.locals.success = req.flash("success");
+   next();
 });
 
 
@@ -90,9 +106,10 @@ app.get("/instapic/new" , isloggedin , function(req,res){
     res.render("new.ejs");	
 });
 
-// GETTING DATA OF NEW PHOTO POST	
-app.post("/instapic" ,isloggedin, function(req,res){
-	var img = req.body.img;
+
+app.post("/instapic", isloggedin , async function(req, res){
+    // get data from form and add to campgrounds array
+    var img = req.body.img;
 	var description = req.body.description;
 	var author = {
 		id : req.user._id,
@@ -104,17 +121,25 @@ app.post("/instapic" ,isloggedin, function(req,res){
 		description : description,
 		author : author
 	};
-	Photos.create(photos , function(err , createdphoto){
-		if(err){
-			console.log(err);
-		} else {
-			req.flash("success" , "Successfully added a new post");
-			res.redirect("/");
-		}
-	});
-	
+    try {
+      let createdphoto = await Photos.create(photos);
+      let user = await User.findById(req.user._id).populate("followers").exec();
+      let newNotification = {
+        username: req.user.username,
+        photoId: createdphoto.id
+      }
+      for(const follower of user.followers) {
+        let notification = await Notification.create(newNotification);
+        follower.notifications.push(notification);
+        follower.save();
+      }
+      //redirect back to campgrounds page
+      res.redirect("/instapic");
+    } catch(err) {
+      req.flash("error", err.message);
+      res.redirect("back");
+    }
 });
-
 
 // AUTH RELATED ROUTES =================
 
@@ -305,7 +330,6 @@ app.post("/instapic/:id/like" ,isloggedin, function(req ,res){
 				if(err){
 					console.log(err);
 				} else {
-					
 					res.redirect("/instapic/" + foundphoto._id);
 				}
 			});	
@@ -315,7 +339,7 @@ app.post("/instapic/:id/like" ,isloggedin, function(req ,res){
 
 // USERS PROFILE
 app.get("/user/:id", function(req,res){
-	User.findById(req.params.id ,function(err , founduser){
+	User.findById(req.params.id).populate("followers").exec(function(err , founduser){
 		if(err){
 			console.log(err);
 		} else {
@@ -330,7 +354,60 @@ app.get("/user/:id", function(req,res){
 	});
 });
 
-// CREATOR SESSION
+// follow user
+app.get("/follow/:id", isloggedin , async function(req, res) {
+  try {
+     let founduser = await User.findById(req.params.id);
+	 var checkfollower = founduser.followers.some(function (follow) {
+            return follow.equals(req.user._id);
+           });
+	  if(checkfollower)
+		  {
+			  // aleady have a same follower
+			 founduser.followers.pull(req.user._id);
+		  }else {
+			  // Don't have a follower
+			 founduser.followers.push(req.user._id);
+		  }
+    founduser.save();
+    res.redirect("/user/" + req.params.id);
+  } catch(err) {
+    req.flash('error', err.message);
+    res.redirect('back');
+  }
+});
+
+
+// view all notifications
+app.get("/notifications", isloggedin , async function(req, res) {
+  try {
+    let currentuser = await User.findById(req.user._id).populate({
+      path: 'notifications',
+      options: { sort: { "_id": -1 } }
+    }).exec();
+    let allNotifications = currentuser.notifications;
+    res.render("notifications.ejs", { allNotifications : allNotifications });
+  } catch(err) {
+    req.flash('error', err.message);
+    res.redirect('back');
+  }
+});
+
+// handle notification
+app.get("/notifications/:id", isloggedin , async function(req, res) {
+  try {
+    let notification = await Notification.findById(req.params.id);
+    notification.isRead = true;
+    notification.save();
+    res.redirect("/instapic/" + notification.photoId);
+  } catch(err) {
+    req.flash("error", err.message);
+    res.redirect("back");
+  }
+});
+
+
+// CREATOR ROUTE
 app.get("/creator" , function(req ,res){
 	res.render("creator.ejs");
 });

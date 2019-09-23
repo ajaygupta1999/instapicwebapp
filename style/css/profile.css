@@ -1,3 +1,4 @@
+
 .userprofile {
 	margin:155px auto 110px;
 	display:flex;
@@ -31,8 +32,7 @@
 
 .userprofile .userdetails p {
 	width: 100%;
-	
-	
+	margin-bottom: 2.5px;	
 }
 
 .related-post .content h5
@@ -40,4 +40,15 @@
 	padding-left:20px;
 	font-weight:800;
 	letter-spacing:1px;
+}
+
+#follower-popup
+{
+	color : #3a3ad5;
+	font-size:20px;
+}
+
+#modal-title-of-followers
+{
+	color : #3a3ad5;
 }

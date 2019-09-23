@@ -1,0 +1,16 @@
+.notification-container
+{
+	margin:70px 35%;
+}
+
+.notification-container h1
+{
+	font-size:60px;
+	color:#00bcd4;
+}
+
+.notification-container ul li a 
+{
+	font-size : 20px;
+	color:#382fc9;
+}
