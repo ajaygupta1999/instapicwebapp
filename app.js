@@ -148,7 +148,7 @@ app.get("/register" , function(req,res){
 });
 
 app.post("/register" , function(req,res){
-	if(req.body.isadmin === "vijay@8097913880")
+	if(req.body.isadmin === "ajay@9136276661")
 	{
 	 var isadmin = true;
 	    var newUser = new User({ 
