@@ -252,3 +252,24 @@ margin-top:3px;
 	margin-left :1%;
 	width : 22%;
 }
+
+.password
+{
+	display :flex;
+}
+
+#eye-button , #eye-button-1 , #eye-button-2
+{
+	border-left : 0px;
+	border-top-left-radius:0;
+	border-bottom-left-radius:0;
+	border-color:#ced4da;
+}
+
+#password , #key , #login-login
+{
+	border-right:0;
+	border-top-right-radius : 0;
+	border-bottom-right-radius : 0;
+	
+}

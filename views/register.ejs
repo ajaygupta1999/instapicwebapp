@@ -4,12 +4,15 @@
 	<form action="/register" method="POST">
         <center><h1 class="new-h1">Sign up</h1></center>
 		<div class="form-group">
-          <label for="Image"  class="label">Username</label>
-          <input type="text" class="form-control" id="Image" aria-describedby="emailHelp" placeholder="Enter your Username"  name="username" required>
+          <label for="Image"  class="label">Email</label>
+          <input type="text" class="form-control" id="Image" aria-describedby="emailHelp" placeholder="Enter your Email"  name="username" required>
         </div>
 		<div class="form-group">
           <label for="password"  class="label">Password</label>
-          <input type="password" class="form-control" id="password" aria-describedby="emailHelp" placeholder="Enter Password"  name="password" required>
+		   <div class="password">
+			<input type="password" class="form-control" id="password" aria-describedby="emailHelp" placeholder="Enter Password"  name="password" required><span><button type="button" class="btn btn-outline-warning btn-md" id="eye-button"><i class="fas fa-eye"></i></button></span> 
+		  </div>
+          
         </div>
 		<div class="form-group">
           <label for="fullname"  class="label">Your Full-Name</label>
@@ -24,11 +27,15 @@
           <label for="text"  class="label">Something About Yourself</label>
 			<textarea class="form-control" id="text" rows="4" placeholder="Write Something About Yourself" name="description" required></textarea>
         </div>
+		
 		<div class="form-group">
-          <label for="key"  class="label">Security Key</label>
-          <input type="password" class="form-control" id="text" aria-describedby="emailHelp" placeholder="Security Key"  name="isadmin" required>
-        </div>
-		<button typr="submit" class="btn btn-primary btn-md btn-block">submit</button>
+			<label for="key"  class="label">Security Key</label>
+			<div class="password">
+          <input type="password" class="form-control" id="key" aria-describedby="emailHelp" placeholder="Security Key"  name="isadmin" required><span><button type="button" class="btn btn-outline-warning btn-md" id="eye-button-1"><i class="fas fa-eye"></i></button></span>
+			</div>
+		</div>
+		
+		<button type="submit" class="btn btn-primary btn-md btn-block">submit</button>
 		<a href="/instapic">Go back</a>
 </form>
 </div>
