@@ -24,8 +24,8 @@
 	padding:0 10px;
 }
 
-#creator-p {
-	margin-bottom : 8px;
+.userprofile .userdetails p {
+	margin-bottom : 5px;
 }
 
 #instagram-icon , #facebook-icon , #twitter-icon 
