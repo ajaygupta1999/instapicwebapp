@@ -52,3 +52,11 @@
 {
 	color : #3a3ad5;
 }
+
+.btn btn-sm 
+{
+	color: #212529;
+	background-color: #f1f1ea;
+    border-color: #dbdbdb;
+	
+}

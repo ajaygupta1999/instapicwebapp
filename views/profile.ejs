@@ -16,14 +16,14 @@
 		  <% if (CurrentUser && user.followers.some(function (follow){
                  return follow.equals(CurrentUser._id)
              })) { %>
-		 <a href="/follow/<%= user.id %>"><button class="btn btn-sm btn-primary"> follow </button></a>
+		 <a href="/follow/<%= user.id %>"><button class="btn btn-sm "> <strong>follow </strong></button></a>
               <% } else { %>
-             <a href="/follow/<%= user.id %>"><button class="btn btn-sm btn-primary"> follow </button></a>
+             <a href="/follow/<%= user.id %>"><button class="btn btn-sm"> <strong>follow </strong></button></a>
              <% } %>
 		     <% } %>
 		
-     <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#followers">
-       see followers(<%=user.followers.length%>)
+     <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#followers">
+     <strong> see followers(<%=user.followers.length%>)</strong> 
      </button>
 
 <!-- Modal -->
