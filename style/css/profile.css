@@ -4,6 +4,12 @@
 	justify-content:center;
 }
 
+.userprofile .userimage
+{
+	display : flex;
+	align-items : center;
+}
+
 .userprofile .userimage .img
 {
 	width:150px;
