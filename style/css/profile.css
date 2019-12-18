@@ -62,4 +62,10 @@
 	font-size : 15px;
 	font-weight : 900;
 	background-color: #f1f1ea;
+	cursor : pointer;
+}
+
+.userprofile .userdetails .profile_follow_btn:hover
+{
+	background-color : #e8e4da;
 }
