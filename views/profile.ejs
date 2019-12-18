@@ -3,7 +3,7 @@
  <div class="userprofile">
 	 <div class="userimage">
 		 <div class="img">
-			 <img src="<%= user.avatar %>">
+			 <img id="profile_img" src="<%= user.avatar %>">
 		 </div>
 	 </div>
 	 <div class="userdetails">
@@ -93,6 +93,17 @@
 			
 			<% })%>
 	</div>
+</div>
+
+<!-- profile image pop up modal -->
+
+<div id="prof-img-modal" class="prof-modal">
+  <!-- The Close Button -->
+  <span class="close-span">&times;</span>
+  <!-- Modal Content (The Image) -->
+  <img class="prof-modal-content" id="img">
+  <!-- Modal Caption (Image Text) -->
+  <div id="prof-caption"></div>
 </div>
  
 <% include ./partials/footer %>
