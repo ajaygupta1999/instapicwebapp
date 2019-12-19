@@ -89,13 +89,18 @@
 
 .container1 .row .col-lg-3 .img-boxs .content .user
 {
-    margin-bottom:230px;
     padding:0px;
 	width:100%;
 	height:35px;
 	display: inline-flex;
-	
 }
+
+.container1 .row .col-lg-3 .img-boxs .content .image-link
+{
+	width:100%;
+	height : 230px;
+}
+
 .container1 .row .col-lg-3 .img-boxs .content .user .username
 {
 	margin:0px;

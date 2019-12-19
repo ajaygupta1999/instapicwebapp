@@ -148,18 +148,18 @@
 	   	<div class="row">
           <% photos.forEach(function(photo){ %>
 			<div class=" col-xs-12 col-sm-6 col-lg-3">
-	   			<a href="/instapic/<%=photo._id%>"> 
+	   			
 				<div class="img-boxs">
 					<div class="imges">
 					   <img src="<%= photo.img%>">
 	   				</div>
-	   				<div class="content">
+	   				<div class="content d-flex align-content-start flex-wrap">
                       <div class="user">
                       	<div class="userimage">
-                      		<img src="<%= photo.author.id.avatar %>">
+                      		<a href="/user/<%=foundphoto.author.id%>"><img src="<%= photo.author.id.avatar %>">
                       	</div>
                       	<div class="username">
-                      		<h5><%=photo.author.id.fullname.substring(0 , 20)%>.</h5>
+							<h5><%=photo.author.id.fullname.substring(0 , 20)%>.</h5></a>
                       	</div>
 						  <div class="likes">
 							  <button type="button" class="btn btn-warning">
@@ -167,13 +167,14 @@
 							  </button>
 						  </div>
                       </div>
+						<a class="image-link" href="/instapic/<%=photo._id%>"> </a>
 	   				  <div class="discription">
 	   					   <P><%= photo.description.substring(0 , 65)%>..</P>
 	   				  </div>
 	   				</div>
 					
 	   			</div>
-				</a>
+				
 	   		</div>
 			<% })%>	   	
     </div>
