@@ -20,7 +20,7 @@
 		    <% if (CurrentUser && user.followers.some(function (follow){
                  return follow.equals(CurrentUser._id)
              })) { %>
-		 <a href="/follow/<%= user.id %>"><button class="profile_follow_btn"> <strong>follow </strong></button></a>
+		 <a href="/follow/<%= user.id %>"><button class="profile_follow_btn"> <strong>unfollow </strong></button></a>
               <% } else { %>
              <a href="/follow/<%= user.id %>"><button class="profile_follow_btn"><strong>follow </strong></button></a>
              <% } %>
