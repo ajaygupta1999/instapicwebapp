@@ -7,7 +7,11 @@
 		 </div>
 	 </div>
 	 <div class="userdetails">
-		 <h3><%= user.fullname %></h3>
+		 <div class="d-flex justify-content-start">
+			 <div><h3><%= user.fullname %></h3></div>
+			 <div id="update-button"><a href="/user/<%= user.id %>/edit"><button class="profile_follow_btn"><strong>update <i class="fas fa-cog"></i></strong></button></a>
+		     </div>
+		</div>
 		 <span><i class="far fa-calendar-alt"></i> <%= user.created.toDateString() %></span>
 		 <p>
 			<%= user.description %>

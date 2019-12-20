@@ -354,6 +354,55 @@ app.get("/user/:id", function(req,res){
 	});
 });
 
+// udate user profile data
+app.get("/user/:id/edit" ,isloggedin ,  function(req , res){
+		User.findById(req.params.id , function(err , founduser){
+		if(err){
+			console.log(err);
+		}else{
+			  if(founduser._id.equals(req.user._id))
+				{
+					res.render("profile-edit.ejs" , {user : founduser});
+				}else{
+				  	req.flash("error" , "You Don't have permission to change others profile data");
+					res.redirect("/user/" + req.params.id);
+				}
+		}
+	  });	
+});
+
+// UPDAING PROFILE PAGE IN DB
+app.put("/user/:id" , function(req ,res){
+	  // getting data for upadation of profile
+	   var fullname = req.body.fullname;
+	   var avatar  = req.body.avatar;
+	   var description = req.body.description;
+	   var newuser = {
+		  fullname : fullname,
+		  avatar : avatar,
+		  description : description
+	   }
+	// find that user and then update data
+	User.findByIdAndUpdate(req.params.id , newuser , function(err , updateduser){
+		    if(err){
+				res.redirect("/user/" + req.params.id);
+			}else{
+				Comments.find({"author.id" : req.params.id} , function(err , foundusercomment){
+					if(err){
+						console.log(err);
+					}else{
+						foundusercomment.forEach(function(usercomment){
+							usercomment.author.username = fullname;
+							usercomment.save();
+						});
+					}
+				});
+				// AND redirect to user page
+			   res.redirect("/user/" + req.params.id);
+			}
+	});
+});
+
 // follow user
 app.get("/follow/:id", isloggedin , async function(req, res) {
   try {

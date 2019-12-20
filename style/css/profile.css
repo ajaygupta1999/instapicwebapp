@@ -75,3 +75,14 @@
 {
 	background-color : #e8e4da;
 }
+
+#update-button
+{
+	padding-left : 10px;
+	padding-top : 2px; 
+}
+
+.userprofile .userdetails .fa-cog
+{
+	color : #fd7e14;
+}
