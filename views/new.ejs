@@ -1,11 +1,12 @@
 
 <% include ./partials/header %>
+
 <div class="container" id="instapic-new">
-	<form action="/instapic" method="POST">
+	<form action="/instapic" method="POST" enctype="multipart/form-data">
         <center><h1 class="new-h1">Add New Photo</h1></center>
 		<div class="form-group">
-          <label for="Image"  class="label">Image</label>
-          <input type="text" class="form-control" id="Image" aria-describedby="emailHelp" placeholder="Image URL"  name="img" required>
+          <label for="Image-uplode" >Image</label>
+          <input type="file" id="Image-uplode" aria-describedby="emailHelp" name="image"  accept="image/*" required>
         </div>
 		<div class="form-group">
           <label for="COMMENTS"  class="label">Something About Image</label>

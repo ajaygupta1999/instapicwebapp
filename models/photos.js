@@ -2,6 +2,7 @@ var mongoose = require("mongoose");
 
 var photosSchema = new mongoose.Schema({
 	img:"string",
+	imgId : "string",
 	description:"string",
 	author : {
 		     id : {

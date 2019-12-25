@@ -5,6 +5,7 @@ var UserSchema = new mongoose.Schema({
 	username : "string",
 	password : "string",
 	avatar  :  "string",
+	avatarId : "string",
 	fullname : "string",
 	created: { type: Date, default: Date.now },
 	description : "string",

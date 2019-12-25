@@ -1,7 +1,7 @@
 <% include ./partials/header %>
 
 <div class="container" id="instapic-new">
-	<form action="/register" method="POST">
+	<form action="/register" method="POST" enctype="multipart/form-data">
         <center><h1 class="new-h1">Sign up</h1></center>
 		<div class="form-group">
           <label for="Image"  class="label">Email</label>
@@ -18,9 +18,10 @@
           <label for="fullname"  class="label">Your Full-Name</label>
           <input type="text" class="form-control" id="fullname" aria-describedby="emailHelp" placeholder="Enter your Full name"  name="fullname" required>
         </div>
+		
 		<div class="form-group">
-          <label for="profileImage"  class="label">Profile Image</label>
-          <input type="text" class="form-control" id="profileImage" aria-describedby="emailHelp" placeholder="Your profile image url"  name="avatar" required>
+          <label for="Image-uplode" >Profile Image</label>
+          <input type="file" id="Image-uplode" aria-describedby="emailHelp" name="image"  accept="image/*" required>
         </div>
 		
 		<div class="form-group">

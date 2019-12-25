@@ -1,3 +1,4 @@
+require('dotenv').config();
 var express                 = require("express"),
     app                     = express(),
 	flash                   = require("connect-flash"),
@@ -9,7 +10,32 @@ var express                 = require("express"),
 	LocalStrategy           = require("passport-local"),
 	passportLocalMongoose   = require("passport-local-mongoose"),
     bodyParser              = require("body-parser"),
-	Comments                = require("./models/comments.js");
+	Comments                = require("./models/comments.js"),
+	multer                  = require('multer');
+
+var storage = multer.diskStorage({
+  filename: function(req, file, callback) {
+    callback(null, Date.now() + file.originalname);
+  }
+});
+// checks and only allow images 
+var imageFilter = function (req, file, cb) {
+    // accept image files only
+    if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
+        return cb(new Error('Only image files are allowed!'), false);
+    }
+    cb(null, true);
+};
+
+var upload = multer({ storage: storage, fileFilter: imageFilter});
+
+// cloudinary config
+var cloudinary = require('cloudinary');
+cloudinary.config({ 
+  cloud_name: "instapic-heroku-app", 
+  api_key: process.env.CLOUDINARY_API_KEY, 
+  api_secret: process.env.CLOUDINARY_API_SECRET_KEY
+});
 	    
 app.use(express.static("style"));
 app.use(methodOverride("_method"));
@@ -107,9 +133,11 @@ app.get("/instapic/new" , isloggedin , function(req,res){
 });
 
 
-app.post("/instapic", isloggedin , async function(req, res){
+app.post("/instapic", isloggedin , upload.single('image') , async function(req, res){
     // get data from form and add to campgrounds array
-    var img = req.body.img;
+	var result = await upload_get_url(req.file.path);
+	var img = result.secure_url;
+    var imgId = result.public_id;
 	var description = req.body.description;
 	var author = {
 		id : req.user._id,
@@ -118,6 +146,7 @@ app.post("/instapic", isloggedin , async function(req, res){
 	};
 	var photos = {
 		img : img,
+	    imgId : imgId,
 		description : description,
 		author : author
 	};
@@ -147,17 +176,22 @@ app.get("/register" , function(req,res){
 	 res.render("register.ejs");
 });
 
-app.post("/register" , function(req,res){
-	if(req.body.isadmin === "ajay@9136276661")
+app.post("/register" , upload.single('image') , async function(req,res){
+	
+	if(req.body.isadmin === "ajay@8097913880")
 	{
-	 var isadmin = true;
-	    var newUser = new User({ 
-		username : req.body.username,
-		fullname : req.body.fullname,
-		avatar : req.body.avatar,
-		description : req.body.description,
-		isadmin : isadmin
-	   });
+	       var isadmin = true;
+		   var result = await upload_get_url(req.file.path);
+		   var avatar = result.secure_url;
+		   var avatarId = result.public_id;
+		   var newUser = new User({ 
+		   username : req.body.username,
+		   fullname : req.body.fullname,
+		   avatar :  avatar,
+		   avatarId : avatarId,
+		   description : req.body.description,
+		    isadmin : isadmin	
+		   });   
 	} else {
 	 isadmin = false;
 	}
@@ -220,28 +254,36 @@ app.get("/instapic/:id", function(req,res){
 	 });
 });
 
-// DELETE PHOTO ROUTE
+// DELETE REQUEST FROM USER
 app.delete("/instapic/:id" , function(req, res){
 	// Is user logged in or not?
 	if(req.isAuthenticated()){
-		Photos.findById(req.params.id , function(err , foundphoto){
+		Photos.findById(req.params.id ,  async function(err ,foundphoto){
 			if(foundphoto.author.id.equals(req.user._id)){
-				Photos.findOneAndDelete({_id : req.params.id} , function(err){
+				try{
+					await cloudinary.v2.uploader.destroy(foundphoto.imgId);
+					Photos.findOneAndDelete({_id : req.params.id} , function(err){
 					if(err){
 						console.log(err);
-					} else {
+					 } else {
 					 req.flash("success" , "Successfully deleted the post");
 					 res.redirect("/instapic");
 					}
-				});
+				    });
+				}catch(err) {
+					 req.flash("success" , "Successfully deleted the post");
+					 res.redirect("/instapic");
+				}	
 			} else {
-				res.send("you don't have permission to do that");
+				req.flash("error" , "you don't have permission to do that");
+				res.redirect("/instapic/" + foundphoto._id);
 			}
 		});
 	} else {
-	    res.send("first looged in");
+	    req.flash("error" , "please login");
+	    res.redirect("/login");
 	}   
-});	
+});		
 	
 
 // GETTING COMMENTS DATA FROM COMMENT FORM
@@ -372,16 +414,35 @@ app.get("/user/:id/edit" ,isloggedin ,  function(req , res){
 });
 
 // UPDAING PROFILE PAGE IN DB
-app.put("/user/:id" , function(req ,res){
-	  // getting data for upadation of profile
-	   var fullname = req.body.fullname;
-	   var avatar  = req.body.avatar;
-	   var description = req.body.description;
-	   var newuser = {
-		  fullname : fullname,
-		  avatar : avatar,
-		  description : description
-	   }
+app.put("/user/:id" , upload.single('image')  , function(req ,res){
+	   // getting data for upadation of profile
+	   
+	   User.findById(req.params.id , async function(err , founduser){
+		  if(err){
+			  req.flash("error" , "something went wrong");
+			  return res.redirct("/user/" +  req.params.id);
+		  } 
+		   try{
+			  if(req.file){
+				  await cloudinary.v2.uploader.destroy(founduser.avatarId);
+				  var result = await upload_get_url(req.file.path); 
+				  var newuser = {
+		              fullname : req.body.fullname,
+		              avatar : result.secure_url,
+					  avatarId : result.public_id,
+		              description : req.body.description 
+	                 }
+			     } else{
+					  var newuser = {
+		              fullname : req.body.fullname,
+		              description : req.body.description
+	                 } 
+				 } 
+		   } catch(err){
+			   req.flash("error" , "Something went wrong . image is not able to update");
+			   res.redirect("/user/" + req.params.id);
+		   } 
+	  
 	// find that user and then update data
 	User.findByIdAndUpdate(req.params.id , newuser , function(err , updateduser){
 		    if(err){
@@ -392,7 +453,7 @@ app.put("/user/:id" , function(req ,res){
 						console.log(err);
 					}else{
 						foundusercomment.forEach(function(usercomment){
-							usercomment.author.username = fullname;
+							usercomment.author.username = req.body.fullname;
 							usercomment.save();
 						});
 					}
@@ -400,6 +461,7 @@ app.put("/user/:id" , function(req ,res){
 				// AND redirect to user page
 			   res.redirect("/user/" + req.params.id);
 			}
+	});
 	});
 });
 
@@ -460,6 +522,15 @@ app.get("/notifications/:id", isloggedin , async function(req, res) {
 app.get("/creator" , function(req ,res){
 	res.render("creator.ejs");
 });
+
+function upload_get_url(image){
+  return new Promise((resolve, reject) => {
+    cloudinary.v2.uploader.upload(image, (err, url) => {
+      if (err) return reject(err);
+      return resolve(url);
+    })
+  }) 
+}
 
 function escapeRegex(text) {
     return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
