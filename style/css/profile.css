@@ -86,3 +86,45 @@
 {
 	color : #fd7e14;
 }
+
+#uploadcontainerh4
+{
+	font-weight:600;
+	font-size:2.5rem;
+	color : #15569b;
+}
+
+#firstDiv 
+{
+  padding : 28% 25%;
+  text-align: center;
+}
+
+
+#SecondDiv{
+	text-align: center;
+	padding: 2% 25%;
+}
+
+#uploadicon
+{
+   font-size: 3rem;
+   color: #15569b;
+}
+
+#imageuplodeicon {
+	font-size : 1.3rem;
+	margin-right: 6px;
+	color : #1111d3;
+}
+
+#imageh4{
+	font-size:20px;
+	font-weight:500;
+	color:#1111d3;
+}
+
+#uploadImgBox {
+  background-color : #d7d7d7;
+  border : 1px solid #358be8; 
+}

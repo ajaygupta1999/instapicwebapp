@@ -3,7 +3,7 @@
  <div class="userprofile">
 	 <div class="userimage">
 		 <div class="img">
-			 <img id="profile_img" src="<%= user.avatar %>">
+			 <img id="profile_img" class="AllSmallImages" src="<%= user.avatar %>">
 		 </div>
 	 </div>
 	 <div class="userdetails">
@@ -65,9 +65,20 @@
 
 <div class="container1" id="user-container">
 	   	<div class="row">
+		
+		    <div class="col-xs-12 col-sm-6 col-lg-3">
+				<a href="/instapic/new">
+				<div class="img-boxs" id="uploadImgBox">
+				   <div class="imges">
+						<div id="firstDiv"><i id="uploadicon" class="fas fa-cloud-upload-alt"></i><h4 id="uploadcontainerh4">upload</h4></div>
+						<div id="SecondDiv"><i id="imageuplodeicon" class="fas fa-image"></i><span id="imageh4">Image</span></div>
+					</div>  
+	   			</div>
+				</a>
+	   		</div>
+			
           <% photo.forEach(function(photo){ %>
 			<div class=" col-xs-12 col-sm-6 col-lg-3">
-	   			
 				<div class="img-boxs">
 					<div class="imges">
 					   <img class="AllSmallImages" src="<%= photo.img%>">
@@ -98,17 +109,6 @@
 			
 			<% })%>
 	</div>
-</div>
-
-<!-- profile image pop up modal -->
-
-<div id="prof-img-modal" class="prof-modal">
-  <!-- The Close Button -->
-  <span class="close-span">&times;</span>
-  <!-- Modal Content (The Image) -->
-  <img class="prof-modal-content" id="img">
-  <!-- Modal Caption (Image Text) -->
-  <div id="prof-caption"></div>
 </div>
  
 <% include ./partials/footer %>
