@@ -70,12 +70,12 @@
 	   			
 				<div class="img-boxs">
 					<div class="imges">
-					   <img src="<%= photo.img%>">
+					   <img class="AllSmallImages" src="<%= photo.img%>">
 	   				</div>
 	   				<div class="content d-flex align-content-start flex-wrap">
                       <div class="user">
                       	<div class="userimage">
-                      		<a href="/user/<%= user._id %>"><img src="<%=user.avatar%>"></a>
+                      		<a href="/user/<%= user._id %>"><img class="AllSmallImages" src="<%=user.avatar%>"></a>
                       	</div>
                       	<div class="username">
 							<a href="/user/<%= user._id %>"><h5><%=user.fullname.substring(0 , 20)%>.</h5></a>

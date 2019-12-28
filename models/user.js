@@ -6,6 +6,7 @@ var UserSchema = new mongoose.Schema({
 	password : "string",
 	avatar  :  "string",
 	avatarId : "string",
+	angle : "Number",
 	fullname : "string",
 	created: { type: Date, default: Date.now },
 	description : "string",

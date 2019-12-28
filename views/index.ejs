@@ -85,12 +85,12 @@
 			<div class="col-xs-12 col-sm-6 col-lg-3">
 				<div class="img-boxs">
 				    <div class="imges">
-						<img src="<%= photo.img%>">
+						<img class="AllSmallImages" src="<%= photo.img%>">
 					</div>
 	   				<div class="content d-flex align-content-start flex-wrap">
                       <div class="user">
                       	<div class="userimage">
-							<a href="/user/<%= photo.author.id._id %>"><img src="<%= photo.author.id.avatar %>"></a>
+							<a href="/user/<%= photo.author.id._id %>"><img class="AllSmallImages" src="<%= photo.author.id.avatar %>"></a>
                       	</div>
                       	<div class="username">
 							<a href="/user/<%= photo.author.id._id %>"><h5><%=photo.author.id.fullname.substring(0 , 20)%>.</h5></a>

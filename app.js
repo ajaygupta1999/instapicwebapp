@@ -57,12 +57,7 @@ app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-// app.use(function(req ,res ,next){
-// 	res.locals.CurrentUser = req.user;
-// 	res.locals.error     = req.flash("error"); 
-// 	res.locals.success     = req.flash("success"); 
-// 	next();
-// });
+
 
 app.use(async function(req, res, next){
    res.locals.CurrentUser = req.user;
@@ -135,7 +130,9 @@ app.get("/instapic/new" , isloggedin , function(req,res){
 
 app.post("/instapic", isloggedin , upload.single('image') , async function(req, res){
     // get data from form and add to campgrounds array
+	try {
 	var result = await upload_get_url(req.file.path);
+	var angle = getAngle(result.exif.Orientation); 
 	var img = result.secure_url;
     var imgId = result.public_id;
 	var description = req.body.description;
@@ -147,10 +144,10 @@ app.post("/instapic", isloggedin , upload.single('image') , async function(req, 
 	var photos = {
 		img : img,
 	    imgId : imgId,
+		angle : angle,
 		description : description,
 		author : author
 	};
-    try {
       let createdphoto = await Photos.create(photos);
       let user = await User.findById(req.user._id).populate("followers").exec();
       let newNotification = {
@@ -165,9 +162,9 @@ app.post("/instapic", isloggedin , upload.single('image') , async function(req, 
       //redirect back to campgrounds page
       res.redirect("/instapic");
     } catch(err) {
-      req.flash("error", err.message);
-      res.redirect("back");
-    }
+      req.flash("error" , err.message);
+	  res.redirect("/instapic");
+    } 
 });
 
 // AUTH RELATED ROUTES =================
@@ -177,21 +174,29 @@ app.get("/register" , function(req,res){
 });
 
 app.post("/register" , upload.single('image') , async function(req,res){
-	
-	if(req.body.isadmin === "ajay@8097913880")
+	if(req.body.isadmin === process.env.REGISTER_SECURITY_KEY)
 	{
-	       var isadmin = true;
+		try{
+		   var isadmin = true;
 		   var result = await upload_get_url(req.file.path);
+			// eval(require("locus"));
+		   var angle = getAngle(result.exif.Orientation);
 		   var avatar = result.secure_url;
 		   var avatarId = result.public_id;
 		   var newUser = new User({ 
 		   username : req.body.username,
 		   fullname : req.body.fullname,
 		   avatar :  avatar,
+		   angle : angle,
 		   avatarId : avatarId,
 		   description : req.body.description,
 		    isadmin : isadmin	
 		   });   
+		} catch(error)
+			{
+				console.log(error);
+			}
+	       
 	} else {
 	 isadmin = false;
 	}
@@ -212,7 +217,6 @@ app.post("/register" , upload.single('image') , async function(req,res){
 			req.flash("error" , "You must required security key for registeration as a new user.");
 			res.redirect("/register");
 		}
-	
 });
 
 app.get("/login" , function(req,res){
@@ -413,7 +417,6 @@ app.get("/user/:id/edit" ,isloggedin ,  function(req , res){
 	  });	
 });
 
-// UPDAING PROFILE PAGE IN DB
 app.put("/user/:id" , upload.single('image')  , function(req ,res){
 	   // getting data for upadation of profile
 	   
@@ -426,9 +429,11 @@ app.put("/user/:id" , upload.single('image')  , function(req ,res){
 			  if(req.file){
 				  await cloudinary.v2.uploader.destroy(founduser.avatarId);
 				  var result = await upload_get_url(req.file.path); 
+				  var angle = getAngle(result.exif.Orientation);
 				  var newuser = {
 		              fullname : req.body.fullname,
 		              avatar : result.secure_url,
+					  angle : angle,
 					  avatarId : result.public_id,
 		              description : req.body.description 
 	                 }
@@ -525,7 +530,7 @@ app.get("/creator" , function(req ,res){
 
 function upload_get_url(image){
   return new Promise((resolve, reject) => {
-    cloudinary.v2.uploader.upload(image, (err, url) => {
+    cloudinary.v2.uploader.upload(image , {exif : true} , (err, url) => {
       if (err) return reject(err);
       return resolve(url);
     })
@@ -535,6 +540,22 @@ function upload_get_url(image){
 function escapeRegex(text) {
     return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 }; 
+
+function getAngle(number){
+	switch(number){
+		case "1" :
+			return(0);
+			
+		case "8" :
+			return(270);
+			
+		case "3" :
+			return(180);
+			
+		case "6" :
+			return(90);
+	}	
+}
 
  
 function isloggedin(req ,res , next){

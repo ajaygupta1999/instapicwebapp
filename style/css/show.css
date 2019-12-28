@@ -57,14 +57,14 @@
 	height:0px;
 } 
 
-.landscape .img-session 
+.img-container .img-session 
 {
 	margin:0px 1%;
 	width :98%;
 	height:482px;
 }
 
-.landscape .img-session .img-box
+.landscape
 {
 	display:flex;
     margin:auto auto;
@@ -73,24 +73,42 @@
 	vertical-align: center;
 }
 
-.landscape .img-session .img-box img
+.potrate
+{
+   display: flex;
+   margin:auto auto;
+   width: 350px;
+   height:480px;
+   vertical-align: center;
+}
+
+.square
+{
+   display: flex;
+   margin:auto auto;
+   width: 450px;
+   height:450px;
+   vertical-align: center;
+
+}
+
+#checkimg
 {
 	width:100%;
 	height:100%;
 }
 
-.landscape .description {
-	margin-top:15px;
-	margin-left:50px;
+.img-container .description {
+	margin-top:5px;
 	display:flex;
 	justify-content:center;	
 }
 
-.landscape .description p
+.img-container .description p
 {
     font-size : 19px;
 	font-weight:600;
-	
+	letter-spacing:1px;
 }
 
 .text {
@@ -111,90 +129,6 @@
 {
 	margin-top:10px;
 }
-
-/*======================  */
-/* FOR POTRATE IMAGES    */
-/*======================  */
-.potrate .img-session 
-{
-	margin:1%;
-	width :98%;
-	height:480px;
-}
-
-.potrate .img-session .img-box
-{
-   display: flex;
-   margin:auto auto;
-   width: 350px;
-   height:480px;
-   vertical-align: center;
-
-}
-
-.potrate .img-session .img-box img 
-{
-	width:100%;
-	height:100%;
-	
-}
-
-.potrate .description {
-	margin-top:15px;
-	display:flex;
-	justify-content:center;	
-}
-
-.potrate .description p
-{
-    font-size : 19px;
-	font-weight:600;
-	
-}
-/*=========================  */
-
-
-/*===================  */
-/*FOR SQUARE IMAGE     */
-/*===================  */
-.square .img-session 
-{
-	margin:0 1%;
-	width :98%;
-	height:450px;
-}
-
-.square .img-session .img-box
-{
-   display: flex;
-   margin:auto auto;
-   width: 450px;
-   height:450px;
-   vertical-align: center;
-
-}
-
-.square .img-session .img-box img 
-{
-	width:100%;
-	height:100%;
-	
-}
-
-.square .description {
-	margin-top:15px;
-	margin-left:50px;
-	display:flex;
-	justify-content:center;	
-}
-
-.square .description p
-{
-    font-size : 19px;
-	font-weight:600;
-	
-}
-/*=======================  */
 
 .selectedimg {
 	display:none;

@@ -3,6 +3,7 @@ var mongoose = require("mongoose");
 var photosSchema = new mongoose.Schema({
 	img:"string",
 	imgId : "string",
+	angle : "Number",
 	description:"string",
 	author : {
 		     id : {
