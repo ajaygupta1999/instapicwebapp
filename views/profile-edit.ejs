@@ -1,7 +1,7 @@
 <% include ./partials/header %>
 
 <div class="container" id="instapic-new">
-	<form action="/user/<%= user._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
+	<form action="/user/<%= user._id %>?_method=PUT" method="POST" enctype="multipart/form-data" class="UploadFoam">
         <center><h1 class="new-h1">Update your profile</h1></center>
 		<div class="form-group">
           <label for="fullname"  class="label">Your Full-Name</label>
@@ -15,7 +15,23 @@
           <label for="text"  class="label">Something About Yourself</label>
 			<textarea class="form-control" id="text" rows="4" name="description" ><%= user.description %></textarea>
 		</div>
-		<button type="submit" class="btn btn-primary btn-md btn-block">submit</button>
+		<button type="submit" class="submitButton">
+			<span id="submitSpan">
+				<h4 id="submith4">
+					Submit
+				</h4>
+			</span>
+		<div class="loading d-none" id="lodinganimtion">
+         	<div class="obj"></div>
+         	<div class="obj"></div>
+         	<div class="obj"></div>
+         	<div class="obj"></div>
+         	<div class="obj"></div>
+         	<div class="obj"></div>
+         	<div class="obj"></div>
+         	<div class="obj"></div>
+         </div>
+		</button>
 </form>
 </div>
 

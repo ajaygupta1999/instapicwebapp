@@ -1,7 +1,7 @@
 <% include ./partials/header %>
 
 <div class="container" id="instapic-new">
-	<form action="/register" method="POST" enctype="multipart/form-data" id="new-foam">
+	<form action="/register" method="POST" enctype="multipart/form-data" id="new-foam" class="UploadFoam">
         <center><h1 class="new-h1">Sign up</h1></center>
 		<div class="form-group">
           <label for="Image"  class="label">Email</label>
@@ -36,7 +36,23 @@
 			</div>
 		</div>
 		
-		<button type="submit" class="btn btn-primary btn-md btn-block">submit</button>
+		<button type="submit" class="submitButton">
+			<span id="submitSpan">
+				<h4 id="submith4">
+					Submit
+				</h4>
+			</span>
+		<div class="loading d-none" id="lodinganimtion">
+         	<div class="obj"></div>
+         	<div class="obj"></div>
+         	<div class="obj"></div>
+         	<div class="obj"></div>
+         	<div class="obj"></div>
+         	<div class="obj"></div>
+         	<div class="obj"></div>
+         	<div class="obj"></div>
+         </div>
+		</button>
 		<a href="/instapic">Go back</a>
 </form>
 </div>
