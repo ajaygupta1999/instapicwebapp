@@ -10,7 +10,7 @@ function imgcal(){
 	  if(showFirstImg == 90 || showFirstImg == 270){
 	   	     orientation.setAttribute("class" , "potrate");
              var imgurl = img.src;
-             var lastdata = imgurl.substr(52 , imgurl.length);
+             var lastdata = imgurl.substr(60 , imgurl.length);
              var c_w = img.clientWidth;
              var c_h = img.clientHeight;
              var parameters = "c_fill,w_" + c_w + ",h_" +  c_h +",g_auto,f_auto";
