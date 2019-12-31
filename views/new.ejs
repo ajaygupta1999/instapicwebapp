@@ -2,7 +2,7 @@
 <% include ./partials/header %>
 
 <div class="container" id="instapic-new">
-	<form action="/instapic" method="POST" enctype="multipart/form-data">
+	<form action="/instapic" method="POST" enctype="multipart/form-data" id="UploadFoam">
         <center><h1 class="new-h1">Add New Photo</h1></center>
 		<div class="form-group">
           <label for="Image-uplode" >Image</label>
@@ -12,9 +12,9 @@
           <label for="COMMENTS"  class="label">Something About Image</label>
 			<textarea class="form-control" id="exampleFormControlTextarea1" rows="4" placeholder="Write Something About Image " name="description" required></textarea>
         </div>
-		<button typr="submit" class="btn btn-primary btn-md btn-block">submit</button>
+		<button type="submit" class="btn btn-primary btn-md btn-block">submit</button>
 		<a href="/instapic">Go back</a>
 </form>
-</div>
+</div>	
 	
 <% include ./partials/footer %>
