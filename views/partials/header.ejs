@@ -83,7 +83,7 @@
 		  <a id="notification-popup" class="dropdown-item" href="/notifications"> View past notifications</a>
          <% notifications.forEach(function(notification) { %>                          
             <a id="notification-popup2" class="dropdown-item" href="/notifications/<%= notification.id %>">
-              <%= notification.username %> created a new photo
+              <%= notification.fullname %> created a new photo
             </a>
          <% }); %>
       </div>

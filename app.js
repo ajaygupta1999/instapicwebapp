@@ -152,6 +152,7 @@ app.post("/instapic", isloggedin , upload.single('image') , async function(req, 
       let user = await User.findById(req.user._id).populate("followers").exec();
       let newNotification = {
         username: req.user.username,
+		fullname : req.user.fullname,
         photoId: createdphoto.id
       }
       for(const follower of user.followers) {
