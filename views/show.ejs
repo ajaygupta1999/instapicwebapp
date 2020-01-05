@@ -51,8 +51,10 @@
 </div>
 <div class="img-container" id="showFirstImage">
 	<div class="img-session">
-		<div class="img-box" id="img-box">
-			<img id="checkimg" src="<%= foundphoto.img %>" alt="<%= foundphoto.angle %>" style="transform:rotate(<%= foundphoto.angle %>deg)">
+		<div class="img-box d-none" id="img-box">
+			<img id="firstShowImg" class="d-none" src="<%= foundphoto.img %>">
+			<img id="checkimg" alt="<%= foundphoto.angle %>" style="transform:rotate(<%= foundphoto.angle %>deg)">
+			
 		</div>
 	</div>
 	<div class="description">
