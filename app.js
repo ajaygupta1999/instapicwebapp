@@ -160,8 +160,8 @@ app.post("/instapic", isloggedin , upload.single('image') , async function(req, 
         follower.notifications.push(notification);
         follower.save();
       }
-      //redirect back to campgrounds page
-      res.redirect("/instapic");
+      //redirect back to instapic page
+      res.redirect("/instapic/" + createdphoto._id );
     } catch(err) {
       req.flash("error" , err.message);
 	  res.redirect("/instapic");
@@ -210,7 +210,7 @@ app.post("/register" , upload.single('image') , async function(req,res){
 		 } else {
 			passport.authenticate("local")(req , res , function(){
 			req.flash("success" , "Welcome to Instapic App " + req.user.fullname );
-			res.redirect("/instapic");
+			res.redirect("/user/" + newUser._id);
 			});	 
 			 }
 	 });

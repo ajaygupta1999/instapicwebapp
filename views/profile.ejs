@@ -1,5 +1,6 @@
+
 <% include ./partials/header %>
-  
+
  <div class="userprofile">
 	 <div class="userimage">
 		 <div class="img">
@@ -21,10 +22,13 @@
                  return follow.equals(CurrentUser._id)
              })) { %>
 		 <a href="/follow/<%= user.id %>"><button class="profile_follow_btn"> <strong>unfollow </strong></button></a>
-              <% } else { %>
-             <a href="/follow/<%= user.id %>"><button class="profile_follow_btn"><strong>follow </strong></button></a>
-             <% } %>
+              <% } else if(CurrentUser._id.equals(user._id)) { %>
+                 
+             <% } else {  %>
+			 <a href="/follow/<%= user.id %>"><button class="profile_follow_btn"><strong>follow </strong></button></a>
+		     <%  } %>
 		     <% } %>
+		
 		
      <button type="button" class="profile_follow_btn" data-toggle="modal" data-target="#followers">
      <strong> see followers(<%=user.followers.length%>)</strong> 
@@ -65,8 +69,8 @@
 
 <div class="container1" id="user-container">
 	   	<div class="row">
-		
-		    <div class="col-xs-12 col-sm-6 col-lg-3">
+		<% if(CurrentUser){ if(CurrentUser._id.equals(user._id)){  %>
+			<div class="col-xs-12 col-sm-6 col-lg-3">
 				<a href="/instapic/new">
 				<div class="img-boxs" id="uploadImgBox">
 				   <div class="imges">
@@ -76,6 +80,10 @@
 	   			</div>
 				</a>
 	   		</div>
+		<%	} } %>	
+			
+			
+		    
 			
           <% photo.forEach(function(photo){ %>
 			<div class=" col-xs-12 col-sm-6 col-lg-3">
