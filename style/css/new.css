@@ -112,3 +112,19 @@ input[type="file"]{
 .fa-image {
 	margin-right : 8px;
 }
+
+.radio-photo-status
+{
+	margin:10px;
+}
+
+.status-radio-button
+{
+	margin-right : 25px;
+	color:#3a3ad5;
+}
+
+#exampleRadios1
+{
+	margin:10px 3px;
+}

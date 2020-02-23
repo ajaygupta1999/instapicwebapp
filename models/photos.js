@@ -5,6 +5,7 @@ var photosSchema = new mongoose.Schema({
 	imgId : "string",
 	angle : "Number",
 	description:"string",
+	status : "string",
 	author : {
 		     id : {
 			type : mongoose.Schema.Types.ObjectId,

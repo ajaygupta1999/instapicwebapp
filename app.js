@@ -1,3 +1,4 @@
+// hidden file
 require('dotenv').config();
 var express                 = require("express"),
     app                     = express(),
@@ -13,11 +14,14 @@ var express                 = require("express"),
 	Comments                = require("./models/comments.js"),
 	multer                  = require('multer');
 
+
+// storage file name from multer 
 var storage = multer.diskStorage({
   filename: function(req, file, callback) {
     callback(null, Date.now() + file.originalname);
   }
 });
+
 // checks and only allow images 
 var imageFilter = function (req, file, cb) {
     // accept image files only
@@ -58,7 +62,7 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-
+// This will allow these variables to accessble to all pages
 app.use(async function(req, res, next){
    res.locals.CurrentUser = req.user;
    if(req.user) {
@@ -73,8 +77,6 @@ app.use(async function(req, res, next){
    res.locals.success = req.flash("success");
    next();
 });
-
-
 // ================================================
 
 // =============
@@ -84,7 +86,7 @@ app.use(async function(req, res, next){
 // HOME PAGE
 app.get("/" ,  function(req ,res){
 	// FIND ALL THE PHOTO 
-	Photos.find({}).sort({_id: -1}).populate({path : "author.id"}).exec(function(err , allphoto){
+	Photos.find({status : "public"}).sort({_id: -1}).populate({path : "author.id"}).exec(function(err , allphoto){
 		if(err){
 			console.log(err);
 		} else {
@@ -104,12 +106,18 @@ app.get("/instapic" , function(req ,res){
 					 if(err){
 						 console.log(err);
 					 } else {
-						 res.render("index.ejs" , { photos : foundphotos});
+						 var publicfoundphotos = [];
+						 foundphotos.forEach(function(photo){
+							 if(photo.status == "public"){
+								 publicfoundphotos.push(photo);
+							 }
+						 })
+						 res.render("index.ejs" , { photos : publicfoundphotos});
 					 }
 				 });
 	 } else {
 		 // FIND ALL THE PHOTO    
-		  Photos.find({}).sort({_id: -1}).populate({path : "author.id"}).exec(function(err , allphoto){
+		  Photos.find({status : "public"}).sort({_id: -1}).populate({path : "author.id"}).exec(function(err , allphoto){
 			if(err){
 			console.log(err);
 		     }else {
@@ -119,7 +127,6 @@ app.get("/instapic" , function(req ,res){
 	 }
 	
 });
-
 //===================
 
 // CREATING NEW POST
@@ -127,7 +134,7 @@ app.get("/instapic/new" , isloggedin , function(req,res){
     res.render("new.ejs");	
 });
 
-
+// creating a new photo..
 app.post("/instapic", isloggedin , upload.single('image') , async function(req, res){
     // get data from form and add to campgrounds array
 	try {
@@ -146,7 +153,8 @@ app.post("/instapic", isloggedin , upload.single('image') , async function(req, 
 	    imgId : imgId,
 		angle : angle,
 		description : description,
-		author : author
+		author : author,
+		status : req.body.status
 	};
       let createdphoto = await Photos.create(photos);
       let user = await User.findById(req.user._id).populate("followers").exec();
@@ -167,13 +175,15 @@ app.post("/instapic", isloggedin , upload.single('image') , async function(req, 
 	  res.redirect("/instapic");
     } 
 });
+//=================================
 
 // AUTH RELATED ROUTES =================
-
+// Register new user
 app.get("/register" , function(req,res){
 	 res.render("register.ejs");
 });
 
+// Creating a new user 
 app.post("/register" , upload.single('image') , async function(req,res){
 	if(req.body.isadmin === process.env.REGISTER_SECURITY_KEY)
 	{
@@ -236,7 +246,7 @@ app.get("/logout" , function(req,res){
 	res.redirect("/instapic");
 });
 
-// SHOW ROUTE
+// SHOW PAGE ROUTE
 app.get("/instapic/:id", function(req,res){
 	 // FIND PARTICULAR PHOTO FROM DATABASE
 	 Photos.findById(req.params.id).populate("comments likes").exec(function(err , foundphoto){
@@ -252,11 +262,90 @@ app.get("/instapic/:id", function(req,res){
 			  if(err){
 				console.log(err);
 			} else {
-				res.render("show.ejs" , {foundphoto : foundphoto , photos : photos});
+				var publicfoundphotos = [];
+						 photos.forEach(function(photo){
+							 if(photo.status == "public"){
+								 publicfoundphotos.push(photo);
+							 }
+						 });
+				res.render("show.ejs" , {foundphoto : foundphoto , photos : publicfoundphotos});
 			} 
 		 });
 	 }
 	 });
+});
+
+// SHOWING PRIVATE IMAGE IN PRIVATE SESSION...
+app.get("/instapic/private/:id" ,isloggedin ,  function(req,res){
+	// FIND PARTICULAR PHOTO FROM DATABASE
+	 Photos.findById(req.params.id).populate("comments likes").exec(function(err , foundphoto){
+	    if(err){
+	      console.log(err);
+	    } else {
+			// FIND ALL THE PHOTOS RELATED TO LOGGEDIN USER
+			// POPULATE ALL THE DATA OF USER
+		 var user = foundphoto.author.username;
+	     Photos.find({ "author.username" : user }).populate({
+			 path : "author.id",
+		 }).exec(function(err , photos){
+			  if(err){
+				console.log(err);
+			} else {
+				var privatefoundphotos = [];
+						 photos.forEach(function(photo){
+							 if(photo.status == "private"){
+								 privatefoundphotos.push(photo);
+							 }
+						 });
+				res.render("private-show.ejs" , {foundphoto : foundphoto , photos : privatefoundphotos});
+			} 
+		 });
+	 }
+	 });
+});
+
+// Covert private IMAGE to public IMAGE
+app.put("/instapic/private/:id/cpublic" , isloggedin , function(req,res){
+	 Photos.findById(req.params.id).populate("comments likes").exec(function(err , foundphoto){
+	    if(err){
+	      console.log(err);
+	    } else {
+			var newphoto = {
+				status : "public"
+			}
+			Photos.findByIdAndUpdate(req.params.id , newphoto , function(err,updatedphoto){
+				if(err){
+					console.log(err);
+				}else{
+					req.flash("success" , "Added to public section..");
+					res.redirect("/instapic");
+				}
+			});	
+	 }
+	 });
+	
+});
+
+// Covert public IMAGE to private IMAGE
+app.put("/instapic/private/:id/cprivate" , isloggedin , function(req,res){
+	 Photos.findById(req.params.id).populate("comments likes").exec(function(err , foundphoto){
+	    if(err){
+	      console.log(err);
+	    } else {
+			var newphoto = {
+				status : "private"
+			}
+			Photos.findByIdAndUpdate(req.params.id , newphoto , function(err,updatedphoto){
+				if(err){
+					console.log(err);
+				}else{
+					req.flash("success" , "Added to private section..");
+					res.redirect("/instapic");
+				}
+			});	
+	 }
+	 });
+	
 });
 
 // DELETE REQUEST FROM USER
@@ -288,7 +377,38 @@ app.delete("/instapic/:id" , function(req, res){
 	    req.flash("error" , "please login");
 	    res.redirect("/login");
 	}   
-});		
+});	
+
+// DELETE PRIVATE PHOTO ROUTE
+app.delete("/instapic/private/:id" , function(req, res){
+	// Is user logged in or not?
+	if(req.isAuthenticated()){
+		Photos.findById(req.params.id ,  async function(err ,foundphoto){
+			if(foundphoto.author.id.equals(req.user._id)){
+				try{
+					await cloudinary.v2.uploader.destroy(foundphoto.imgId);
+					Photos.findOneAndDelete({_id : req.params.id} , function(err){
+					if(err){
+						console.log(err);
+					 } else {
+					 req.flash("success" , "Successfully deleted the post");
+					 res.redirect("/user/" + req.user._id + "/private");
+					}
+				    });
+				}catch(err) {
+					 req.flash("success" , "Successfully deleted the post");
+					 res.redirect("/user/" + req.user._id + "/private");
+				}	
+			} else {
+				req.flash("error" , "you don't have permission to do that");
+				res.redirect("/instapic/private/" + req.params.id);
+			}
+		});
+	} else {
+	    req.flash("error" , "please login");
+	    res.redirect("/login");
+	}   
+});
 	
 
 // GETTING COMMENTS DATA FROM COMMENT FORM
@@ -352,7 +472,7 @@ app.delete("/instapic/:id/comments/:comment_id" , function(req,res){
 });
 
 
-// LIKES ==============
+// LIKES ====================================
 app.post("/instapic/:id/like" ,isloggedin, function(req ,res){
 	// find Photo
 	Photos.findById(req.params.id , function(err, foundphoto){
@@ -394,12 +514,52 @@ app.get("/user/:id", function(req,res){
 				if(err){
 					console.log(err);	
 				}else {
-					res.render("profile.ejs" , {user : founduser , photo : photo});
+					var publicfoundphotos = [];
+					var privatefoundphotos = [];
+						 photo.forEach(function(photo){
+							 if(photo.status == "public"){
+								 publicfoundphotos.push(photo);
+							 }else{
+								  privatefoundphotos.push(photo);
+							 }
+						 });
+					res.render("profile.ejs" , {user : founduser , publicfoundphotos : publicfoundphotos });
 				}
 			});	
 		}
 	});
 });
+
+// private images from profile page
+app.get("/user/:id/private" , isloggedin , function(req,res){
+   User.findById(req.params.id , function(err , founduser){
+	   if(err){
+		   console.log(err); 
+	   }else{
+		   if(founduser._id.equals(req.user._id))
+		     {
+				Photos.find().where("author.id").equals(founduser._id).exec(function(err , photo){
+				if(err){
+					console.log(err);	
+				}else {
+					var privatefoundphotos = [];
+						 photo.forEach(function(photo){
+							 if(photo.status == "private"){
+								 privatefoundphotos.push(photo);
+							 }
+						 });
+					res.render("profileprivateimage.ejs" , {user : founduser , privatefoundphotos : privatefoundphotos});
+				}
+			});	
+				}else{
+				  	req.flash("error" , "You Don't have permission to check others private Images");
+					res.redirect("/user/" + req.params.id);
+				} 
+	   }
+   })
+});
+
+
 
 // udate user profile data
 app.get("/user/:id/edit" ,isloggedin ,  function(req , res){
@@ -529,19 +689,22 @@ app.get("/creator" , function(req ,res){
 	res.render("creator.ejs");
 });
 
+// UPLOAD IMAGE TO CLOUDINARY.COM SENDING OBJECT..
 function upload_get_url(image){
   return new Promise((resolve, reject) => {
     cloudinary.v2.uploader.upload(image , {exif : true} , (err, url) => {
       if (err) return reject(err);
       return resolve(url);
-    })
-  }) 
+    });
+  });
 }
 
+// SEARCH ACTIVITY 
 function escapeRegex(text) {
     return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 }; 
 
+// GETTING ANGLE OF IMAGE(ORIENTATION OF IMAGE)
 function getAngle(number){
 	switch(number){
 		case "1" :
@@ -558,7 +721,7 @@ function getAngle(number){
 	}	
 }
 
- 
+//  CHECK WHETHER THE PERSON IS LOGGED-IN OR NOT.
 function isloggedin(req ,res , next){
 	if(req.isAuthenticated()){
 	return	next();

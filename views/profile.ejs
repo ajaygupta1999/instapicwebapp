@@ -80,12 +80,22 @@
 	   			</div>
 				</a>
 	   		</div>
+			<div class="col-xs-12 col-sm-6 col-lg-3">
+				<a href="/user/<%=user._id%>/private">
+				<div class="img-boxs" id="uploadImgBox">
+				   <div class="imges">
+						<div id="firstDiv"><i id="uploadicon" class="fas fa-shield-alt"></i><h4 id="uploadcontainerh4">Private</h4></div>
+						<div id="SecondDiv"><i id="imageuplodeicon" class="fas fa-image"></i><span id="imageh4">Image</span></div>
+					</div>  
+	   			</div>
+				</a>
+	   		</div>
 		<%	} } %>	
 			
 			
 		    
 			
-          <% photo.forEach(function(photo){ %>
+          <% publicfoundphotos.forEach(function(photo){ %>
 			<div class=" col-xs-12 col-sm-6 col-lg-3">
 				<div class="img-boxs">
 					<div class="imges">

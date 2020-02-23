@@ -1,0 +1,55 @@
+<% include ./partials/header %>
+
+<div class="jumbotron jumbotron-fluid d-flex" id="private-page-container">
+	<div class="private-page">
+		<div class="private-profile-image">
+			<i class="fas fa-camera-retro" id="private-gallery-icon"></i>
+		</div>
+	</div>
+  <div class="container" id="inside-container">
+    <h1 class="display-4" id="private-name-session">Hi <%= user.fullname %></h1>
+    <p class="lead" id="private-p-session">Your All private Images is here..</p>
+  </div>
+</div>
+
+
+<div class="text">
+    <p>Your Post</p>	
+</div>
+<div class="container1" id="user-container">
+	   	<div class="row">
+          <% privatefoundphotos.forEach(function(photo){ %>
+			<div class=" col-xs-12 col-sm-6 col-lg-3">
+				<div class="img-boxs">
+					<div class="imges">
+					   <img class="AllSmallImages" src="<%= photo.img%>">
+	   				</div>
+	   				<div class="content d-flex align-content-start flex-wrap">
+                      <div class="user">
+                      	<div class="userimage">
+                      		<img class="AllSmallImages" src="<%=user.avatar%>">
+                      	</div>
+                      	<div class="username">
+                      		<h5><%=user.fullname.substring(0 , 20)%>.</h5>
+                      	</div> 
+						  <div class="likes">
+							  <button type="button" class="btn btn-warning">
+								  <i class="fas fa-heart"></i> <%= photo.likes.length %>
+							  </button>
+						  </div>
+                      </div>
+						<a class="image-link" href="/instapic/private/<%=photo._id%>"> </a>
+	   				  <div class="discription">
+	   					   <P><%= photo.description.substring(0 , 65)%>..</P>
+	   				  </div>
+	   				</div>
+					
+	   			</div>
+				</a>
+	   		</div>
+			
+			<% })%>
+	</div>
+</div>
+  
+<% include ./partials/footer %>

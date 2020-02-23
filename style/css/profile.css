@@ -128,3 +128,38 @@
   background-color : #d7d7d7;
   border : 1px solid #358be8; 
 }
+
+#private-page-container
+{
+	margin :70px 30px 20px;
+}
+
+#private-gallery-icon
+{
+	font-size : 100px;
+	color:#0a5799ed;
+	
+}
+
+.private-page{
+	margin-left : 30%;
+}
+
+#inside-container
+{
+	margin-left : 20px; 
+}
+
+#private-name-session{
+	margin-bottom:0px;
+	color:#0a5799ed;
+	font-weight:500;
+	
+}
+
+#private-p-session{
+	color: #19629f;
+    font-size : 18px;
+	font-weight:600;
+		
+}

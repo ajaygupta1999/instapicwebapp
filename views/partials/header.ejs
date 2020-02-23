@@ -40,15 +40,12 @@
               <a class="nav-link" href="/instapic/new">Add Post</a>
             </li>
           </ul>
-			<!-- Search box	 -->
-		    <form action="/instapic" method="GET" id="search-box-form">
-			     <div class="input-group mb-1 mt-1" id="seach-input">
-                    <input type="text" class="form-control" placeholder="Search User" aria-label="Recipient's username" aria-describedby="basic-addon2" name="search" id="search-input-box">
-                    <div class="input-group-append">
-                       <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
-                    </div>
-                 </div>
-			</form>	
+			
+		  <!-- Search box	 --> 
+		 <button type="button" class="btn btn-primary" id="see-comments" data-toggle="modal" data-target="#searchbox">
+	        <i class="fas fa-search"></i>							 
+       </button>
+		  
 			
           <ul class="navbar-nav ml-auto">
 			<% if(!CurrentUser){  %>
@@ -66,6 +63,37 @@
 		 </ul>
 		 </nav>
     </header>
+	
+<!-- POP UP Search Box  ======================-->
+<!-- Modal -->
+<div class="modal fade" id="searchbox" tabindex="-1" role="dialog" aria-labelledby="commentsTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" id="search-box-model">
+        <h5 class="modal-title" id="commentsTitle">
+		  <div class="main-text-searchbox">
+			 <div class="searchtext">
+			  Search User
+			 </div> 
+		  </div>	
+			<div class="add-comment-button">
+			 <form action="/instapic" method="GET">
+	              <div class="input-group mb-1 mt-1" id="comment-input">
+					<input type="text" class="form-control" placeholder="Search User" aria-label="Write Comments here...." aria-describedby="button-addon2" name="search" required>
+                  <div class="input-group-append">
+                 <button class="btn btn-primary" type="submit" id="button-addon2">Submit</button>
+                 </div>
+		     	</div>
+                </form>
+			</div>
+			<div class="close-search-button">
+				<button type="button" class="btn btn-sm btn-danger" data-dismiss="modal">Close</button>
+			</div>
+		  </h5>
+      </div>
+    </div>
+  </div>
+</div>
   
 	    <% if(CurrentUser){ %>
 <!-- Modal -->

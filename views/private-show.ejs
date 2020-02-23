@@ -39,14 +39,14 @@
                         </form>
                     </div>
 					<%	if(CurrentUser && foundphoto.author.id.equals(CurrentUser._id)){ %>
-						 <form action="/instapic/<%=foundphoto._id%>?_method=DELETE" method="POST">
+						 <form action="/instapic/private/<%=foundphoto._id%>?_method=DELETE" method="POST">
 							   <button id="delete-photo" class="btn btn-danger">
 								  <i class="far fa-trash-alt"></i>
 							   </button>   
 						 </form>
-						<form action="/instapic/private/<%=foundphoto._id%>/cprivate?_method=PUT" method="POST">
+						<form action="/instapic/private/<%=foundphoto._id%>/cpublic?_method=PUT" method="POST">
 							   <button id="delete-photo" class="btn btn-warning">
-								  private
+								 public
 							   </button>   
 						 </form>
 						<% }%>
