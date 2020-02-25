@@ -156,20 +156,26 @@ app.post("/instapic", isloggedin , upload.single('image') , async function(req, 
 		author : author,
 		status : req.body.status
 	};
+	
       let createdphoto = await Photos.create(photos);
-      let user = await User.findById(req.user._id).populate("followers").exec();
-      let newNotification = {
-        username: req.user.username,
-		fullname : req.user.fullname,
-        photoId: createdphoto.id
-      }
-      for(const follower of user.followers) {
-        let notification = await Notification.create(newNotification);
-        follower.notifications.push(notification);
-        follower.save();
-      }
-      //redirect back to instapic page
-      res.redirect("/instapic/" + createdphoto._id );
+	   if(createdphoto.status === "public"){
+		   let user = await User.findById(req.user._id).populate("followers").exec();
+           let newNotification = {
+		     fullname : req.user.fullname,
+             username: req.user.username,
+             photoId: createdphoto.id
+            }
+          for(const follower of user.followers){
+             let notification = await Notification.create(newNotification);
+             follower.notifications.push(notification);
+             follower.save();
+             //redirect back to campgrounds page
+             res.redirect("/instapic/" +  createdphoto._id);
+          }
+	  }else{
+		  //redirect back to campgrounds page
+          res.redirect("/instapic/" + createdphoto._id);
+	  }
     } catch(err) {
       req.flash("error" , err.message);
 	  res.redirect("/instapic");
