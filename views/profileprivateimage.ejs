@@ -18,19 +18,19 @@
 </div>
 <div class="container1" id="user-container">
 	   	<div class="row">
-          <% privatefoundphotos.forEach(function(photo){ %>
+          <% photos.forEach(function(photo){ %>
 			<div class=" col-xs-12 col-sm-6 col-lg-3">
 				<div class="img-boxs">
 					<div class="imges">
-					   <img class="AllSmallImages" src="<%= photo.img%>">
+					   <img data-src="<%= photo.img%>">
 	   				</div>
 	   				<div class="content d-flex align-content-start flex-wrap">
                       <div class="user">
                       	<div class="userimage">
-                      		<img class="AllSmallImages" src="<%=user.avatar%>">
+                      		<a href="/user/<%= user._id %>"><img data-src="<%=user.avatar%>"></a>
                       	</div>
                       	<div class="username">
-                      		<h5><%=user.fullname.substring(0 , 20)%>.</h5>
+							<a href="/user/<%= user._id %>"><h5><%=user.fullname.substring(0 , 20)%>.</h5></a>
                       	</div> 
 						  <div class="likes">
 							  <button type="button" class="btn btn-warning">
@@ -38,14 +38,14 @@
 							  </button>
 						  </div>
                       </div>
-						<a class="image-link" href="/instapic/private/<%=photo._id%>"> </a>
+					  <a class="image-link" href="/instapic/private<%=photo._id%>"> </a>
 	   				  <div class="discription">
 	   					   <P><%= photo.description.substring(0 , 65)%>..</P>
 	   				  </div>
 	   				</div>
 					
 	   			</div>
-				</a>
+				
 	   		</div>
 			
 			<% })%>
