@@ -18,7 +18,7 @@
 </div>
 <div class="container1" id="user-container">
 	   	<div class="row">
-          <% photos.forEach(function(photo){ %>
+          <% privatefoundphotos.forEach(function(photo){ %>
 			<div class=" col-xs-12 col-sm-6 col-lg-3">
 				<div class="img-boxs">
 					<div class="imges">
@@ -38,7 +38,7 @@
 							  </button>
 						  </div>
                       </div>
-					  <a class="image-link" href="/instapic/private<%=photo._id%>"> </a>
+					  <a class="image-link" href="/user/<%=user._id%>/private/<%=photo._id%>"> </a>
 	   				  <div class="discription">
 	   					   <P><%= photo.description.substring(0 , 65)%>..</P>
 	   				  </div>

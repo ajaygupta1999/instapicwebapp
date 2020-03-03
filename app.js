@@ -282,7 +282,7 @@ app.get("/instapic/:id", function(req,res){
 });
 
 // SHOWING PRIVATE IMAGE IN PRIVATE SESSION...
-app.get("/instapic/private/:id" ,isloggedin ,  function(req,res){
+app.get("/user/:id/private/:id" ,isloggedin ,  function(req,res){
 	// FIND PARTICULAR PHOTO FROM DATABASE
 	 Photos.findById(req.params.id).populate("comments likes").exec(function(err , foundphoto){
 	    if(err){
@@ -303,7 +303,7 @@ app.get("/instapic/private/:id" ,isloggedin ,  function(req,res){
 								 privatefoundphotos.push(photo);
 							 }
 						 });
-				res.render("private-show.ejs" , {foundphoto : foundphoto , photos : privatefoundphotos});
+				res.render("private-show.ejs" , {foundphoto : foundphoto , photos : privatefoundphotos , user : user});
 			} 
 		 });
 	 }
@@ -311,7 +311,7 @@ app.get("/instapic/private/:id" ,isloggedin ,  function(req,res){
 });
 
 // Covert private IMAGE to public IMAGE
-app.put("/instapic/private/:id/cpublic" , isloggedin , function(req,res){
+app.put("/user/:id/private/:id/cpublic" , isloggedin , function(req,res){
 	 Photos.findById(req.params.id).populate("comments likes").exec(function(err , foundphoto){
 	    if(err){
 	      console.log(err);
@@ -333,7 +333,7 @@ app.put("/instapic/private/:id/cpublic" , isloggedin , function(req,res){
 });
 
 // Covert public IMAGE to private IMAGE
-app.put("/instapic/private/:id/cprivate" , isloggedin , function(req,res){
+app.put("/user/:id/private/:id/cprivate" , isloggedin , function(req,res){
 	 Photos.findById(req.params.id).populate("comments likes").exec(function(err , foundphoto){
 	    if(err){
 	      console.log(err);
@@ -385,8 +385,9 @@ app.delete("/instapic/:id" , function(req, res){
 	}   
 });	
 
+
 // DELETE PRIVATE PHOTO ROUTE
-app.delete("/instapic/private/:id" , function(req, res){
+app.delete("/user/:id/private/:id" , function(req, res){
 	// Is user logged in or not?
 	if(req.isAuthenticated()){
 		Photos.findById(req.params.id ,  async function(err ,foundphoto){

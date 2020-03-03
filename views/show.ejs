@@ -44,12 +44,19 @@
 								  <i class="far fa-trash-alt"></i>
 							   </button>   
 						 </form>
-						<form action="/instapic/private/<%=foundphoto._id%>/cprivate?_method=PUT" method="POST">
+						<% if(foundphoto.status == "private"){ %>
+						    <form action="/user/<%=foundphoto.author.id%>/private/<%=foundphoto._id%>/cpublic?_method=PUT" method="POST">
+							   <button id="delete-photo" class="btn btn-warning">
+								  public
+							   </button>   
+						 </form>
+						 <% } else{ %>
+						    <form action="/user/<%=foundphoto.author.id%>/private/<%=foundphoto._id%>/cprivate?_method=PUT" method="POST">
 							   <button id="delete-photo" class="btn btn-warning">
 								  private
 							   </button>   
 						 </form>
-						<% }%>
+						<% }}%>
 			</div>
 		</div>
 	</div>
