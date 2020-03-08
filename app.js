@@ -37,7 +37,7 @@ var upload = multer({ storage: storage, fileFilter: imageFilter});
 // cloudinary config
 var cloudinary = require('cloudinary');
 cloudinary.config({ 
-  cloud_name: "instapicapp", 
+  cloud_name: "instapic-heroku-app", 
   api_key: process.env.CLOUDINARY_API_KEY, 
   api_secret: process.env.CLOUDINARY_API_SECRET_KEY
 });
