@@ -2,7 +2,7 @@
 
 <div class="container" id="instapic-new">
 	<form action="/user/<%= user._id %>?_method=PUT" method="POST" enctype="multipart/form-data" class="UploadFoam">
-        <center><h1 class="new-h1">Update your profile</h1></center>
+        <center><h1 id="profile-edit-header">Update your profile</h1></center>
 		<div class="form-group">
           <label for="fullname"  class="label">Your Full-Name</label>
           <input type="text" class="form-control" id="fullname" aria-describedby="emailHelp" value="<%= user.fullname %>"  name="fullname" required>

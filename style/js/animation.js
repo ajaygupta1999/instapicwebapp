@@ -7,3 +7,4 @@ foam.addEventListener("submit" , function(){
 	var loadanimation = document.querySelector("#lodinganimtion");
 	loadanimation.setAttribute("class" , "loading");
 });
+

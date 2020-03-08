@@ -63,13 +63,23 @@
   
 <div class="related-post">
 	<div class="content">
-		<h5>
-			Your Posts
-		</h5>
-	</div>	
-</div>
-
-<div class="container1" id="user-container">
+		<ul class="nav nav-pills mb-1" id="pills-tab" role="tablist">
+           <li class="nav-items-1">
+                   <a class="toggle-buttons" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Your Post</a>
+           </li>
+		<% if(CurrentUser){ if(CurrentUser._id.equals(user._id)){  %>
+           <li class="nav-items-2">
+                <a class="toggle-buttons" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false"><i class="fas fa-user-shield"></i> Private Images</a>
+           </li>
+           <li class="nav-items-3">
+                <a class="toggle-buttons" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false" onClick="refreshPage()"><i class="fas fa-heart"></i> Liked Images</a>
+          </li>
+		<% }} %>	
+       </ul>
+      <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+		 <!-- public images	 -->
+			<div class="container1" id="user-container">
 	   	<div class="row">
 		<% if(CurrentUser){ if(CurrentUser._id.equals(user._id)){  %>
 			<div class="col-xs-12 col-sm-6 col-lg-3">
@@ -82,20 +92,8 @@
 	   			</div>
 				</a>
 	   		</div>
-			<div class="col-xs-12 col-sm-6 col-lg-3">
-				<a href="/user/<%=user._id%>/private">
-				<div class="img-boxs" id="uploadImgBox">
-				   <div class="imges">
-						<div id="firstDiv"><i id="uploadicon" class="fas fa-shield-alt"></i><h4 id="uploadcontainerh4">Private</h4></div>
-						<div id="SecondDiv"><i id="imageuplodeicon" class="fas fa-image"></i><span id="imageh4">Image</span></div>
-					</div>  
-	   			</div>
-				</a>
-	   		</div>
 		<%	} } %>	
 			
-			
-		    
 			
           <% publicfoundphotos.forEach(function(photo){ %>
 			<div class=" col-xs-12 col-sm-6 col-lg-3">
@@ -130,5 +128,85 @@
 			<% })%>
 	</div>
 </div>
- 
+		  
+</div>
+    <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+		 <div class="container1" id="user-container">
+	      	<div class="row"> 
+			<% if(CurrentUser){ if(CurrentUser._id.equals(user._id)){  %>
+			  <% priavteimages.forEach(function(photo){ %>
+			  <div class=" col-xs-12 col-sm-6 col-lg-3">
+				<div class="img-boxs">
+					<div class="imges">
+					   <img private-img-src="<%= photo.img%>">
+	   				</div>
+	   				<div class="content d-flex align-content-start flex-wrap">
+                      <div class="user">
+                      	<div class="userimage">
+                      	<a href="/user/<%= user._id %>"><img private-profile-src="<%=user.avatar%>"></a>
+                      	</div>
+                      	<div class="username">
+							<a href="/user/<%= user._id %>"><h5><%=user.fullname.substring(0 , 20)%>.</h5></a>
+                      	</div> 
+						  <div class="likes">
+							  <button type="button" class="btn btn-warning">
+								  <i class="fas fa-heart"></i> <%= photo.likes.length %>
+							  </button>
+						  </div>
+                      </div>
+					  <a class="image-link" href="/user/<%=user._id%>/private/<%=photo._id%>"> </a>
+	   				  <div class="discription">
+	   					   <P><%= photo.description.substring(0 , 65)%>..</P>
+	   				  </div>
+	   				</div>
+					
+	   			</div>
+				
+	   		</div>
+			
+			<% }) }} %>
+			</div>
+		</div>
+	</div>
+   <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+	   <div class="container1" id="user-container">
+	      	<div class="row"> 
+		 <% if(CurrentUser){ if(CurrentUser._id.equals(user._id)){  %>
+			  <% Alllikedimages.forEach(function(photo){ %>
+			  <div class=" col-xs-12 col-sm-6 col-lg-3">
+				<div class="img-boxs">
+					<div class="imges">
+					   <img liked-img-src="<%= photo.img%>">
+	   				</div>
+	   				<div class="content d-flex align-content-start flex-wrap">
+                      <div class="user">
+                      	<div class="userimage">
+                      	<a href="/user/<%= photo.author.id._id %>"><img liked-profile-src="<%=photo.author.id.avatar%>"></a>
+                      	</div>
+                      	<div class="username">
+							<a href="/user/<%= photo.author.id._id%>"><h5><%=photo.author.fullname.substring(0 , 20)%>.</h5></a>
+                      	</div> 
+						  <div class="likes">
+							  <button type="button" class="btn btn-warning">
+								  <i class="fas fa-heart"></i> <%= photo.likes.length %>
+							  </button>
+						  </div>
+                      </div>
+					  <a class="image-link" href="/instapic/<%=photo._id%>"></a>
+	   				  <div class="discription">
+	   					   <P><%= photo.description.substring(0 , 65)%>..</P>
+	   				  </div>
+	   				</div>
+					
+	   			</div>
+				
+	   		</div>
+			
+			<% }) }} %>
+			</div>
+		</div>
+		  
+	</div>
+
+
 <% include ./partials/footer %>

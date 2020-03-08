@@ -12,7 +12,8 @@ var express                 = require("express"),
 	passportLocalMongoose   = require("passport-local-mongoose"),
     bodyParser              = require("body-parser"),
 	Comments                = require("./models/comments.js"),
-	multer                  = require('multer');
+	multer                  = require('multer'),
+	async                   = require("async");
 
 
 // storage file name from multer 
@@ -36,7 +37,7 @@ var upload = multer({ storage: storage, fileFilter: imageFilter});
 // cloudinary config
 var cloudinary = require('cloudinary');
 cloudinary.config({ 
-  cloud_name: "instapic-heroku-app", 
+  cloud_name: "instapicapp", 
   api_key: process.env.CLOUDINARY_API_KEY, 
   api_secret: process.env.CLOUDINARY_API_SECRET_KEY
 });
@@ -346,7 +347,7 @@ app.put("/user/:id/private/:id/cprivate" , isloggedin , function(req,res){
 					console.log(err);
 				}else{
 					req.flash("success" , "Added to private section..");
-					res.redirect("/instapic");
+					res.redirect("/user/" +req.user._id);
 				}
 			});	
 	 }
@@ -399,16 +400,16 @@ app.delete("/user/:id/private/:id" , function(req, res){
 						console.log(err);
 					 } else {
 					 req.flash("success" , "Successfully deleted the post");
-					 res.redirect("/user/" + req.user._id + "/private");
+					 res.redirect("/user/" + req.user._id );
 					}
 				    });
 				}catch(err) {
 					 req.flash("success" , "Successfully deleted the post");
-					 res.redirect("/user/" + req.user._id + "/private");
+					 res.redirect("/user/" + req.user._id );
 				}	
 			} else {
 				req.flash("error" , "you don't have permission to do that");
-				res.redirect("/instapic/private/" + req.params.id);
+				res.redirect("/instapic");
 			}
 		});
 	} else {
@@ -517,27 +518,62 @@ app.get("/user/:id", function(req,res){
 		if(err){
 			console.log(err);
 		} else {
-			Photos.find().where("author.id").equals(founduser._id).exec(function(err , photo){
+	    Photos.find().populate({path : "author.id"}).exec(function(err , Allphotos){
+		  
+			Photos.find().where("author.id").equals(founduser._id).exec(async function(err , photo){
 				if(err){
 					console.log(err);	
 				}else {
+				   try{	
+					var userid = req.user._id;
+			        var likedimages = [];
+					var likeimages = [];
 					var publicfoundphotos = [];
 					var privatefoundphotos = [];
-						 photo.forEach(function(photo){
+					 
+					await Photos.find({} , function(err , foundphotos){
+					foundphotos.forEach(function(photo){
+					      photo.likes.forEach(function(alllikeduser){
+						      if(alllikeduser.equals(userid)){
+							     if(photo.author.id.equals(userid)){
+									  
+						            }else{
+										likedimages.push(photo);
+									}
+						          }
+					       });
+					});
+					});
+					 
+					await Allphotos.forEach(function(photo){
+						likedimages.forEach(function(likephoto){
+							if(likephoto._id.equals(photo._id)){
+								likeimages.push(photo);
+							}
+						}); 
+					 });
+				   } catch(err){
+					   req.flash("err" , "Something Went Wrong!!");
+					   res.redirect("/instapic");
+				   }
+					await photo.forEach(function(photo){
 							 if(photo.status == "public"){
 								 publicfoundphotos.push(photo);
 							 }else{
 								  privatefoundphotos.push(photo);
 							 }
 						 });
-					res.render("profile.ejs" , {user : founduser , publicfoundphotos : publicfoundphotos });
-				}
+			  res.render("profile.ejs" , {user : founduser , publicfoundphotos : publicfoundphotos , priavteimages : privatefoundphotos , Alllikedimages : likeimages });
+				  }
+				});
 			});	
-		}
+	    }
+		
+		});
 	});
-});
 
-// private images from profile page
+
+// private images on profile page
 app.get("/user/:id/private" , isloggedin , function(req,res){
    User.findById(req.params.id , function(err , founduser){
 	   if(err){

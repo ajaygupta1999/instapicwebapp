@@ -305,3 +305,41 @@ margin-top:3px;
 	display : flex;
 	justify-content:flex-end;
 }
+
+
+#login-popup-container{
+	margin-top:10px;
+    margin-bottom: 5%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#popup-header{
+	margin-top:10px;
+	display:flex;
+	justify-content:flex-end;
+}
+
+.new-h1{
+	color:#1818e3;
+}
+
+#login-popup-close-button{
+	padding-top: 0px;
+    height: 10px;
+    width: 50px;
+}
+
+#close-button-of-login{
+	width:50px;
+	color:red;
+}
+
+#login-hr{
+	width:30%;
+	border: 0;
+	margin-top:4px;
+    height: 1px;
+	background: #5555db;
+    background-image: linear-gradient(to right, #d1dce9, #3a3ad5, #d1dce9);
+}
