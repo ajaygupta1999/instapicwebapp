@@ -1,4 +1,4 @@
-var dataurl =  "https://res.cloudinary.com/instapicapp/image/upload/";
+var dataurl =  "https://res.cloudinary.com/instapic-heroku-app/image/upload/";
 
 $("#pills-home-tab").click(function(){
 	$("#pills-home-tab").css("color" , "#045fc0");
@@ -24,7 +24,7 @@ $("#pills-profile-tab").click(function(){
      var avatar = document.querySelectorAll("[private-profile-src]");
 	 avatar.forEach(function(avatar){
 	   var profUrl = avatar.getAttribute("private-profile-src");
-	   var lastdata = profUrl.substr(52 , profUrl.length);
+	   var lastdata = profUrl.substr(60 , profUrl.length);
 	   var c_w = 35;
        var c_h = 35;
 	   var parameters = "c_fill,w_" + c_w + ",h_" +  c_h +",g_auto,f_auto";
@@ -41,7 +41,7 @@ $("#pills-profile-tab").click(function(){
      // for all grid images
       list.forEach(function(img){
 	   var ImageUrl = img.getAttribute("private-img-src");
-	   var lastdata = ImageUrl.substr(52 , ImageUrl.length);
+	   var lastdata = ImageUrl.substr(60 , ImageUrl.length);
 	   var c_w = 298;
        var c_h = 350;
 	   var parameters = "c_fill,w_" + c_w + ",h_" +  c_h +",g_auto,f_auto";
@@ -69,7 +69,7 @@ $("#pills-contact-tab").click(function(){
       var likedavatar = document.querySelectorAll("[liked-profile-src]"); 
 	  likedavatar.forEach(function(avatar){
 	   var profUrl = avatar.getAttribute("liked-profile-src");
-	   var lastdata = profUrl.substr(52 , profUrl.length);
+	   var lastdata = profUrl.substr(60 , profUrl.length);
 	   var c_w = 35;
        var c_h = 35;
 	   var parameters = "c_fill,w_" + c_w + ",h_" +  c_h +",g_auto,f_auto";
@@ -85,7 +85,7 @@ $("#pills-contact-tab").click(function(){
      // for all grid liked images 
       likedimages.forEach(function(img){
 	   var ImageUrl = img.getAttribute("liked-img-src");
-	   var lastdata = ImageUrl.substr(52 , ImageUrl.length);
+	   var lastdata = ImageUrl.substr(60 , ImageUrl.length);
 	   var c_w = 298;
        var c_h = 350;
 	   var parameters = "c_fill,w_" + c_w + ",h_" +  c_h +",g_auto,f_auto";
