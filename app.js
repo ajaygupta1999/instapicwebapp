@@ -13,7 +13,14 @@ var express                 = require("express"),
     bodyParser              = require("body-parser"),
 	Comments                = require("./models/comments.js"),
 	multer                  = require('multer'),
-	async                   = require("async");
+	async                   = require("async"),
+	twilio                  = require("twilio");
+
+// Twilio Setup 
+var client = twilio( 
+	process.env.TWILIO_SID,
+	process.env.TWILIO_TOKEN
+   );
 
 
 // storage file name from multer 
@@ -282,6 +289,52 @@ app.get("/instapic/:id", function(req,res){
 	 });
 });
 
+// sending image on whatsapp
+app.get("/instapic/:id/sendimage", isloggedin ,function(req,res){
+	Photos.findById(req.params.id , function(err , foundphoto){
+	if(foundphoto.author.id.equals(req.user._id)){
+		if(err){
+			console.log(err);
+		}else{
+			var userid = foundphoto.author.id;
+			User.findById(userid , function(err , user){
+				res.render("whatsapp.ejs" , {foundphoto : foundphoto , user : user});
+			});
+		}
+	  }else{
+		  req.flash("err" , "You don't have permission to share this image");
+		  res.redirect("/instapic/" + foundphoto._id);
+	  }
+		
+	});
+});
+
+app.post("/instapic/:id/sendimage" , isloggedin, function(req,res){
+ 	 Photos.findById(req.params.id , function(err , foundphoto){
+	  if(foundphoto.author.id.equals(req.user._id)){
+		 var imgurl = req.body.imgurl;
+		 var fullname = foundphoto.author.fullname;
+		 var sendnum = req.body.sendnum;
+		 client.messages
+		  .create({
+			 from : 'whatsapp:+14155238886',
+			 to : 'whatsapp:+91' + sendnum,
+			 body : "Image from " + fullname,
+			 mediaUrl :  imgurl
+		 }).then(message => {
+			 req.flash("success" , "Image send successfully");
+			 res.redirect("/instapic");
+		 }).catch(err => {
+			 req.flash("error" , "Something Went wrong");
+			 res.redirect("/instapic");
+		 });
+	  }else{
+		  req.flash("error" , "You don't have permission to share this image");
+		  res.redirect("/instapic/" + foundphoto._id);
+	  }	 
+	 });
+}); 
+
 // SHOWING PRIVATE IMAGE IN PRIVATE SESSION...
 app.get("/user/:id/private/:id" ,isloggedin ,  function(req,res){
 	// FIND PARTICULAR PHOTO FROM DATABASE
@@ -532,17 +585,18 @@ app.get("/user/:id", function(req,res){
 					var privatefoundphotos = [];
 					 
 					await Photos.find({} , function(err , foundphotos){
-					foundphotos.forEach(function(photo){
-					      photo.likes.forEach(function(alllikeduser){
-						      if(alllikeduser.equals(userid)){
-							     if(photo.author.id.equals(userid)){
+					      foundphotos.forEach(function(photo){
+					          for(var i = 0 ; i < photo.likes.length ; i++){
+							  if(photo.likes[i].equals(userid)){
+								   if(photo.author.id.equals(userid)){
 									  
-						            }else{
-										likedimages.push(photo);
-									}
-						          }
-					       });
-					});
+								    }else{
+								      likedimages.push(photo);
+								    }
+								  break;
+							  } 
+						   }	
+					   });
 					});
 					 
 					await Allphotos.forEach(function(photo){
@@ -552,17 +606,19 @@ app.get("/user/:id", function(req,res){
 							}
 						}); 
 					 });
-				   } catch(err){
-					   req.flash("err" , "Something Went Wrong!!");
-					   res.redirect("/instapic");
-				   }
-					await photo.forEach(function(photo){
+					   
+					   await photo.forEach(function(photo){
 							 if(photo.status == "public"){
 								 publicfoundphotos.push(photo);
 							 }else{
 								  privatefoundphotos.push(photo);
 							 }
 						 });
+				   } catch(err){
+					   req.flash("err" , "Something Went Wrong!!");
+					   res.redirect("/instapic");
+				   }
+					
 			  res.render("profile.ejs" , {user : founduser , publicfoundphotos : publicfoundphotos , priavteimages : privatefoundphotos , Alllikedimages : likeimages });
 				  }
 				});

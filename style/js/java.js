@@ -11,11 +11,11 @@ function imgcal(){
 		     orientation.setAttribute("class" , "potrate");
 		     var imgurl = firstShowImg.src;
 		     var lastdata = imgurl.substr(60 , imgurl.length);
-		     var c_w = img.clientWidth;
-		     var c_h = img.clientHeight;
+		     var c_w = $("#img-box").width();
+		     var c_h = $("#img-box").height();
 		     var parameters = "c_fill,w_" + c_w + ",h_" +  c_h +",g_auto,f_auto";
-		     var url = dataurl + parameters + "/" + lastdata;
-		     img.setAttribute("src" , url);
+		     var showimageurl = dataurl + parameters + "/" + lastdata;
+		     img.setAttribute("src" , showimageurl);
 		     img.style.setProperty("transform" , "rotate(0deg)");
 	  }else if(firstShowImg.naturalWidth > firstShowImg.naturalHeight){
 		  orientation.setAttribute("class" , "landscape");
@@ -28,6 +28,8 @@ function imgcal(){
 		  singleimageset(img);
 	  }
 	
+	  
+	   
 	  function imageset(images){
 		 images.forEach(function(image){
              var imgurl = image.getAttribute("data-src");
@@ -41,17 +43,17 @@ function imgcal(){
            });
 	   }
 	
-	function singleimageset(image){
+	    function singleimageset(image){
              var firstShowImg = document.querySelector("#firstShowImg");
 		     var imgurl = firstShowImg.src;
              var lastdata = imgurl.substr(60 , imgurl.length);
-             var c_w = image.clientWidth;
-             var c_h = image.clientHeight;
+             var c_w = $("#img-box").width();
+		     var c_h = $("#img-box").height();
              var parameters = "c_fill,w_" + c_w + ",h_" +  c_h +",g_auto,f_auto";
-             var url = dataurl + parameters + "/" + lastdata;
+             var showimageurl = dataurl + parameters + "/" + lastdata;
 		     image.style.setProperty("transform" , "rotate(0deg)");
-             image.setAttribute("src" , url);
-	}
+             image.setAttribute("src" , showimageurl);
+	     }
 	
   }
 

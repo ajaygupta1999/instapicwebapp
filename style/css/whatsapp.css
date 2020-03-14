@@ -1,0 +1,85 @@
+#whatsapp-foam #showFirstImage{
+	display:none;
+}
+
+#whatsapp-container , #login-container {
+    width : 800px;
+	margin-top: 90px;
+	padding : 2rem;
+	margin-bottom: 5%;
+	margin-left: auto;
+	margin-right:auto;
+	background : #ffffff8a;
+	box-shadow: 0 4px 10px 8px rgba(0, 0, 0, 0.05), 0 6px 20px 2px rgba(0, 0, 0, 0.04);
+	border-radius : 4px;
+}
+
+#login-container{
+	width : 700px;
+	padding : 2.5rem;
+}
+
+.whatsapp-userImg {
+	margin:20px auto;
+    display : flex;
+	justify-content : center;
+}
+
+.prof-img img{
+	width : 130px;
+	height:  130px;
+	border-radius : 65px;
+	background : #ffffff8a;
+	box-shadow: 0 4px 10px 8px rgba(0, 0, 0, 0.05), 0 6px 20px 2px rgba(0, 0, 0, 0.04);
+}
+
+.whatsappinfo h2 {
+	font-size : 45px;
+	font-family: 'Raleway', sans-serif;
+	text-align : center;
+	color : #42422e;
+	font-weight: 700;
+}
+
+.whatsappinfo p {
+	font-size : 19px;
+	font-weight : 400;
+	text-align : center;
+	color : #484f42; 
+	padding : 0.5rem;
+}
+
+.whatsappinfo  h3 {
+	font-size : 24px;
+	font-weight : 700;
+	color : #2289f78a; 
+	padding-left: 0.5rem;
+}
+
+.whatsappinfo  .p-instruction{
+	text-align : left;
+	font-weight : 400;
+	margin-top : 0px;
+	margin-bottom : 0px;
+	font-size : 18px;
+	color :#000000;
+}
+
+#instruction-p2{
+	padding-top:2px;
+	margin-bottom : 5px;
+}
+
+.whatsapp-num {
+	font-weight : 800;
+	color : #0078f7;
+}
+
+.number-foam{
+	display : flex;
+}
+
+.number-foam .password{
+	width :70%;
+	margin-right :5px;
+}

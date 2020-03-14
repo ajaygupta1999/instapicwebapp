@@ -1,6 +1,6 @@
 <% include ./partials/header %>
 
-<div class="container" id="instapic-new">
+<div class="container" id="login-container">
 	<form action="/user/<%= user._id %>?_method=PUT" method="POST" enctype="multipart/form-data" class="UploadFoam">
         <center><h1 id="profile-edit-header">Update your profile</h1></center>
 		<div class="form-group">
@@ -32,6 +32,7 @@
          	<div class="obj"></div>
          </div>
 		</button>
+		<a href="/user/<%= user._id %>">Go back</a>
 </form>
 </div>
 

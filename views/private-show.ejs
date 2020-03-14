@@ -44,6 +44,9 @@
 								  <i class="far fa-trash-alt"></i>
 							   </button>   
 						 </form>
+						<a href="/instapic/<%=foundphoto._id%>/sendimage" id="delete-photo" class="btn btn-success">
+								  <i class="far fa-paper-plane"></i>
+							</a>
 				<form action="/user/<%=foundphoto.author.id%>/private/<%=foundphoto._id%>/cpublic?_method=PUT" method="POST">
 							   <button id="delete-photo" class="btn btn-warning">
 								 public
@@ -58,7 +61,7 @@
 	<div class="img-session">
 		<div class="img-box d-none" id="img-box">
 			<img id="firstShowImg" class="d-none" src="<%= foundphoto.img %>">
-			<img id="checkimg" alt="<%= foundphoto.angle %>" style="transform:rotate(<%= foundphoto.angle %>deg)">
+			<img id="checkimg" onContextMenu="return false;" alt="<%= foundphoto.angle %>" style="transform:rotate(<%= foundphoto.angle %>deg)">
 			
 		</div>
 	</div>
