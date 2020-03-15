@@ -51,7 +51,7 @@
 		 <button type="button" class="btn btn-primary" id="see-comments" data-toggle="modal" data-target="#searchbox">
 	        <i class="fas fa-search"></i>							 
        </button>
-		  
+		  	  
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">	
           <ul class="navbar-nav ml-auto">
 			<% if(!CurrentUser){  %>
@@ -89,12 +89,15 @@
 			<div class="add-comment-button">
 			 <form action="/instapic" method="GET">
 	              <div class="input-group mb-1 mt-1" id="comment-input">
-					<input type="text" class="form-control" placeholder="Search User" aria-label="Write Comments here...." aria-describedby="button-addon2" name="search" required>
+					<input type="text" class="form-control" placeholder="Search User" aria-label="Write Comments here...." aria-describedby="button-addon2" name="search" id="search-input-box">
                   <div class="input-group-append">
                  <button class="btn btn-primary" type="submit" id="button-addon2">Submit</button>
                  </div>
 		     	</div>
                 </form>
+				<div class="d-flex flex-column" id="allmatches">
+					
+				</div>
 			</div>
 			<div class="close-search-button">
 				<button type="button" class="btn btn-sm btn-danger" data-dismiss="modal">Close</button>

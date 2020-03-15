@@ -104,38 +104,27 @@ app.get("/" ,  function(req ,res){
 });
 
 // HOME PAGE
-app.get("/instapic" , function(req ,res){
-	 if(req.query.search){
-		 // variable for holding search
-		 var regex = new RegExp(escapeRegex(req.query.search), 'gi');
-		// finding all photo and populating users
-				  // find all photo having description === search
-				 Photos.find({"author.fullname" : regex}).populate({path : "author.id"}).exec(function(err , foundphotos){
-					 if(err){
-						 console.log(err);
-					 } else {
-						 var publicfoundphotos = [];
-						 foundphotos.forEach(function(photo){
-							 if(photo.status == "public"){
-								 publicfoundphotos.push(photo);
-							 }
-						 })
-						 res.render("index.ejs" , { photos : publicfoundphotos});
-					 }
-				 });
-	 } else {
+app.get("/instapic" , function(req ,res){	 
 		 // FIND ALL THE PHOTO    
-		  Photos.find({status : "public"}).sort({_id: -1}).populate({path : "author.id"}).exec(function(err , allphoto){
+		Photos.find({status : "public"}).sort({_id: -1}).populate({path : "author.id"}).exec(function(err , allphoto){
 			if(err){
 			console.log(err);
 		     }else {
 			   res.render("index.ejs" , { photos : allphoto});
 				}
 		});	
-	 }
-	
 });
 //===================
+
+// GETTING USER'S DATA USING API.
+app.get("/instapic/api/users" , function(req ,res){
+	User.find({})
+	.then(function(users){
+		res.json(users);
+	}).catch(function(err){
+	   res.send("something went wrong...");
+	});
+});
 
 // CREATING NEW POST
 app.get("/instapic/new" , isloggedin , function(req,res){
@@ -302,7 +291,7 @@ app.get("/instapic/:id/sendimage", isloggedin ,function(req,res){
 			});
 		}
 	  }else{
-		  req.flash("err" , "You don't have permission to share this image");
+		  req.flash("error" , "You don't have permission to share this image");
 		  res.redirect("/instapic/" + foundphoto._id);
 	  }
 		
@@ -578,13 +567,13 @@ app.get("/user/:id", function(req,res){
 					console.log(err);	
 				}else {
 				   try{	
-					var userid = req.user._id;
-			        var likedimages = [];
-					var likeimages = [];
 					var publicfoundphotos = [];
 					var privatefoundphotos = [];
-					 
-					await Photos.find({} , function(err , foundphotos){
+					if(req.user){
+						var userid = req.user._id;
+						var likedimages = [];
+					    var likeimages = [];
+						await Photos.find({} , function(err , foundphotos){
 					      foundphotos.forEach(function(photo){
 					          for(var i = 0 ; i < photo.likes.length ; i++){
 							  if(photo.likes[i].equals(userid)){
@@ -598,17 +587,18 @@ app.get("/user/:id", function(req,res){
 						   }	
 					   });
 					});
-					 
+						
 					await Allphotos.forEach(function(photo){
-						likedimages.forEach(function(likephoto){
-							if(likephoto._id.equals(photo._id)){
+						  likedimages.forEach(function(likephoto){
+							 if(likephoto._id.equals(photo._id)){
 								likeimages.push(photo);
-							}
-						}); 
-					 });
+							 }
+						  }); 
+					   });
+					} 
 					   
-					   await photo.forEach(function(photo){
-							 if(photo.status == "public"){
+					 await photo.forEach(function(photo){
+							if(photo.status == "public"){
 								 publicfoundphotos.push(photo);
 							 }else{
 								  privatefoundphotos.push(photo);
@@ -618,7 +608,6 @@ app.get("/user/:id", function(req,res){
 					   req.flash("err" , "Something Went Wrong!!");
 					   res.redirect("/instapic");
 				   }
-					
 			  res.render("profile.ejs" , {user : founduser , publicfoundphotos : publicfoundphotos , priavteimages : privatefoundphotos , Alllikedimages : likeimages });
 				  }
 				});
@@ -798,10 +787,6 @@ function upload_get_url(image){
   });
 }
 
-// SEARCH ACTIVITY 
-function escapeRegex(text) {
-    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-}; 
 
 // GETTING ANGLE OF IMAGE(ORIENTATION OF IMAGE)
 function getAngle(number){
