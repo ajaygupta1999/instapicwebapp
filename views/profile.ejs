@@ -48,7 +48,15 @@
       </div>
       <div class="modal-body">
          <% user.followers.forEach(function(follower){ %>
-			   <a href="/user/<%= follower._id %>"><p id="follower-popup"><i class="fas fa-user"></i> <%= follower.fullname %></p></a>
+		     <div class="col-12 d-flex justify-content-start">
+							<div class="likesimagesprofile p-2">
+								<img class="likesprofimage" likesprof-src="<%= follower.avatar %>" alt="user profile image"> 
+							</div>
+							<div class="poplikeusername">
+							  <h5 class="likedpersonusername"><a href="/user/<%= follower._id %>"><%= follower.fullname %></a></h5>
+			                </div>
+						</div>
+			  
 			<% }); %>
       </div>
       <div class="modal-footer">
