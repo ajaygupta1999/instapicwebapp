@@ -95,8 +95,13 @@
       <div class="modal-body">
 		  <div class="row" >
            <% foundphoto.likes.forEach(function(like) { %>
-                        <div class="col-12">
-							<h5><i class="fas fa-user" id="pop-up-like-usericon"></i><a href="/user/<%= like._id%>"><%= like.fullname %></a></h5>
+                        <div class="col-12 d-flex justify-content-start">
+							<div class="likesimagesprofile p-2">
+								<img class="likesprofimage" likesprof-src="<%= like.avatar %>" alt="user profile image"> 
+							</div>
+							<div class="poplikeusername">
+							  <h5 class="likedpersonusername"><a href="/user/<%= like._id%>"><%= like.fullname %></a></h5>
+			                </div>
 						</div>
                          <% }) %>
             	</div> 
@@ -134,10 +139,18 @@
       </div>
       <div class="modal-body">
 		  <div class="row">
-			   <% foundphoto.comments.forEach(function(comment){ %>
+			   <% foundedphoto.comments.forEach(function(comment){ %>
 			  <div class="col-12">
 				  <div class="pop-up-seecomment">
-					  <h6 id="comments-author"><i class="fas fa-user" id="comment-user-icon"></i><a href="/user/<%= comment.author.id %>"><%= comment.author.username %></a></h6>
+					  <div class="d-flex justify-content-start">
+						 <div class="likesimagesprofile">
+						    <img class="likesprofimage" likesprof-src="<%= comment.author.id.avatar %>" alt="user profile image"> 
+						  </div>
+					      <div class="poplikeusername">
+						     <h5 class="likedpersonusername2"><a href="/user/<%= comment.author.id._id %>"><%= comment.author.username %></a></h5> 
+						  </div> 
+					</div>
+					  
 					<span> <form action="/instapic/<%= foundphoto._id %>/comments/<%=comment._id%>?_method=DELETE" method="POST">
 					  <button type="submit" class="btn btn-sm btn-danger" id="comment-delete">
 						  <i class="far fa-trash-alt"></i>

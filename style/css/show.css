@@ -148,10 +148,10 @@
 }
 
 #comments-text {
-	font-size:19px;
+	font-size:18px;
 	font-weight:600;
-	margin-bottom:12px;
-	margin-left:28px;
+	margin-bottom:10px;
+	margin-left:50px;
 	padding-top:0px;
 }
 
@@ -181,4 +181,25 @@
 #comment-user-icon
 {
 	margin-right:10px;
+}
+
+.likesprofimage{
+	width : 40px;
+	height: 40px;
+	border-radius : 20px;
+	object-fit : cover;
+}
+
+.likedpersonusername{
+	margin-top: 13px;
+    padding-left: 4px;
+}
+
+.likesimagesprofile {
+	padding : 2px 2px 0px 2px;
+}
+
+.likedpersonusername2 {
+	margin-top: 8px;
+    padding-left: 7px;
 }

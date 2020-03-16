@@ -252,28 +252,42 @@ app.get("/logout" , function(req,res){
 // SHOW PAGE ROUTE
 app.get("/instapic/:id", function(req,res){
 	 // FIND PARTICULAR PHOTO FROM DATABASE
-	 Photos.findById(req.params.id).populate("comments likes").exec(function(err , foundphoto){
+	 Photos.findById(req.params.id).populate("likes").exec(function(err , foundphoto){
 	    if(err){
 	      console.log(err);
 	    } else {
-			// FIND ALL THE PHOTOS RELATED TO LOGGEDIN USER
-			// POPULATE ALL THE DATA OF USER
-		 var user = foundphoto.author.username;
-	     Photos.find({ "author.username" : user }).populate({
-			 path : "author.id",
-		 }).exec(function(err , photos){
-			  if(err){
-				console.log(err);
-			} else {
-				var publicfoundphotos = [];
+			Photos.findById(req.params.id).populate({
+				path : "comments",
+				populate: {
+                   path: "author.id",
+                   model: 'User'
+                    } 
+			}).exec(function(err , foundedphoto){
+				if(err){
+					console.log(err);
+				}else{
+				  var user = foundphoto.author.username;
+	              Photos.find({ "author.username" : user }).populate({
+			         path : "author.id",
+		          }).exec(function(err , photos){
+			     if(err){
+				    console.log(err);
+		           	} else {
+				      var publicfoundphotos = [];
 						 photos.forEach(function(photo){
 							 if(photo.status == "public"){
 								 publicfoundphotos.push(photo);
 							 }
 						 });
-				res.render("show.ejs" , {foundphoto : foundphoto , photos : publicfoundphotos});
+				res.render("show.ejs" , {foundphoto : foundphoto , photos : publicfoundphotos , foundedphoto : foundedphoto});
 			} 
 		 });
+					
+				}
+			})
+			
+			
+		 
 	 }
 	 });
 });
