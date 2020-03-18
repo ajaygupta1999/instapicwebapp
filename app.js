@@ -304,7 +304,7 @@ app.post("/instapic/forgot" , function(req ,res ,next){
 				text : "A password reset event has been triggered. The password reset window is limited to 1.5 hours.\n\n" + 
 				'If you do not reset your password within 1.5 hours, you will need to submit a new request. \n\n' + 
 			'To complete the password reset process, visit the following link: \n\n' + 
-				'https://goorm-ide-test-pvpts-debug.run.goorm.io/instapic/forgot/' + token + '\n\n' +
+				'https://instapic-1999.herokuapp.com/instapic/forgot/' + token + '\n\n' +
 				'If you did not request this , plz ignore your password will not be changed \n\n' +
 				'Thank you'
 			};
