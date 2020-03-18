@@ -314,9 +314,11 @@ app.post("/instapic/forgot" , function(req ,res ,next){
 		} , 
 		function(err){
 			if(err){
-				return next(err);	
+				res.render("forgotpass.ejs");	
+			}else{
+				res.redirct("/instapic/forgot");
 			}
-			res.redirct("/instapic/forgot");
+			
 		}
 	])
 });
