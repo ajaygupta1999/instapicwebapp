@@ -1,0 +1,20 @@
+<% include ./partials/header %>
+
+<div class="container" id="login-container">
+	<form action="/instapic/forgot/<%= token %>" method="POST">
+        <center><h1 class="new-h1">Confirm Password</h1></center>
+		<div class="form-group">
+          <label for="username"  class="label">New Password</label>
+          <input type="password" class="form-control" id="username" aria-describedby="emailHelp" placeholder="New Password" name="newpassword" required>
+        </div>
+        <div class="form-group">
+		 <label for="login-login"  class="label">Confirm Password</label>
+			<div class="password">
+			<input type="password" class="form-control" id="login-login" aria-describedby="emailHelp" placeholder="Confirm Password"  name="conpassword" required><span><button type="button" class="btn btn-outline-warning btn-md" id="eye-button-2"><i class="fas fa-eye"></i></button></span>
+			</div>
+         </div>
+		<button typr="submit" class="btn btn-primary btn-md btn-block">Update Password</button>	
+</form>
+</div>
+
+<% include ./partials/footer %>

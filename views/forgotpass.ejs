@@ -1,0 +1,15 @@
+<% include ./partials/header %>
+
+<div class="container" id="login-container">
+	<form action="/instapic/forgot" method="POST">
+        <center><h1 class="new-h1">Reset Password</h1></center>
+		<div class="form-group">
+          <label for="username"  class="label">Email</label>
+          <input type="text" class="form-control" id="username" aria-describedby="emailHelp" placeholder="Enter Your Email"  name="email" required>
+		</div>
+		<button typr="submit" class="btn btn-primary btn-md btn-block">submit</button>
+		<a href="/login">Go back</a>
+   </form>
+</div>
+
+<% include ./partials/footer %>

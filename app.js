@@ -14,6 +14,8 @@ var express                 = require("express"),
 	Comments                = require("./models/comments.js"),
 	multer                  = require('multer'),
 	async                   = require("async"),
+	nodemailer              = require("nodemailer"),
+	crypto                  = require("crypto"),
 	twilio                  = require("twilio");
 
 // Twilio Setup 
@@ -78,7 +80,7 @@ app.use(async function(req, res, next){
       let user = await User.findById(req.user._id).populate("notifications", null, { isRead: false }).exec();
       res.locals.notifications = user.notifications.reverse();
     } catch(err) {
-      console.log(err.message);
+      console.log();
     }
    }
    res.locals.error = req.flash("error");
@@ -174,7 +176,7 @@ app.post("/instapic", isloggedin , upload.single('image') , async function(req, 
           res.redirect("/instapic/" + createdphoto._id);
 	  }
     } catch(err) {
-      req.flash("error" , err.message);
+      req.flash("error" , );
 	  res.redirect("/instapic");
     } 
 });
@@ -193,18 +195,17 @@ app.post("/register" , upload.single('image') , async function(req,res){
 		try{
 		   var isadmin = true;
 		   var result = await upload_get_url(req.file.path);
-			// eval(require("locus"));
 		   var angle = getAngle(result.exif.Orientation);
 		   var avatar = result.secure_url;
 		   var avatarId = result.public_id;
 		   var newUser = new User({ 
-		   username : req.body.username,
-		   fullname : req.body.fullname,
-		   avatar :  avatar,
-		   angle : angle,
-		   avatarId : avatarId,
-		   description : req.body.description,
-		    isadmin : isadmin	
+		      username : req.body.username,
+		      fullname : req.body.fullname,
+		      avatar :  avatar,
+		      angle : angle,
+		      avatarId : avatarId,
+		      description : req.body.description,
+		      isadmin : isadmin	
 		   });   
 		} catch(error)
 			{
@@ -218,7 +219,7 @@ app.post("/register" , upload.single('image') , async function(req,res){
 		{
 	    User.register(newUser , req.body.password , function(err , user){
 		 if(err){
-			 req.flash("error" , err.message);
+			 req.flash("error" , );
 			 return res.redirect("back");
 		 } else {
 			passport.authenticate("local")(req , res , function(){
@@ -239,7 +240,8 @@ app.get("/login" , function(req,res){
 
 app.post("/login" , passport.authenticate("local" , {
     successRedirect : "/instapic",
-	failureRedirect : "/login"
+	failureRedirect : "/login",
+	failureFlash: true
 }),  function(req,res){
 });
 
@@ -248,6 +250,140 @@ app.get("/logout" , function(req,res){
 	req.flash("success" , "You Successfully Logged out");
 	res.redirect("/instapic");
 });
+
+// FORGOT PASSWORD SESSION
+app.get("/instapic/forgot",  function(req , res){
+	res.render("forgotpass.ejs");
+});
+
+// GETTING DATA FROM FORGOT ROUTES
+app.post("/instapic/forgot" , function(req ,res ,next){
+	
+	async.waterfall([
+		function(done){
+			crypto.randomBytes(20 , function(err , buf){
+				if(err){
+					req.flash("error" , "Something Went Wrong while Reseting Password");
+					return res.redirect("/instapic/forgot");
+				}
+				  var token = buf.toString('hex');
+				  done(err , token);	
+			});
+		} ,
+		function(token ,done){
+			User.findOne({username : req.body.email} , function(err , user){
+				if(err){
+					req.flash("error" , "Something Went Wrong while Reseting Password");
+					res.redirect("/instapic/forgot");
+				}else{
+					if(!user){
+					   req.flash("error" , "User with this Email Address does not exist");
+					   return res.redirect("/instapic/forgot");
+					}
+					
+					user.resetPasswordToken = token;
+					user.resetPasswordExpires = Date.now() + 5400000;
+					user.save(function(err){
+						done(err , token , user);
+					})
+				}
+			})
+		} , 
+		function(token , user , done){
+			var smtpTransport = nodemailer.createTransport({
+				service : "Gmail",
+				auth : {
+					user : process.env.PERSONAL_EMAIL,
+					pass  : process.env.EMAIL_PASS
+				}
+			});
+			var mailOptions = {
+				to : req.body.email,
+				from : process.env.PERSONAL_EMAIL,
+				subject : "Password Reset from Instapic App.",
+				text : "A password reset event has been triggered. The password reset window is limited to 1.5 hours.\n\n" + 
+				'If you do not reset your password within 1.5 hours, you will need to submit a new request. \n\n' + 
+			'To complete the password reset process, visit the following link: \n\n' + 
+				'https://goorm-ide-test-pvpts-debug.run.goorm.io/instapic/forgot/' + token + '\n\n' +
+				'If you did not request this , plz ignore your password will not be changed \n\n' +
+				'Thank you'
+			};
+			smtpTransport.sendMail(mailOptions , function(err){
+				done(err , "done");
+			})
+		} , 
+		function(err){
+			if(err){
+				return next(err);	
+			}
+			res.redirct("/instapic/forgot");
+		}
+	])
+});
+
+// HANDLE TOKEN WHEN EMAIL IS SENDING
+app.get("/instapic/forgot/:token" , function(req,res){
+   User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() }           },     function(err, user) {
+        if (!user) {
+            req.flash('error', 'Password reset token is invalid or has expired.');
+            return res.redirect('/instapic/forgot');
+       }
+       res.render('resetpass.ejs', {token: req.params.token});
+      });
+   });
+
+// GETTING DATA FROM CONFORM PASSWORD
+app.post("/instapic/forgot/:token" , function(req ,res){
+	async.waterfall([
+		function(done){
+		   User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() }           }, function(err, user){
+			   if(!user){
+				   req.flash('error', 'Password reset token is invalid or has expired.');
+                   return res.redirect('back');
+			      }
+			   if(req.body.newpassword === req.body.conpassword){
+				   user.setPassword(req.body.newpassword , function(err){
+					   user.resetPasswordToken = undefined;
+					   user.resetPasswordExpires = undefined;
+					   
+					  user.save(user , function(err){
+						  req.login(user , function(err){
+							  done(err ,user);
+						  });
+					  });
+				   });
+			   }else{
+				   req.flash("error" , "passwords do not match.");
+				   return res.redirect("back");
+			   }
+		   });	
+		} , 
+		function(user , done){
+			var smtpTransport = nodemailer.createTransport({
+				service : "Gmail",
+				auth : {
+					user : process.env.PERSONAL_EMAIL,
+					pass  : process.env.EMAIL_PASS
+				}
+			});
+			var mailOptions = {
+				to : user.username,
+				from : process.env.PERSONAL_EMAIL,
+				subject : "Your Password has been changed from Instapic",
+				text : "Hello.\n\n" + 
+			    'This is the confirmation that your password of instapic account with Username : ' + user.fullname + ' has been changed.. \n\n'+
+				'Thank you. '
+			};
+			smtpTransport.sendMail(mailOptions , function(err){
+			    req.flash('success' , "Your Password has been changed.");
+				done(err);
+			});
+		  } , function(err){	
+			  res.redirect("/instapic");
+		   }	
+	])
+});
+
 
 // SHOW PAGE ROUTE
 app.get("/instapic/:id", function(req,res){
@@ -694,6 +830,7 @@ app.put("/user/:id" , upload.single('image')  , function(req ,res){
 				  var result = await upload_get_url(req.file.path); 
 				  var angle = getAngle(result.exif.Orientation);
 				  var newuser = {
+					  username : req.body.email,
 		              fullname : req.body.fullname,
 		              avatar : result.secure_url,
 					  angle : angle,
@@ -702,21 +839,22 @@ app.put("/user/:id" , upload.single('image')  , function(req ,res){
 	                 }
 			     } else{
 					  var newuser = {
-		              fullname : req.body.fullname,
-		              description : req.body.description
+					     username : req.body.email,	  
+		                 fullname : req.body.fullname,
+		                 description : req.body.description
 	                 } 
 				 } 
 		   } catch(err){
 			   req.flash("error" , "Something went wrong . image is not able to update");
 			   res.redirect("/user/" + req.params.id);
 		   } 
-	  
-	// find that user and then update data
-	User.findByIdAndUpdate(req.params.id , newuser , function(err , updateduser){
-		    if(err){
+	    // find that user and then update data
+	    User.findByIdAndUpdate(req.params.id , newuser , function(err , updateduser){
+		      if(err){
+				req.flash("error" , "User with this email address already exist");
 				res.redirect("/user/" + req.params.id);
-			}else{
-				Comments.find({"author.id" : req.params.id} , function(err , foundusercomment){
+			  }else{
+					Comments.find({"author.id" : req.params.id} , function(err , foundusercomment){
 					if(err){
 						console.log(err);
 					}else{
@@ -725,13 +863,14 @@ app.put("/user/:id" , upload.single('image')  , function(req ,res){
 							usercomment.save();
 						});
 					}
-				});
-				// AND redirect to user page
-			   res.redirect("/user/" + req.params.id);
-			}
-	});
+				   });
+				   // AND redirect to user page
+			       res.redirect("/user/" + req.params.id);
+				  }
+	    }); 						
 	});
 });
+
 
 // follow user
 app.get("/follow/:id", isloggedin , async function(req, res) {
@@ -751,7 +890,7 @@ app.get("/follow/:id", isloggedin , async function(req, res) {
     founduser.save();
     res.redirect("/user/" + req.params.id);
   } catch(err) {
-    req.flash('error', err.message);
+    req.flash('error', );
     res.redirect('back');
   }
 });
@@ -767,7 +906,7 @@ app.get("/notifications", isloggedin , async function(req, res) {
     let allNotifications = currentuser.notifications;
     res.render("notifications.ejs", { allNotifications : allNotifications });
   } catch(err) {
-    req.flash('error', err.message);
+    req.flash('error', );
     res.redirect('back');
   }
 });
@@ -780,7 +919,7 @@ app.get("/notifications/:id", isloggedin , async function(req, res) {
     notification.save();
     res.redirect("/instapic/" + notification.photoId);
   } catch(err) {
-    req.flash("error", err.message);
+    req.flash("error", );
     res.redirect("back");
   }
 });
