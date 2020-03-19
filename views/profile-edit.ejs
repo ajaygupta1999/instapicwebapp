@@ -4,13 +4,15 @@
 	<form action="/user/<%= user._id %>?_method=PUT" method="POST" enctype="multipart/form-data" class="UploadFoam">
         <center><h1 id="profile-edit-header">Update your profile</h1></center>
 		<div class="form-group">
-          <label for="fullname"  class="label">Email</label>
-          <input type="text" class="form-control" id="fullname" aria-describedby="emailHelp" value="<%= user.username %>"  name="email" required>
+          <label for="Email"  class="label">Email</label>
+		  <div class="password">
+          <input type="text" class="form-control" id="Email" aria-describedby="emailHelp" value="<%= user.username %>"  name="email" required disabled><span><button type="button" class="btn btn-outline-warning btn-md" id="email-lock"><i id="fa-lock" class="fas fa-lock"></i></button></span>
         </div>
+		</div>
 		<div class="form-group">
           <label for="fullname"  class="label">Your Full-Name</label>
-          <input type="text" class="form-control" id="fullname" aria-describedby="emailHelp" value="<%= user.fullname %>"  name="fullname" required>
-        </div>
+            <input type="text" class="form-control" id="fullname" aria-describedby="emailHelp" value="<%= user.fullname %>"  name="fullname" required>
+		</div>
 		<div class="form-group">
           <label for="Image-uplode" id="imageupload" ><i class="far fa-image"></i> Choose a Photo</label>
           <input type="file" id="Image-uplode" aria-describedby="emailHelp" name="image"  accept="image/*">

@@ -5,8 +5,11 @@ eyelogin.addEventListener("click" , function(){
 	if(inputlogin.type === "password")
 	{
 	  inputlogin.setAttribute("type" , "text");
-	}else
-	{
-	 inputlogin.setAttribute("type" , "password"); 
-	}
+	  var eyebutton = document.querySelector("#fa-eye");
+	  eyebutton.setAttribute("class" , "fas fa-eye-slash");
+	}else {
+	    inputlogin.setAttribute("type" , "password"); 
+		var eyebutton = document.querySelector("#fa-eye");
+	    eyebutton.setAttribute("class" , "fas fa-eye");
+	 }
 });

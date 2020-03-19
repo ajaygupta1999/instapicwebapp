@@ -338,7 +338,7 @@ app.get("/instapic/forgot/:token" , function(req,res){
 app.post("/instapic/forgot/:token" , function(req ,res){
 	async.waterfall([
 		function(done){
-		   User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() }           }, function(err, user){
+		   User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function(err, user){
 			   if(!user){
 				   req.flash('error', 'Password reset token is invalid or has expired.');
                    return res.redirect('back');
@@ -712,7 +712,7 @@ app.get("/user/:id", function(req,res){
 		if(err){
 			console.log(err);
 		} else {
-	    Photos.find().populate({path : "author.id"}).exec(function(err , Allphotos){
+			Photos.find().populate({path : "author.id"}).exec(function(err , Allphotos){
 		  
 			Photos.find().where("author.id").equals(founduser._id).exec(async function(err , photo){
 				if(err){
