@@ -138,3 +138,8 @@ input[type="file"]{
   color : red;  
  }
 
+#Email{
+	pointer-events: none;
+    background: #e7ebe7;
+}
+

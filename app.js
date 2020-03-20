@@ -839,13 +839,28 @@ app.put("/user/:id" , upload.single('image')  , function(req ,res){
 					  avatarId : result.public_id,
 		              description : req.body.description 
 	                 }
+				    if(founduser.username === req.body.email){
+				      var newuser = {
+		                 fullname : req.body.fullname,
+		                 avatar : result.secure_url,
+					     angle : angle,
+					     avatarId : result.public_id,
+		                 description : req.body.description 
+	                   }
+			         }
 			     } else{
-					  var newuser = {
+					var newuser = {
 					     username : req.body.email,	  
 		                 fullname : req.body.fullname,
 		                 description : req.body.description
-	                 } 
-				 } 
+	                   }
+					if(founduser.username === req.body.email){
+				      var newuser = {  
+		                 fullname : req.body.fullname,
+		                 description : req.body.description
+	                   }
+			         }
+				 }
 		   } catch(err){
 			   req.flash("error" , "Something went wrong . image is not able to update");
 			   res.redirect("/user/" + req.params.id);
@@ -853,7 +868,7 @@ app.put("/user/:id" , upload.single('image')  , function(req ,res){
 	    // find that user and then update data
 	    User.findByIdAndUpdate(req.params.id , newuser , function(err , updateduser){
 		      if(err){
-				req.flash("error" , "User with this email address already exist");
+				req.flash("error" , "User with this E-mail address or fullname already exist.");
 				res.redirect("/user/" + req.params.id);
 			  }else{
 					Comments.find({"author.id" : req.params.id} , function(err , foundusercomment){
