@@ -46,7 +46,7 @@ var upload = multer({ storage: storage, fileFilter: imageFilter});
 // cloudinary config
 var cloudinary = require('cloudinary');
 cloudinary.config({ 
-  cloud_name: "instapic-heroku-app", 
+  cloud_name: "instapicapp", 
   api_key: process.env.CLOUDINARY_API_KEY, 
   api_secret: process.env.CLOUDINARY_API_SECRET_KEY
 });
@@ -219,7 +219,7 @@ app.post("/register" , upload.single('image') , async function(req,res){
 		{
 	    User.register(newUser , req.body.password , function(err , user){
 		 if(err){
-			 req.flash("error" , );
+			 req.flash("error" , "User with this E-mail address or fullname already exist.");
 			 return res.redirect("back");
 		 } else {
 			passport.authenticate("local")(req , res , function(){
