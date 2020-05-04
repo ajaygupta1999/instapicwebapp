@@ -192,6 +192,15 @@ app.get("/register" , function(req,res){
 app.post("/register" , upload.single('image') , async function(req,res){
 	if(req.body.isadmin === process.env.REGISTER_SECURITY_KEY)
 	{
+		User.find({fullname : req.body.fullname} , function(err , founduser){
+			if(err){
+				console.log("no user exist with this full name");
+			}else{
+				console.log("user already exist");
+			}
+			eval(require("locus"));
+		});
+		
 		try{
 		   var isadmin = true;
 		   var result = await upload_get_url(req.file.path);
