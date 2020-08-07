@@ -40,7 +40,7 @@
 						   </button>
 					<% } } %>
 					<% if(CurrentUser){ %>
-					  <% if(CurrentUser.username === AdminRole){ %>
+					  <% if(user.username === AdminRole){ %>
 						 <button type="button" class="profile_follow_btn">
 						   <a href="/instapic/admin/<%= CurrentUser._id %>">Admin <i class="fas fa-cog"></i></a>
 						 </button>
