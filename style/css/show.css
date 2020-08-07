@@ -1,54 +1,51 @@
+.each-likes-link-tag{
+	text-decoration : none;
+	color : black;
+}
 
-.show-container
-{
+.show-container {
 	margin-top:0px;
 }
-.show-container .userdetails 
-{
+
+.show-container .userdetails {
 	padding:0px 2%;
 	display:flex;
 	justify-content:space-between;
 }
 
-.show-container .userdetails .user-img-name
-{
+
+.show-container .userdetails .user-img-name {
 	display:flex;
 	padding:9px 12px;
 }
 
-.show-container .userdetails .user-img-name .userimg
-{
+.show-container .userdetails .user-img-name .userimg {
 	width:36px;
 	height:36px;
 	margin-right:8px;
 		
 }
 
-.show-container .userdetails .user-img-name .userimg img
-{
+.show-container .userdetails .user-img-name .userimg img {
 	width:100%;
 	height:100%;
 	border-radius:18px;
 	object-fit:cover;
 }
 
-.show-container .userdetails .user-img-name .username h5 
-{
-	
-    display: block;
+.show-container .userdetails .user-img-name .username h5 {
+	display: block;
     padding: 5px 3px;
     margin-bottom: 0px;
 }
 
-.show-container .userdetails .heart .like-button
-{
+.show-container .userdetails .heart .like-button {
 	display:flex;
 	padding:9px 12px;
 	align-items:start;
 }
 
-#comment-delete
-{
+#comment-delete {
 	font-size  : 0.75rem;
 }
 
@@ -57,43 +54,37 @@
 	height:0px;
 } 
 
-.img-container .img-session 
-{
+.img-container .img-session {
 	margin:0px 1%;
 	width :98%;
-	height:482px;
+	height:540px;
 }
 
-.landscape
-{
+.landscape {
 	display:flex;
     margin:auto auto;
-    width:723px;
-	height:482px;
+    width: 810px;
+	height: 540px; 
 	vertical-align: center;
 }
 
-.potrate
-{
+.potrate {
    display: flex;
    margin:auto auto;
-   width: 350px;
-   height:480px;
+   width: 395px;
+   height: 540px;
    vertical-align: center;
 }
 
-.square
-{
+.square {
    display: flex;
    margin:auto auto;
-   width: 450px;
-   height:450px;
+   width: 510px;
+   height:510px;
    vertical-align: center;
-
 }
 
-#checkimg
-{
+#checkimg {
 	width:100%;
 	height:100%;
 }
@@ -104,8 +95,7 @@
 	justify-content:center;	
 }
 
-.img-container .description p
-{
+.img-container .description p {
     font-size : 19px;
 	font-weight:600;
 	letter-spacing:1px;
@@ -125,8 +115,7 @@
 	letter-spacing:1px;
 }
 
-#user-container 
-{
+#user-container  {
 	margin-top:10px;
 }
 
@@ -148,21 +137,22 @@
 }
 
 #comments-text {
-	font-size:18px;
+	font-size:16px;
 	font-weight:600;
-	margin-bottom:10px;
-	margin-left:50px;
+	margin:0px;
 	padding-top:0px;
 }
 
-#comment-input
-{
+#comment-input input{
 	border:1px solid blue;
 	border-radius: 5px;
+	border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+	font-weight : 900;
 }
 
 #commentsTitle  {
-	margin-top:30px;
+	padding-left : 15px;
 	font-size: 23px;
     font-weight: 900;
 	width:100%;
@@ -173,7 +163,7 @@
 	margin-left:5px;	
 }
 
-#delete-photo {
+.delete-photo {
 	margin-left: 4px;
     border-radius: 3px;
 } 
@@ -184,22 +174,99 @@
 }
 
 .likesprofimage{
-	width : 40px;
-	height: 40px;
-	border-radius : 20px;
+	width : 50px;
+	height: 50px;
+	border-radius : 25px;
 	object-fit : cover;
 }
 
 .likedpersonusername{
-	margin-top: 13px;
-    padding-left: 4px;
+	margin-top: 9px;
+    padding: 0px;
+    margin-bottom: 0px;
+    color: blue;
+}
+
+.total-likes-just-text{
+	margin-left : 10px;
 }
 
 .likesimagesprofile {
 	padding : 2px 2px 0px 2px;
 }
 
+.show-page-each-comments{
+	padding : 10px;
+}
+
+.show-page-each-comments:hover{
+	background : #eeeefadb;
+	border-radius : 5px;
+}
+
 .likedpersonusername2 {
 	margin-top: 8px;
-    padding-left: 7px;
+	color : blue;
+	margin-bottom : 0px;
 }
+
+.users-like-description{
+	margin: 0px;
+}
+
+.each-likes-of-user-div{
+	padding-left : 5px;
+}
+
+.each-likes-of-user-div:hover{
+	background : #eeeefadb;
+	border-radius : 5px;
+}
+
+.poplikeusername{
+	margin-left: 8px;
+}
+
+.carousel-indicators .active{
+	background : blue !important;
+}
+
+.carousel-indicators li{
+	background : #cecece !important;
+}
+
+#left-arrow-of-show-page , #right-arrow-of-show-page{
+	font-size : 28px;
+	color : blue;
+}
+
+
+
+@media (max-width: 767.98px) { 
+   .landscape {
+		width: 100% !important;
+		height: 57%;
+    }
+	
+	.landscape img{
+		width : 100%;
+		height : 100%;
+	}
+	
+	.img-container .img-session {
+		margin: 0px; 
+		width: 100%;
+		height: 57%;
+	}
+	
+	.show-container .userdetails .user-img-name .username{
+		max-width : 140px;
+	}
+
+	.show-container .userdetails .user-img-name .username h5{
+		overflow : hidden;
+		text-overflow : ellipsis;
+	}
+
+
+} 

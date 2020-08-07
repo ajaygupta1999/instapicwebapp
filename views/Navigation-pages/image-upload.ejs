@@ -1,0 +1,48 @@
+<!-- Button trigger modal -->
+<button type="button" id="upload-new-img-modal" class="btn btn-primary d-none" data-toggle="modal" data-target="#exampleModalCenter">
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+       <div class="image-compressor-and-upload">
+		   <div class="content-divs d-flex flex-column">
+			   <h2> Image is uploading... </h2>
+			   <div class="images-of-service-providers d-flex justify-content-center">
+				   <div class="service-providers-div d-flex align-items-center">
+					  <div class="sharp-div-session">
+						<div class="sharp-img-div">
+							 <img src="/Images/sharp.png">
+					    </div> 
+						<p> Sharp </p>
+					   </div> 
+				   </div>
+				   <div class="right-arrow-session d-flex align-items-center">
+					   <i class="fas fa-arrow-right"></i>
+				   </div>
+				   <div class="cloudinary-img-div">
+					   <img src="/Images/cloudinary.png">
+					   <p> Cloudinary </p>
+				   </div>
+			   </div>
+			   <div class="our-loader-of-upload d-flex justify-content-center align-items-center">
+				    <div class="preloader-upload-pages hide-loader-div">
+						<svg class="loading-box">
+							<circle class="loader" fill="none" stroke-width="3" stroke-linecap="round" cx="24" 
+								cy="24" r="17"></circle>
+						</svg>
+					</div>
+			   </div>
+			   <p class="img-uplaod-please-wait-text"> Please wait... </p>
+			   <div class="About-description-of-img">
+				   <p>Image compression using sharp & Image will be uploaded on cloudinay</p>
+			   </div>
+		   </div>
+	   </div>
+        
+      
+    </div>
+  </div>
+</div>

@@ -1,0 +1,200 @@
+
+<!-- New user modal -->
+<div class="modal fade new-user-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="new-user-modal modal-content">
+		<div class="modal-head-session d-flex justify-content-between">
+			<h2 class="new-users-title modal-title" id="exampleModalLongTitle">New Users(<%= newAccounts.length %>)</h2>
+			<button id="new-user-popup-close" type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="new-user-modal-body">
+			<div class="input-group mb-3">
+			  <div class="input-group-prepend">
+				<span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+			  </div>
+			  <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+		    </div>
+			<div class="new-users-container">
+			  <% newAccounts.forEach(function(newuser){ %>
+					<div class="each-new-user-div">
+						  <div class="new-user-prof-div d-flex">
+							  <div class="new-user-img-session d-flex align-items-center">
+								  <img src="<%= newuser.avatar %>">
+							  </div>
+							  <div class="new-user-profdata d-flex flex-column">
+								  <a class="new-user-profile-page-link" href="/user/<%= newuser._id %>" target="_blank">
+									  <p class="new-user-name"><%= newuser.fullname %></p> 
+									  <p class="new-user-email"><%= newuser.username %></p>
+									  <p class="new-user-account-date"><%= newuser.created.toString() %></p>
+									  <p class="new-user-name-description"><%= newuser.description %></p>
+								  </a>
+								  <p>
+									 <% if(newuser.isApproved){ %>
+									    <a href="/user/<%= CurrentUser._id %>/Account/<%= newuser._id %>/unapprove">
+										    <button class="btn btn-sm btn-danger">Unapprove</button>
+									    </a>
+									<% }else{ %>
+									    <a href="/user/<%= CurrentUser._id %>/Account/<%= newuser._id %>/approve">
+										    <button class="btn btn-sm btn-success">Approve</button>
+									    </a>
+									 <% } %>
+								  </p>
+							  </div>
+						  </div>
+					</div>
+				<% }); %>
+			</div>
+		</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Unapproved Accounts modal -->
+<div class="modal fade unapproved-Accounts-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="new-user-modal modal-content">
+		<div class="modal-head-session d-flex justify-content-between">
+			<h2 class="new-users-title modal-title" id="exampleModalLongTitle">Unapproved Accounts(<%= unapprovedAccounts.length %>)</h2>
+			<button id="new-user-popup-close" type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="new-user-modal-body">
+			<div class="input-group mb-3">
+			  <div class="input-group-prepend">
+				<span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+			  </div>
+			  <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+		    </div>
+			<div class="new-users-container">
+			  <% unapprovedAccounts.forEach(function(unapprovedAccounts){ %>
+					<div class="each-new-user-div">
+						  <div class="new-user-prof-div d-flex">
+							  <div class="new-user-img-session d-flex align-items-center">
+								  <img src="<%= unapprovedAccounts.avatar %>">
+							  </div>
+							  <div class="new-user-profdata d-flex flex-column">
+								  <a class="new-user-profile-page-link" href="/user/<%= unapprovedAccounts._id %>" target="_blank">
+									  <p class="new-user-name"><%= unapprovedAccounts.fullname %></p> 
+									  <p class="new-user-email"><%= unapprovedAccounts.username %></p>
+									  <p class="new-user-account-date"><%= unapprovedAccounts.created.toString() %></p>
+									  <p class="new-user-name-description"><%= unapprovedAccounts.description %></p>
+								  </a>
+								  <p>
+									  <a href="/user/<%= CurrentUser._id %>/Account/<%= unapprovedAccounts._id %>/approve">
+										  <button class="btn btn-sm btn-success">Approve</button>
+									  </a>
+								  </p>
+							  </div>
+						  </div>
+					</div>
+				<% }); %>
+			</div>
+		</div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Approved Accounts modal -->
+<div class="modal fade approved-Accounts-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="new-user-modal modal-content">
+		<div class="modal-head-session d-flex justify-content-between">
+			<h2 class="new-users-title modal-title" id="exampleModalLongTitle">Approved Accounts(<%= approvedAccounts.length %>)</h2>
+			<button id="new-user-popup-close" type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="new-user-modal-body">
+			<div class="input-group mb-3">
+			  <div class="input-group-prepend">
+				<span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+			  </div>
+			  <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+		    </div>
+			<div class="new-users-container">
+			  <% approvedAccounts.forEach(function(approvedAccounts){ %>
+					<div class="each-new-user-div">
+						  <div class="new-user-prof-div d-flex">
+							  <div class="new-user-img-session d-flex align-items-center">
+								  <img src="<%= approvedAccounts.avatar %>">
+							  </div>
+							  <div class="new-user-profdata d-flex flex-column">
+								  <a class="new-user-profile-page-link" href="/user/<%= approvedAccounts._id %>" target="_blank">
+									  <p class="new-user-name"><%= approvedAccounts.fullname %></p> 
+									  <p class="new-user-email"><%= approvedAccounts.username %></p>
+									  <p class="new-user-account-date"><%= approvedAccounts.created.toString() %></p>
+									  <p class="new-user-name-description"><%= approvedAccounts.description %></p>
+								  </a>
+								  <p>
+									  <a href="/user/<%= CurrentUser._id %>/Account/<%= approvedAccounts._id %>/unapprove">
+										  <button class="btn btn-sm btn-danger">Unapprove</button>
+									  </a>
+								  </p>
+							  </div>
+						  </div>
+					</div>
+				<% }); %>
+			</div>
+		</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- All accounts -->
+<div class="modal fade all-Account-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="new-user-modal modal-content">
+		<div class="modal-head-session d-flex justify-content-between">
+			<h2 class="new-users-title modal-title" id="exampleModalLongTitle">All Accounts(<%= allaccounts.length %>)</h2>
+			<button id="new-user-popup-close" type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="new-user-modal-body">
+			<div class="input-group mb-3">
+			  <div class="input-group-prepend">
+				<span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+			  </div>
+			  <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+		    </div>
+			<div class="new-users-container">
+			  <% allaccounts.forEach(function(account){ %>
+					<div class="each-new-user-div">
+						  <div class="new-user-prof-div d-flex">
+							  <div class="new-user-img-session d-flex align-items-center">
+								  <img src="<%= account.avatar %>">
+							  </div>
+							  <div class="new-user-profdata d-flex flex-column">
+								  <a class="new-user-profile-page-link" href="/user/<%= account._id %>" target="_blank">
+									  <p class="new-user-name"><%= account.fullname %></p> 
+									  <p class="new-user-email"><%= account.username %></p>
+									  <p class="new-user-account-date"><%= account.created.toString() %></p>
+									  <p class="new-user-name-description"><%= account.description %></p>
+								  </a>
+								  <p>
+									 <% if(account.isApproved){ %>
+									    <a href="/user/<%= CurrentUser._id %>/Account/<%= account._id %>/unapprove">
+										    <button class="btn btn-sm btn-danger">Unapprove</button>
+									    </a>
+									<% }else{ %>
+									    <a href="/user/<%= CurrentUser._id %>/Account/<%= account._id %>/approve">
+										    <button class="btn btn-sm btn-success">Approve</button>
+									    </a>
+									 <% } %>
+								  </p>
+							  </div>
+						  </div>
+					</div>
+				<% }); %>
+			</div>
+		</div>
+    </div>
+  </div>
+</div>

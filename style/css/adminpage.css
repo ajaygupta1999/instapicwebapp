@@ -1,0 +1,182 @@
+/******************
+Admin page style 
+*******************/
+
+.admin-page-outer-container{
+	margin-top : 80px;
+	margin-bottom : 40px;
+}
+
+.admin-title{
+    font-size: 40px;
+    font-weight: 900;
+    color: #3434f3; 
+}
+
+.admin-description {
+	font-size : 18px;
+	font-weight  : 500;
+}
+
+.admin-description-sec{
+	font-size : 18px;
+	font-weight  : 500;
+	margin-bottom : 35px;
+}
+
+#admin-page-jumbotron{
+	margin-left: 35px;
+    margin-right: 35px;
+    border-radius: 5px;
+    /* border: 1px solid #dddddd; */
+	box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.05), 0 0px 20px 0px rgba(0, 0, 0, 0.04);
+	padding-top: 60px;
+	padding-left:  48px;
+}
+
+#admin-container-page{
+	margin-left : 20px;
+}
+
+.admin-page-buttons{
+	margin-right : 10px;
+	border : none !important;
+	border-radius : 0px !important;
+}
+
+.admin-page-unapprove-buttons{
+	border : none !important;
+	border-radius : 0px !important;
+	margin-left: 26px;
+    margin-right: 26px;
+}
+
+.New-users-collections .New-user-collections-header{
+	font-size: 16px;
+    font-weight: 900;
+    color: #0008ff;
+    margin-left: 35px;
+    margin-bottom: 15px;
+}
+
+.New-users-collections .New-users-grid{
+	padding-left : 35px !important;
+	padding-right : 35px !important;
+}
+
+.New-users-collections .New-users-grid .row .new-user-box{
+	padding : 30px;
+	border : 1px solid blue;
+	text-align : center;
+}
+
+.New-users-collections .New-users-grid .row .new-user-box .new-user-img{
+	margin-bottom : 15px;
+}
+
+.New-users-collections .New-users-grid .row .new-user-box .new-user-img img{
+	width : 130px;
+	height : 130px;
+	object-fit : cover;
+	border-radius : 65px;
+}
+
+.New-users-collections .New-users-grid .row .new-user-box .new-user-text{
+	margin : 0px;
+	line-height: 30px;
+    font-size: 22px;
+    font-weight: 900;	
+}
+
+.New-users-collections .New-users-grid .row .new-user-box .new-user-email , .New-users-collections .New-users-grid .row .new-user-box .new-user-description{
+	margin : 0px;
+	line-height: 25px;
+    font-size: 16px;
+    font-weight: 500;	
+}
+
+.New-users-collections .New-users-grid .row .new-user-box .new-user-description{
+	margin-bottom : 12px;
+}
+
+.New-users-collections .New-users-grid .row .new-user-box .new-user-date{
+	margin : 0px;
+	line-height: 25px;
+	color : #0008ff;
+    font-size: 16px;
+    font-weight: 500;	
+}
+
+/********************
+New-user-popup style
+********************/
+
+.new-user-modal{
+	padding : 30px 40px;
+}
+
+.modal-head-session{
+	margin-bottom : 25px;
+}
+
+.modal-head-session #new-user-popup-close{
+	font-size : 20px;
+}
+
+.modal-head-session .new-users-title{
+	font-size: 26px;
+    font-weight: 900;
+    color: blue;
+}
+
+#new-user-popup-close{
+	position: relative;
+    font-size: 32px !important;
+    margin-top: -13px !important;
+    color: black !important;
+    width: 50px;
+    height: 50px;
+    left: 16px;
+}
+
+.new-user-modal .new-user-modal-body .new-users-container .each-new-user-div{
+	border: 1px solid #d9d5d5;
+    padding: 20px 30px;
+}
+
+.new-user-modal .new-user-modal-body .new-users-container .each-new-user-div .new-user-prof-div .new-user-img-session{
+	margin-right : 20px;
+}
+
+.new-user-modal .new-user-modal-body .new-users-container .each-new-user-div .new-user-prof-div .new-user-img-session img{
+	width : 100px; 
+	height: 100px; 
+	object-fit : cover; 
+	border-radius:50px;
+}
+
+.new-user-modal .new-user-modal-body .new-users-container .each-new-user-div .new-user-prof-div .new-user-profdata p{
+	margin : 0px;
+}
+
+.new-user-modal .new-user-modal-body .new-users-container .each-new-user-div .new-user-prof-div .new-user-profdata .new-user-profile-page-link{
+	text-decoration : none;
+}
+
+.new-user-modal .new-user-modal-body .new-users-container .each-new-user-div .new-user-prof-div .new-user-profdata .new-user-name{
+	font-size: 22px;
+	font-weight : 900;
+}
+
+
+.new-user-modal .new-user-modal-body .new-users-container .each-new-user-div .new-user-prof-div .new-user-profdata .new-user-email , .new-user-modal .new-user-modal-body .new-users-container .each-new-user-div .new-user-prof-div .new-user-profdata .new-user-account-date{
+	font-weight : 900;
+	color : blue;
+}
+
+
+
+
+
+
+

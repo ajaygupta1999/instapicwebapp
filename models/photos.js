@@ -1,15 +1,17 @@
 var mongoose = require("mongoose");
 
 var photosSchema = new mongoose.Schema({
-	img:"string",
-	imgId : "string",
-	angle : "Number",
+	imgdata : [{
+		img : "string",
+		imgId : "string",
+		angle : "Number",
+	}],
 	description:"string",
 	status : "string",
 	author : {
 		     id : {
-			type : mongoose.Schema.Types.ObjectId,
-			ref : "User"
+				type : mongoose.Schema.Types.ObjectId,
+				ref : "User"
 		     },
 		    username : "string",
 		    fullname : "string"

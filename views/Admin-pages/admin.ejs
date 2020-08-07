@@ -1,0 +1,66 @@
+<% include ../partials/header %>
+
+<div class="admin-page-outer-container">
+	<div class="jumbotron" id="admin-page-jumbotron">
+	   <div class="container" id="admin-container-page">
+		  <h1 class="admin-title">Welcome Ajay</h1>
+		  <p class="admin-description">
+			  This is the Admin page and from where you can control any account. <br>
+			  If they are posting inappropriate images on our website.
+		   </p>
+		  <p class="admin-description-sec">Instapic, Our vision to connect the world.</p>
+		   <div class="d-flex justify-content-start">
+			 <button class="admin-page-buttons btn btn-md btn-primary" data-toggle="modal" data-target=".new-user-modal-lg">
+				New Users<span class="new-users-count">(<%= newAccounts.length %>)</span>	 
+			 </button>
+			 <button class="admin-page-buttons btn btn-md btn-danger" data-toggle="modal" data-target=".unapproved-Accounts-modal-lg">
+				Unapproved Accounts<span class="new-users-count">(<%= unapprovedAccounts.length %>)</span>	 
+			 </button>
+			 <button class="admin-page-buttons btn btn-md btn-success" data-toggle="modal" data-target=".approved-Accounts-modal-lg">
+				Approved Accounts(<%= approvedAccounts.length %>)	 
+			 </button>
+			 <button class="admin-page-buttons btn btn-md btn-success" data-toggle="modal" data-target=".all-Account-modal-lg">
+				All Accounts(<%= allaccounts.length %>)	 
+			 </button>
+		   </div>
+	  </div>   
+	</div>
+
+	<div class="New-users-collections">
+		<div class="New-user-collections-header">
+			<h5>Recent New Users<span class="new-users-count">(5)</span></h5>
+		</div>
+		<div class="New-users-grid container-fluid">
+			<div class="row">
+			  <% newAccounts.forEach(function(newuser){ %>
+					<div class="col-12 col-md-4 col-lg-3">
+					   <div class="new-user-box d-flex flex-column">
+						   <div class="new-user-img">
+							   <img src="<%= newuser.avatar %>">
+						   </div>
+						   <p class="new-user-text"><%= newuser.fullname %></p>
+						   <p class="new-user-email"><%= newuser.username %></p>
+						   <p class="new-user-date"><%= newuser.created.toString() %></p>
+						   <p class="new-user-description"><%= newuser.description %></p>
+						   <% if(newuser.isApproved){ %>
+								 <a href="/user/<%= CurrentUser._id %>/Account/<%= newuser._id %>/unapprove">
+								   <button class="admin-page-unapprove-buttons btn btn-md btn-danger">Unapprove</button>
+								 </a>
+						  <% }else{ %>
+						     <a href="/user/<%= CurrentUser._id %>/Account/<%= newuser._id %>/approve">
+						       <button class="admin-page-unapprove-buttons btn btn-md btn-success">Approve</button>
+						     </a>
+						  <% } %>
+						   
+					   </div>
+					</div>
+			  <% }); %>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Pop-up modals -->
+<% include ./admin-popup %>
+
+<% include ../partials/footer %>

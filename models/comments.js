@@ -4,11 +4,11 @@ var CommentSchema = new mongoose.Schema({
 	text : "string",
 	author : {
 		     id: {
-			type : mongoose.Schema.Types.ObjectId,
-			ref : "User"
+				type : mongoose.Schema.Types.ObjectId,
+				ref : "User"
 		     },
-		    username : "string"
-	          }
-         }); 
+		     username : "string"
+	    }
+    }); 
 
 module.exports = mongoose.model("Comments" , CommentSchema);

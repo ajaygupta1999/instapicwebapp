@@ -1,0 +1,40 @@
+<% include ../partials/header %>
+
+<div class="our-login-page-content">
+	<div id="login-container">
+		<div class="preloader-all-pages hide-loader-div">
+			<svg class="loading-box">
+				<circle class="loader" fill="none" stroke-width="3" stroke-linecap="round" cx="24" 
+					cy="24" r="17"></circle>
+			</svg>
+		</div>
+		<div class="login-page-contant">
+			<form action="/instapic/signup/verify/<%= token %>" method="POST" enctype="multipart/form-data" id="new-foam" 
+				  class="submit-forms UploadFoam">
+					<center><h1 class="new-h1">Create Profile</h1></center>
+					<div class="form-group">
+						  <label for="fullname"  class="label">Your Full-Name</label>
+						  <input type="text" class="form-control" id="fullname" aria-describedby="emailHelp" placeholder="Enter your Full name"  									name="fullname" required>
+					</div>
+					<div class="form-group d-flex justify-content-start">
+						  <label for="Image-uplode" id="imageupload" ><i class="far fa-image"></i> Choose a Photo</label>
+						  <input type="file" id="Image-uplode" aria-describedby="emailHelp" name="image"  accept="image/*" required>
+						  <span id="attachment-text" class="d-flex align-items-center">No Files choosen, Yet.</span>
+					</div>
+					<div class="form-group">
+						<label for="text"  class="label">Something About Yourself</label>
+						   <textarea class="form-control" id="text" rows="4" placeholder="Write Something About Yourself" name="description"></textarea>
+					</div>
+					<button type="submit" class="submitButton">
+						<span id="submitSpan">
+							<h5 id="submith4">
+								Submit
+							</h5>
+						</span>
+					</button>
+			</form>
+		</div>
+	</div>
+</div>
+
+<% include ../partials/footer %>

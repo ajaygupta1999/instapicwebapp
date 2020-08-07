@@ -3,21 +3,29 @@
 }
 
 #whatsapp-container , #login-container {
-    width : 800px;
-	margin-top: 90px;
-	padding : 2rem;
-	margin-bottom: 5%;
+    position : relative;
+	width : 800px;
 	margin-left: auto;
 	margin-right:auto;
 	background : #ffffff8a;
 	box-shadow: 0 4px 10px 8px rgba(0, 0, 0, 0.05), 0 6px 20px 2px rgba(0, 0, 0, 0.04);
 	border-radius : 4px;
+	margin-bottom : 40px;
+	transition : all 0.5s ease;
 }
 
 #login-container{
 	width : 670px;
-	padding : 2.5rem;
+	padding:  0px;
+	position : relative;
+	transition : all 0.5s ease;
 }
+
+.login-page-contant{
+	padding: 2rem 2.5rem;
+	transition : all 0.5s ease;
+}
+
 
 .whatsapp-userImg {
 	margin:20px auto;
@@ -52,7 +60,7 @@
 .whatsappinfo  h3 {
 	font-size : 24px;
 	font-weight : 700;
-	color : #2289f78a; 
+	color : #005dff; 
 	padding-left: 0.5rem;
 }
 
@@ -61,7 +69,7 @@
 	font-weight : 400;
 	margin-top : 0px;
 	margin-bottom : 0px;
-	font-size : 18px;
+	font-size : 17px;
 	color :#000000;
 }
 
@@ -82,4 +90,38 @@
 .number-foam .password{
 	width :70%;
 	margin-right :5px;
+}
+
+.sign-up-bottom-links p {
+	color : blue;
+	font-weight : 700;
+	font-size : 14px;
+}
+
+.sign-up-bottom-links a{
+	font-weight : 700;
+	font-size : 14px;
+}
+
+
+@media (max-width: 992px) { 
+    #login-container {
+	   width : 95%;
+	}
+	
+	.login-page-contant {
+	    padding: 2rem 2rem !important;
+	}
+	
+	#whatsapp-container, #login-container {
+       width: 90% !important;
+    }
+	
+	.creator-description{
+		width : 85%;
+	}
+	
+	#creator-page-my-data-session{
+		margin-right : 5% !important;
+	}
 }

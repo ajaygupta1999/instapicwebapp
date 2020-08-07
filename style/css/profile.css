@@ -1,35 +1,35 @@
 
 .userprofile {
-	margin:155px auto 110px;
+	margin:100px auto 100px;
 	display:flex;
 	justify-content:center;
+	transition: all 0.3s ease;
 }
 
-.userprofile .userimage
-{
+.userprofile .userimage {
 	display : flex;
 	align-items : center;
 	margin-top: 15px;
+	transition: all 0.3s ease;
 }
 
-.userprofile .userimage .img
-{
+.userprofile .userimage .img {
 	width:150px;
 	height:150px;
 }
 
 .userprofile .userimage .img img
 {
-	width:100%;
-	height:100%;
-	object-fit:cover;
-	border-radius:75px;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 75px;
 }
 .userprofile .userdetails {
-	display:block;
-	padding-left:3.5%;
-	margin-top:15px;
-	width:35%;
+	display: block;
+	padding-left: 2%;
+	margin-top: 15px;
+	max-width: 40%;
 }
 
 .userprofile .userdetails h3 {
@@ -165,7 +165,7 @@
 }
 
 #profile-edit-header{
-	margin:20px auto;
+	margin : 5px auto 20px;
 	color:#4547d6;
 }
 
@@ -197,5 +197,20 @@
 	color:  rgb(4, 95, 192);
 }
 
-
+@media (max-width: 992px) { 
+	.userprofile{
+		display : block !important;
+	}
+	
+	.userprofile .userimage{
+		justify-content : center !important;
+	}
+	
+	.userprofile .userdetails {
+		max-width: 100% !important;
+		padding-left : 10% !important;
+		display : flex !important;
+		justify-content : center !important;
+	}
+}
 

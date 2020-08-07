@@ -1,0 +1,72 @@
+.image-compressor-and-upload{
+	padding : 3rem;
+}
+
+.image-compressor-and-upload .content-divs h2{
+	text-align : center;
+	font-weight : 900;
+}
+
+.service-providers-div{
+	margin-right : 15%;
+}
+
+.image-compressor-and-upload .content-divs .images-of-service-providers{
+	margin-top : 22px;
+}
+
+.image-compressor-and-upload .content-divs .sharp-img-div{
+	margin-right : 15%;
+}
+
+.image-compressor-and-upload .content-divs .our-loader-of-upload{
+	position : relative;
+	height : 65px;
+}
+
+.image-compressor-and-upload .content-divs .images-of-service-providers .sharp-div-session p {
+	margin-bottom : 0px; 
+	text-align :center;
+	margin-top : 20px;
+    font-weight: 900;
+    font-size: 18px;
+}
+
+.image-compressor-and-upload .content-divs .cloudinary-img-div{
+	margin-left : 15%;
+}
+
+.image-compressor-and-upload .content-divs .sharp-img-div img{
+	width : 130px;
+	height:  130px;
+}
+
+.image-compressor-and-upload .content-divs .right-arrow-session i{
+	font-size : 40px;
+	color : blue;
+}
+
+.image-compressor-and-upload .content-divs .cloudinary-img-div img{
+	width : 150px;
+	height:  150px;
+}
+
+.image-compressor-and-upload .content-divs .cloudinary-img-div p{
+	margin-bottom : 0px; 
+	text-align :center;
+    font-weight: 900;
+    font-size: 18px;
+}
+
+.image-compressor-and-upload .content-divs .img-uplaod-please-wait-text{
+	text-align : center;
+	font-weight : 900;
+	font-size : 22px;
+	margin-bottom: 30px;
+}
+
+.image-compressor-and-upload .content-divs .About-description-of-img p{
+	text-align: center;
+    font-size: 18px;
+    font-weight: 900;
+}

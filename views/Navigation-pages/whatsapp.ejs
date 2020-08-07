@@ -1,0 +1,60 @@
+<% include ../partials/header %>
+
+<div class="our-login-page-content">
+	<div id="whatsapp-container">
+		<div class="preloader-all-pages hide-loader-div">
+				<svg class="loading-box">
+					<circle class="loader" fill="none" stroke-width="3" stroke-linecap="round" cx="24" 
+						  cy="24" r="17"></circle>
+				</svg>
+		</div>
+		<div class="login-page-contant">
+			<form class="submit-forms" id="whatsapp-foam" action="/instapic/<%= foundphoto._id %>/sendimage" method="POST">
+		<div class="img-container" id="showFirstImage">
+	     <div class="img-session">
+		   <div class="img-box d-none" id="imgbox">
+			 <img id="first-Show-Img" class="d-none" src="<%= foundphoto.img %>">
+			 <img id="check-img" onContextMenu="return false;" alt="<%= foundphoto.angle %>" style="transform:rotate(<%= foundphoto.angle %>deg)">	
+		</div>
+			</div>
+</div>
+        <div class="whatsapp-userImg">
+		   <div class="prof-img" >
+			   <img datas-src="<%= user.avatar %>" alt="user profile image">
+			</div>
+		</div>
+		<div class="whatsappinfo">
+			<h2>Image Share System</h2>
+			<p>You can share image directly from the website to your whatsapp number or other's whatspp number</p>
+			<h3>Instructions: </h3>
+			<p class="p-instruction">
+				To whom you want to share this Image please send a whatsapp message to this <br>
+				<strong class="whatsapp-num"><i class="fab fa-whatsapp"></i> +1 415 523 8886</strong> number with text as <strong class="whatsapp-num">join each-moment</strong>.  
+			</p>
+			<p class="p-instruction">
+				For eg: If I want all this images to my whatsapp number then I will first save  <br><strong class="whatsapp-num"><i class="fab fa-whatsapp"></i> +1 415 523 8886</strong> this number in my contacts. Then i will send a message to this<br> mobile number and the text of that message will be join each-moment. And all images will be sended to my whatsapp from twilio.
+			</p>
+			<p class="p-instruction" id="instruction-p2">
+				This will verify your whatsapp number on <strong class="whatsapp-num">Twilio</strong>. Without this you will not able to share images.
+			</p>
+		</div>
+        <div class="form-group">
+		 <label for="sendnum"  class="label">Receiver's whatsapp number</label>
+		<div class="number-foam">
+			<div class="password">
+			<input type="text" class="form-control" id="sendnum" aria-describedby="emailHelp"  placeholder="Enter Number"  name="sendnum" required>
+			</div>
+			<div>
+				<button id="whatsapp-submit" type="submit" class="btn btn-primary btn-md ">Submit</button>
+			</div>
+		</div>
+			
+         </div>
+		
+		<a href="/instapic/<%= foundphoto._id%>">Go back</a>
+   			</form>
+		</div>
+	</div>
+</div>
+
+<% include ../partials/footer %>

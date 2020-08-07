@@ -1,0 +1,306 @@
+<% include ../partials/header %>
+
+ <div class="userprofile">
+	    <div class="userimage">
+			<div class="img">
+				<img id="profile_img" data-src="<%= user.avatar %>">
+			</div>
+		</div>
+		<div class="userdetails">
+			<div class="this-is-right-content-session">
+				<div class="d-flex justify-content-start">
+					 <div><h3><%= user.fullname %></h3></div>
+					 <% if(CurrentUser){ if(CurrentUser._id.equals(user._id)){  %>
+						<div id="update-button"><a href="/user/<%= user.id %>/edit">
+							<button class="profile_follow_btn"><strong>update <i class="fas fa-cog"></i></strong>
+							</button></a>
+						</div>
+					<% } } %>			 
+				</div>
+				<span><i class="far fa-calendar-alt"></i> <%= user.created.toDateString() %> </span>
+				<p><%= user.description %></p>
+				<div class="d-flex justify-content-start">
+					<% if(CurrentUser){ %>
+						<% if(CurrentUser && user.followers.some(function (follow){ 
+							 return follow.equals(CurrentUser._id)
+						 })) { %>
+							 <a href="/follow/<%= user.id %>"><button class="profile_follow_btn"> <strong>unfollow </strong></button></a>
+						 <% } else if(CurrentUser._id.toString() === user._id.toString()){  %>
+
+						 <% } else{  %>
+						   <a href="/follow/<%= user.id %>"><button class="profile_follow_btn"><strong>follow </strong></button></a>
+					<% }} %>
+					<button type="button" class="profile_follow_btn" data-toggle="modal" data-target="#followers">
+					  <strong> see followers(<%=user.followers.length%>)</strong> 
+					</button>
+					<% if(CurrentUser){ %>
+						<% if(CurrentUser._id.toString() === user._id.toString()){ %>
+						   <button type="button" class="profile_follow_btn" data-toggle="modal" data-target="#followings">
+							   <strong> see followings(<%=user.followings.length%>)</strong> 
+						   </button>
+					<% } } %>
+					<% if(CurrentUser){ %>
+					  <% if(CurrentUser.username === AdminRole){ %>
+						 <button type="button" class="profile_follow_btn">
+						   <a href="/instapic/admin/<%= CurrentUser._id %>">Admin <i class="fas fa-cog"></i></a>
+						 </button>
+					  <% } %>
+					<% } %>
+				</div>
+			
+				<!-- Followers Modal -->
+				<div class="modal fade" id="followers" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+				  <div class="modal-dialog" role="document">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<h5 id="modal-title-of-followers" class="modal-title" id="exampleModalLongTitle">followers(<%= user.followers.length %>)</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						  <span aria-hidden="true">&times;</span>
+						</button>
+					  </div>
+					  <div class="modal-body">
+						 <% user.followers.forEach(function(follower){ %>
+								<div class="col-12">
+									<a class="each-likes-link-tag" href="/user/<%= follower._id %>">
+										<div class="each-likes-of-user-div d-flex justify-content-start align-items-center">
+											<div class="likesimagesprofile p-2">
+												<img class="likesprofimage" likesprof-src="<%= follower.avatar %>" alt="user profile image"> 
+											</div>
+											<div class="poplikeusernamediv d-flex flex-column align-items-start justify-content-start">
+												<h5 class="likedpersonusername"><%= follower.fullname %></h5>
+												<p class="users-like-description"><%= follower.description %></p>
+											</div>
+										</div>
+									</a>
+								</div>
+						<% }); %>
+					  </div>
+					</div>
+				  </div>
+				</div>
+
+				<!-- Followings Modal -->
+				<% if(CurrentUser){ %>
+				   <% if(CurrentUser._id.toString() === user._id.toString()){ %>
+						<div class="modal fade" id="followings" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+						  <div class="modal-dialog" role="document">
+							<div class="modal-content">
+							  <div class="modal-header">
+								<h5 id="modal-title-of-followers" class="modal-title" id="exampleModalLongTitle">followings(<%= user.followings.length %>)</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								  <span aria-hidden="true">&times;</span>
+								</button>
+							  </div>
+							  <div class="modal-body">
+								 <% user.followings.forEach(function(following){ %>
+										<div class="col-12">
+											<a class="each-likes-link-tag" href="/user/<%= following._id %>">
+												<div class="each-likes-of-user-div d-flex justify-content-start align-items-center">
+													<div class="likesimagesprofile p-2">
+														<img class="likesprofimage" likesprof-src="<%= following.avatar %>" alt="user profile image"> 
+													</div>
+													<div class="poplikeusernamediv d-flex flex-column align-items-start justify-content-start">
+														<h5 class="likedpersonusername"><%= following.fullname %></h5>
+														<p class="users-like-description"><%= following.description %></p>
+													</div>
+												</div>
+											</a>
+										</div>
+								<% }); %>
+							  </div>
+							</div>
+						  </div>
+						</div>	 
+					<% } %>
+				<% } %>
+		    </div>
+		</div>
+</div>
+  
+<div class="related-post">
+	<div class="content">
+		<ul class="nav nav-pills mb-1" id="pills-tab" role="tablist">
+			<li class="nav-items-1">
+				<a class="toggle-buttons" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" 
+					aria-selected="true">Your Post</a>
+			</li>
+		   <% if(CurrentUser){ if(CurrentUser._id.equals(user._id)){  %>
+              <li class="nav-items-2">
+                 <a class="toggle-buttons" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" 
+				    aria-selected="false"><i class="fas fa-user-shield"></i> Private Images</a>
+              </li>
+              <li class="nav-items-3">
+                  <a class="toggle-buttons" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" 
+				     aria-selected="false" onClick="refreshPage()"><i class="fas fa-heart"></i> Liked Images </a>
+              </li>
+		   <% }} %>	
+       </ul>
+       <div class="tab-content" id="pills-tabContent">
+			<div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+			 <!-- public images	 -->
+				<div class="container1" id="user-container">
+					<div class="row">
+					<% if(CurrentUser){ if(CurrentUser._id.equals(user._id)){  %>
+						<div class="col-xs-12 col-sm-6 col-lg-3">
+							<a href="/instapic/new">
+							<div class="img-boxs" id="uploadImgBox">
+							   <div class="imges">
+									<div id="firstDiv"><i id="uploadicon" class="fas fa-cloud-upload-alt"></i><h4 id="uploadcontainerh4">upload</h4></div>
+									<div id="SecondDiv"><i id="imageuplodeicon" class="fas fa-image"></i><span id="imageh4">Image</span></div>
+								</div>  
+							</div>
+							</a>
+						</div>
+					<%	} } %>	
+
+
+					  <% publicfoundphotos.forEach(function(photo){ %>
+						<div class=" col-xs-12 col-sm-6 col-lg-3">
+							<div class="img-boxs">
+								<div class="imges">
+								   <img data-src="<%= photo.imgdata[0].img%>">
+								</div>
+								<% if(photo.imgdata.length  > 1){ %>
+								   <div class="album-icons-pages">
+									  <i class="fas fa-clone"></i>
+								   </div>
+								<% } %>
+								<div class="content d-flex align-content-start flex-wrap">
+								  <div class="user">
+									<div class="userimage">
+										<a href="/user/<%= user._id %>"><img data-src="<%= user.avatar %>"></a>
+									</div>
+									<div class="username">
+										<a href="/user/<%= user._id %>"><h5><%= user.fullname.substring(0 , 20) %>.</h5></a>
+									</div> 
+									<div class="likes">
+										<form action="/instapic/<%= photo._id %>/like" method="POST">
+											<button type="submit" class="btn btn-warning">
+												<i class="fas fa-heart"></i> <%= photo.likes.length %>
+											</button>
+										</form>
+									</div>
+									<div class="likes">
+										<a class="comments-buttons-on-pages btn btn-primary" id="see-comments" data-toggle="modal" 
+											data-target="#publicpagecomments-<%= photo._id %>"><i class="fas fa-comment-alt"></i> 
+											<span class="number-of-comments-text-pages"><%= photo.comments.length %></span>
+										</a>
+									</div>
+								  </div>
+								  <a class="image-link" href="/instapic/<%=photo._id%>"> </a>
+								  <div class="discription">
+									   <P><%= photo.description.substring(0 , 65)%>..</P>
+								  </div>
+								</div>
+
+							</div>
+
+						</div>
+
+						<% })%>
+					</div>
+				</div>
+			</div>
+			<div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+			 <div class="container1" id="user-container">
+				<div class="row"> 
+				<% if(CurrentUser){ if(CurrentUser._id.equals(user._id)){ %>
+				  <% priavteimages.forEach(function(photo){ %>
+					  <div class=" col-xs-12 col-sm-6 col-lg-3">
+						<div class="img-boxs">
+							<div class="imges">
+							   <img private-img-src="<%= photo.imgdata[0].img%>">
+							</div>
+							<% if(photo.imgdata.length  > 1){ %>
+							   <div class="album-icons-pages">
+								   <i class="fas fa-clone"></i>
+							   </div>
+							<% } %>
+							<div class="content d-flex align-content-start flex-wrap">
+							  <div class="user">
+								<div class="userimage">
+								<a href="/user/<%= user._id %>"><img private-profile-src="<%=user.avatar%>"></a>
+								</div>
+								<div class="username">
+									<a href="/user/<%= user._id %>"><h5><%=user.fullname.substring(0 , 20)%>.</h5></a>
+								</div> 
+								<div class="likes">
+									<form action="/instapic/<%= photo._id %>/like" method="POST">
+										<button type="submit" class="btn btn-warning">
+											<i class="fas fa-heart"></i> <%= photo.likes.length %>
+										</button>
+									</form>
+								</div>
+								<div class="likes">
+									<a class="comments-buttons-on-pages btn btn-primary" id="see-comments" data-toggle="modal" 
+										data-target="#privatepagecomments-<%= photo._id %>"><i class="fas fa-comment-alt"></i> 
+										<span class="number-of-comments-text-pages"><%= photo.comments.length %></span>
+									</a>
+								</div>
+							  </div>
+							  <a class="image-link" href="/user/<%=user._id%>/private/<%=photo._id%>"> </a>
+							  <div class="discription">
+								   <P><%= photo.description.substring(0 , 65) %>..</P>
+							  </div>
+							</div>
+						</div>
+					  </div>
+				<% }); }} %>
+				</div>
+			</div>
+			</div>
+			<div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+			   <div class="container1" id="user-container">
+					<div class="row"> 
+						<% if(CurrentUser){ if(CurrentUser._id.equals(user._id)){  %>
+						  <% Alllikedimages.forEach(function(photo){ %>
+						  <div class=" col-xs-12 col-sm-6 col-lg-3">
+							<div class="img-boxs">
+								<div class="imges">
+								   <img liked-img-src="<%= photo.imgdata[0].img %>">
+								</div>
+								<% if(photo.imgdata.length  > 1){ %>
+								   <div class="album-icons-pages">
+									  <i class="fas fa-clone"></i>
+								   </div>
+								<% } %>
+								<div class="content d-flex align-content-start flex-wrap">
+								  <div class="user">
+									<div class="userimage">
+									<a href="/user/<%= photo.author.id._id %>"><img liked-profile-src="<%=photo.author.id.avatar%>"></a>
+									</div>
+									<div class="username">
+										<a href="/user/<%= photo.author.id._id%>"><h5><%=photo.author.fullname.substring(0 , 20)%>.</h5></a>
+									</div> 
+									<div class="likes">
+										<form action="/instapic/<%= photo._id %>/like" method="POST">
+											<button type="submit" class="btn btn-warning">
+												 <i class="fas fa-heart"></i> <%= photo.likes.length %>
+											</button>
+										</form>
+									</div>
+									<div class="likes">
+										<a class="comments-buttons-on-pages btn btn-primary" id="see-comments" data-toggle="modal" 
+											data-target="#likedpagecomments-<%= photo._id %>"><i class="fas fa-comment-alt"></i> 
+											<span class="number-of-comments-text-pages"><%= photo.comments.length %></span>
+										</a>
+									</div>
+								  </div>
+								  <a class="image-link" href="/instapic/<%=photo._id%>"></a>
+								  <div class="discription">
+									   <P><%= photo.description.substring(0 , 65)%>..</P>
+								  </div>
+								</div>
+							</div>
+						</div>
+						<% }); }} %>
+					</div>
+			</div>  
+			</div>
+
+
+<!-- on page related post session comments -->
+<% include ./on-page-comment %>
+		  
+		  
+<% include ../partials/footer %>

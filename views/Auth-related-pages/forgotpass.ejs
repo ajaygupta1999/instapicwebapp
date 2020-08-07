@@ -1,0 +1,25 @@
+<% include ../partials/header %>
+
+<div class="our-login-page-content">
+	<div id="login-container">
+		<div class="preloader-all-pages hide-loader-div">
+				<svg class="loading-box">
+					<circle class="loader" fill="none" stroke-width="3" stroke-linecap="round" cx="24" 
+						  cy="24" r="17"></circle>
+				</svg>
+		</div>
+		<div class="login-page-contant">
+			<form class="submit-forms" action="/instapic/forgot" method="POST">
+				<center><h1 class="new-h1">Reset Password</h1></center>
+				<div class="form-group">
+				  <label for="username"  class="label">Email</label>
+				  <input type="text" class="form-control" id="username" aria-describedby="emailHelp" placeholder="Enter Your Email"  name="email" required>
+				</div>
+				<button typr="submit" class="btn btn-primary btn-md btn-block">submit</button>
+				<a href="/login">Go back</a>
+		   </form>
+		</div>
+	</div>
+</div>
+
+<% include ../partials/footer %>

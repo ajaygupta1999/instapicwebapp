@@ -1,0 +1,73 @@
+.show-page-down-container-session{
+	z-index: 1000;
+    border: 1px solid #d8dbdd;
+    background: white;
+    position: absolute;
+    top: -500px;
+    right: 0px;
+	opacity : 0;
+}
+
+.settings-session{
+	margin-left : 3px;
+}
+
+#checkbox-for-notification-label{
+	margin-bottom : 0px;
+}
+
+
+#checkbox-for-notification-label:hover{
+	cursor : pointer;
+}
+
+#checkbox-for-notification-label #down-link-of-sec{
+	font-size : 16px;
+	color : white;
+}
+
+
+#checkbox-for-show-page-down-button:checked ~ .show-page-down-container-session{
+	 z-index: 1000;
+     border: 1px solid #d8dbdd;
+     background: white;
+     position: absolute;
+     top: 104px;
+     right: 20px;
+	 opacity : 1;
+	 overflow: auto;
+	 min-width : 176px;
+	 box-shadow: 0px 0px 6px 4px rgba(0, 0, 0, 0.2), 0 0px 17px 0px rgba(0, 0, 0, 0.19);
+
+}
+
+.show-page-down-container-session .settings-items{
+	padding-bottom : 8px;
+	padding-top : 8px; 
+}
+
+.show-page-down-container-session .settings-items ul li{
+	list-style  :none;
+	padding :5px 22px;
+}
+
+.show-page-down-container-session .settings-items ul{
+	padding:0px;
+	margin :0px;
+}
+
+
+@media (max-width: 992px) { 
+    .hide-things-after-midpoint{
+		display : none !important;
+	}
+	
+}
+
+
+@media (min-width: 992px) { 
+	.show-page-minimazier {
+		display : none !important;
+	}
+
+}

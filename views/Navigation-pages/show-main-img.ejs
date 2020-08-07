@@ -1,0 +1,46 @@
+<!-- Main image of show page -->
+
+<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+  <ol class="carousel-indicators">
+	 <% for(let i = 0 ; i < foundphoto.imgdata.length ; i++){ %>
+		<% if(i === 0){ %>
+			<li data-target="#carouselExampleIndicators" data-slide-to="<%= i %>" class="active"></li>
+		<% }else{ %>
+			<li data-target="#carouselExampleIndicators" data-slide-to="<%= i %>"></li>
+		<% } %>								   
+	 <% } %>
+  </ol>
+  <div class="carousel-inner">
+	<% for(let i = 0 ; i < foundphoto.imgdata.length ; i++){ %>
+	    <% if(i === 0){ %>
+			<div class="carousel-item active">
+				<div class="img-session">
+					<div class="show-img-type-box">
+					   <img id="firstShowImg" data-imgsrc="<%= foundphoto.imgdata[i].img %>" data-imgorientation="<%= foundphoto.imgdata[i].angle %>"
+							style="transform:rotate(<%= foundphoto.imgdata[i].angle %>deg)">
+					   <img class="testimages-<%= i %> d-none">
+					</div>
+			   </div>
+			</div>
+		<% }else{ %>
+			<div class="carousel-item">
+			  <div class="img-session">
+					<div class="show-img-type-box">
+					   <img data-imgsrc="<%= foundphoto.imgdata[i].img %>" data-imgorientation="<%= foundphoto.imgdata[i].angle %>" 
+							style="transform:rotate(<%= foundphoto.imgdata[i].angle %>deg)">
+					   <img class="testimages-<%= i %> d-none"> 
+					</div>
+			   </div>	
+			</div>
+		<% } %>	
+	  <% } %>
+  </div>
+  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+    <i id="left-arrow-of-show-page" class="fas fa-chevron-left"></i>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+    <i id="right-arrow-of-show-page" class="fas fa-chevron-right"></i>
+    <span class="sr-only">Next</span>
+  </a>
+</div>

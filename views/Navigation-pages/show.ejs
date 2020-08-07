@@ -1,0 +1,195 @@
+<% include ../partials/header %>
+
+<!-- MAIN IMAGE SESSION================================== -->
+    <div class="show-container">
+	     <div class="userdetails">
+			  <div class="user-img-name">
+			       <div class="userimg">
+					   <a href="/user/<%= foundphoto.author.id %>"><img data-src="<%= profimg %>">
+			       </div>
+			     <div class="username">
+				     <h5><%= foundphoto.author.fullname %></h5>
+			     </div></a>
+		      </div>
+		      <div class="heart">
+			     <div class="like-button">
+                    <div style="padding-bottom : 10px;">
+						   <form action="/instapic/<%= foundphoto._id %>/like" method="POST">
+                             <div class="btn-group">
+                                <% if (CurrentUser && foundphoto.likes.some(function (like) {
+                                    return like.equals(CurrentUser._id)
+                                })) { %>
+                                <button class="btn btn-outline-warning">
+                                    <i class="fas fa-heart"></i> (<%= foundphoto.likes.length %>)
+                                </button>
+                                <% } else { %>
+                                <button class="btn btn-outline-warning">
+                                    <i class="fas fa-heart"></i> (<%= foundphoto.likes.length %>)
+                                </button>
+                                <% } %>
+                               <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#likepopup">see likes</button> 
+							   <button type="button" class="btn btn-primary" id="see-comments" data-toggle="modal" 
+									   data-target="#comments"><i class="fas fa-comment-alt"></i> (<%= foundphoto.comments.length %>)
+							   </button>
+                            </div>
+                           </form>
+                    </div>
+					<% if(CurrentUser && foundphoto.author.id.equals(CurrentUser._id)){ %>
+					         <form class="hide-things-after-midpoint" action="/instapic/<%=foundphoto._id%>?_method=DELETE" method="POST">
+								<button class="btn btn-danger delete-photo">
+									<i class="far fa-trash-alt"></i>
+								</button>   
+							 </form>
+							 <a class="hide-things-after-midpoint btn btn-success delete-photo" href="/instapic/<%=foundphoto._id%>/sendimage">
+									<i class="far fa-paper-plane"></i>
+							 </a>
+							 <% if(foundphoto.status == "private"){ %>
+								 <form class="hide-things-after-midpoint" 
+									   action="/user/<%=foundphoto.author.id%>/private/<%= foundphoto._id %>/cpublic?_method=PUT" method="POST">
+									   <button class="btn btn-warning delete-photo">
+										  public
+									   </button>   
+								 </form>
+							 <% } else{ %>
+								 <form class="hide-things-after-midpoint" 
+									   action="/user/<%=foundphoto.author.id%>/private/<%=foundphoto._id%>/cprivate?_method=PUT" method="POST">
+									   <button class="btn btn-warning delete-photo">
+										  private
+									   </button>   
+								 </form>
+							 <% } %>
+							 <div class="show-page-minimazier">
+								<div class="our-dropdown-show-page-down-button">
+									 <input type="checkbox" id="checkbox-for-show-page-down-button" class="d-none">
+									 <div class="down-button-gear-session d-flex align-items-center justify-content-center">
+										 <button class="btn btn-md btn-warning delete-photo">
+											 <label id="checkbox-for-notification-label" for="checkbox-for-show-page-down-button">
+												<i id="down-link-of-sec" class="fas fa-caret-square-down"></i>
+											 </label>
+										 </button>
+									 </div>
+									 <div class="show-page-down-container-session">
+										<div class="settings-items">
+											<ul>
+												<li>
+													<div class="our-content-of-user">
+														 <form action="/instapic/<%=foundphoto._id%>?_method=DELETE" method="POST">
+															<button id="delete-photo" class="btn btn-danger">
+																<i class="far fa-trash-alt"></i> Delete Image
+															</button>   
+														 </form>
+													</div>
+												</li>
+												<li>
+													<div class="our-content-of-user">
+														<a href="/instapic/<%=foundphoto._id%>/sendimage" id="delete-photo" class="btn btn-success">
+															<i class="far fa-paper-plane"></i> Whatsapp share
+														</a> 
+													</div>
+												</li>
+												<li>
+													<div class="our-content-of-user">
+														 <% if(foundphoto.status == "private"){ %>
+															 <form action="/user/<%=foundphoto.author.id%>/private/<%= foundphoto._id %>/cpublic?_method=PUT" method="POST">
+																   <button id="delete-photo" class="btn btn-warning">
+																	  public
+																   </button>   
+															 </form>
+														 <% } else{ %>
+															 <form action="/user/<%=foundphoto.author.id%>/private/<%=foundphoto._id%>/cprivate?_method=PUT" method="POST">
+																   <button id="delete-photo" class="btn btn-warning">
+																	  private
+																   </button>   
+															 </form>
+														  <% } %>
+													</div>
+												</li>
+											</ul>
+										</div>
+									 </div>
+								 </div>
+							 </div>
+					 <% } %>
+			     </div>
+		      </div>
+		</div>
+	</div>
+<div class="img-container" id="showFirstImage">
+	<% if(foundphoto.imgdata.length === 1){ %>
+	   <div class="img-session">
+		    <div class="show-img-type-box">
+				<img id="firstShowImg" data-imgsrc="<%= foundphoto.imgdata[0].img %>" data-imgorientation="<%= foundphoto.imgdata[0].angle %>"
+					style="transform:rotate(<%= foundphoto.imgdata[0].angle %>deg)">
+				<img class="d-none">
+		    </div>
+		</div>
+	<% }else{ %>
+	    <% include ./show-main-img %>
+	<% } %>
+	<div class="description">
+		<p>
+			<%= foundphoto.description %>
+		</p>
+	</div>
+</div>
+
+<!-- RELATED POST ============================== -->
+   <div class="text">
+        <p>Related Photos</p>	
+   </div>
+    <div class="container1">
+	   	<div class="row">
+          <% photos.forEach(function(photo){ %>
+			<div class=" col-xs-12 col-sm-6 col-lg-3">
+				<div class="img-boxs">
+					<div class="imges">
+					   <img  data-src="<%= photo.imgdata[0].img%>">
+	   				</div>
+					<% if(photo.imgdata.length  > 1){ %>
+					   <div class="album-icons-pages">
+						  <i class="fas fa-clone"></i>
+					   </div>
+					<% } %>
+					
+	   				<div class="content d-flex align-content-start flex-wrap">
+                      <div class="user">
+                      	<div class="userimage">
+                      		<a href="/user/<%= foundphoto.author.id %>"><img  data-src="<%= photo.author.id.avatar %>">
+                      	</div>
+                      	<div class="username">
+							<h5><%= photo.author.id.fullname.substring(0 , 20) %>.</h5></a>
+                      	</div>
+						  <div class="likes">
+							  <form action="/instapic/<%= photo._id %>/like" method="POST">
+								  <button type="submit" class="btn btn-warning">
+									  <i class="fas fa-heart"></i> <%= photo.likes.length %>
+								  </button>
+							  </form>
+						  </div>
+						  <div class="likes">
+							<a class="comments-buttons-on-pages btn btn-primary" id="see-comments" data-toggle="modal" 
+								data-target="#comments-<%= photo._id %>"><i class="fas fa-comment-alt"></i> 
+							    <span class="number-of-comments-text-pages"><%= photo.comments.length %></span>
+							</a>
+						  </div>
+                      </div>
+						<a class="image-link" href="/instapic/<%= photo._id %>"> </a>
+	   				  <div class="discription">
+	   					   <P><%= photo.description.substring(0 , 65)%>..</P>
+	   				  </div>
+	   				</div>
+	   			</div>
+	   		</div>
+			<% }); %>	   	
+    </div>
+  </div>
+
+
+<!-- Likes and comments popups -->
+<% include ./show-popups %>
+
+<!-- on page comment session -->
+<% include ./on-page-comment %>
+
+
+<% include ../partials/footer %>

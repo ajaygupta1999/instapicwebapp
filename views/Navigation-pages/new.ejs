@@ -1,0 +1,50 @@
+
+<% include ../partials/header %>
+<div class="our-login-page-content">
+	<div id="login-container">
+	<div class="preloader-all-pages hide-loader-div">
+		<svg class="loading-box">
+			<circle class="loader" fill="none" stroke-width="3" stroke-linecap="round" cx="24" 
+				cy="24" r="17"></circle>
+		</svg>
+	</div>
+    <div class="login-page-contant">
+		<form class="upload-loader-form" action="/instapic" method="POST" enctype="multipart/form-data" class="submit-forms UploadFoam">
+			<center><h1 class="new-h1">Add New Photo</h1></center>
+			<div class="form-group d-flex justify-content-start">
+				  <label for="Image-uplode" id="imageupload" ><i class="far fa-image"></i> Choose a Photo</label>
+				  <input type="file" id="Image-uplode" aria-describedby="emailHelp" name="image"  accept="image/*" multiple required>
+				  <span id="attachment-text" class="d-flex align-items-center">No Files choosen, Yet.</span>
+			</div>
+			<div class="form-group">
+			  <label for="COMMENTS"  class="label">Something About Image</label>
+				<textarea class="form-control" id="exampleFormControlTextarea1" rows="4" placeholder="Write Something About Image " name="description"></textarea>
+			</div>
+			<div class="radio-photo-status">
+				<input type="radio" name="status" id="exampleRadios1" value="public" checked>
+				<label for="exampleRadios1" class="status-radio-button">
+				 <strong>Public</strong>
+				</label>
+
+			   <input type="radio" name="status" id="exampleRadios1" value="private">
+			   <label for="exampleRadios1" class="status-radio-button">
+				<strong>Private</strong>
+			  </label>
+			</div>
+			<button type="submit" class="submitButton">
+				<span id="submitSpan">
+					<h5 id="submith4">
+						Submit
+					</h5>
+				</span>
+			</button>
+			<a href="/instapic">Go back</a>
+		</form>
+	</div>
+</div>	
+
+<!-- Image upload  modal -->
+<% include ./image-upload %>
+	
+	
+<% include ../partials/footer %>

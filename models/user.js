@@ -7,12 +7,16 @@ var UserSchema = new mongoose.Schema({
 	avatar  :  "string",
 	avatarId : "string",
 	angle : "Number",
-	fullname : { type : String , unique : true },
+	fullname : "string" ,
 	created: { type: Date, default: Date.now },
 	description : "string",
 	isadmin : {type : Boolean , default : false},
 	resetPasswordToken : {type : String , default : undefined},
 	resetPasswordExpires : {type : Date , default : undefined},
+	isEmailVerified : {type : Boolean , default : false},
+	emailverificationToken : {type : String , default : undefined},
+	emailverificationTokenExpires : {type : Date , default : undefined},
+	isApproved : {type : Boolean , default : false},
 	notifications: [
     	{
     	   type: mongoose.Schema.Types.ObjectId,
@@ -24,7 +28,13 @@ var UserSchema = new mongoose.Schema({
     		type: mongoose.Schema.Types.ObjectId,
     		ref: "User"
     	}
-    ]
+    ],
+	followings : [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+    		ref: "User"
+		}
+	]
 	
 });
 
