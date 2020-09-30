@@ -15,6 +15,7 @@ var router                 = require("express").Router(),
 	multer                  = require('multer'),
 	moment                  = require('moment'),
 	async                   = require("async"),
+    sendgridtransport       = require("nodemailer-sendgrid-transport"),
 	streamifier				= require('streamifier'),
 	nodemailer              = require("nodemailer"),
 	crypto                  = require("crypto"),
@@ -672,13 +673,11 @@ router.post("/signup" , async function(req , res){
 					} , 
 					function(token , user , done){
 							let verificationlink = process.env.WEBSITE_URL +  '/instapic/signup/verify/' + token;
-							let smtpTransport = nodemailer.createTransport({
-								service : "Gmail",
+							let smtpTransport = nodemailer.createTransport(sendgridtransport({
 								auth : {
-									user : process.env.PERSONAL_EMAIL,
-									pass  : process.env.EMAIL_PASS
-								}
-							});
+									api_key : process.env.SENDGRID_APIKEY
+								},
+							}));
 
 							const email = new Email({
 							  views : { root : "./views/Email-templates" , options : { extension : "ejs" }}, 
@@ -801,6 +800,7 @@ router.post("/instapic/signup/verify/:token" , upload.single('image') , function
 					   });
 					   done(null, user);
 				    }catch(err){
+						console.log(err.message);
 						req.flash("error" , "Something went wrong while creating Account");
 						res.redirect("back");
 					}
@@ -810,13 +810,11 @@ router.post("/instapic/signup/verify/:token" , upload.single('image') , function
 				
 					let todaysDate = new Date().toDateString();
 					let profilelink = process.env.WEBSITE_URL + "/user/" + req.user._id;
-					let smtpTransport = nodemailer.createTransport({
-						service : "Gmail",
+					let smtpTransport = nodemailer.createTransport(sendgridtransport({
 						auth : {
-							user : process.env.PERSONAL_EMAIL,
-							pass  : process.env.EMAIL_PASS
-						}
-					});
+							api_key : process.env.SENDGRID_APIKEY
+						},
+					}));
 
 					const email = new Email({
 					  views : { root : "./views/Email-templates" , options : { extension : "ejs" }}, 
@@ -1009,13 +1007,11 @@ router.put("/user/:id" , upload.single('image')  ,async function(req ,res){
 										} , 
 										function(token , user , done){
 												let verificationlink = process.env.WEBSITE_URL +  '/instapic/changeEmail/verify/' + token + "/email/" + req.body.email;
-												let smtpTransport = nodemailer.createTransport({
-													service : "Gmail",
+												let smtpTransport = nodemailer.createTransport(sendgridtransport({
 													auth : {
-														user : process.env.PERSONAL_EMAIL,
-														pass  : process.env.EMAIL_PASS
-													}
-												});
+														api_key : process.env.SENDGRID_APIKEY
+													},
+												}));
 
 												const email = new Email({
 												  views : { root : "./views/Email-templates" , options : { extension : "ejs" }}, 

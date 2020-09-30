@@ -10,6 +10,7 @@ var router                  = require("express").Router(),
 	nodemailer              = require("nodemailer"),
 	async                   = require("async"),
 	Email                   = require("email-templates"),
+	sendgridtransport       = require("nodemailer-sendgrid-transport"),
 	crypto                  = require("crypto");
 	
 
@@ -68,13 +69,11 @@ router.post("/instapic/forgot" , function(req ,res ,next){
 		} , 
 		function(token , user , done){
 			let verificationlink = process.env.WEBSITE_URL +  '/instapic/forgot/' + token;
-			let smtpTransport = nodemailer.createTransport({
-				service : "Gmail",
-					auth : {
-						user : process.env.PERSONAL_EMAIL,
-						pass  : process.env.EMAIL_PASS
-					}
-				});
+			let smtpTransport = nodemailer.createTransport(sendgridtransport({
+				auth : {
+					api_key : process.env.SENDGRID_APIKEY
+				},
+			}));
 
 				const email = new Email({
 					 views : { root : "./views/Email-templates" , options : { extension : "ejs" }}, 
@@ -100,6 +99,7 @@ router.post("/instapic/forgot" , function(req ,res ,next){
 		}
 	], function(err){
 			if(err){
+				req.flash("error" , err.message);
 				res.render("Auth-related-pages/forgotpass.ejs");	
 			}else{
 			    req.flash("success" , "An email has been send to " + req.body.email + " with the futher Instructions to reset your password.");
@@ -150,13 +150,11 @@ router.post("/instapic/forgot/:token" , function(req ,res){
 		    });	
 		} , 
 		function(user , done){
-			let smtpTransport = nodemailer.createTransport({
-				service : "Gmail",
-					auth : {
-						user : process.env.PERSONAL_EMAIL,
-						pass  : process.env.EMAIL_PASS
-					}
-				});
+			let smtpTransport = nodemailer.createTransport(sendgridtransport({
+				auth : {
+					api_key : process.env.SENDGRID_APIKEY
+				},
+			}));
 
 				const email = new Email({
 					 views : { root : "./views/Email-templates" , options : { extension : "ejs" }}, 

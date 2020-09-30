@@ -1,5 +1,6 @@
 var LOCAL_URL_LENGTH = 52;
 var PROD_URL_LENGTH = 60;
+
 var LOCAL_CLOUD_URL = "https://res.cloudinary.com/instapicapp/image/upload/";
 var PROD_CLOUD_URL = "https://res.cloudinary.com/instapic-heroku-app/image/upload/";
 

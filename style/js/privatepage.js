@@ -1,9 +1,9 @@
 // var dataurl =  "https://res.cloudinary.com/instapic-heroku-app/image/upload/";
 var LOCAL_URL_LENGTH = 52;
 var PROD_URL_LENGTH = 60;
+
 var LOCAL_CLOUD_URL = "https://res.cloudinary.com/instapicapp/image/upload/";
 var PROD_CLOUD_URL = "https://res.cloudinary.com/instapic-heroku-app/image/upload/";
-
 $("#pills-home-tab").click(function(){
 	$("#pills-home-tab").css("color" , "#045fc0");
 	$(".nav-items-1").css("border-bottom" , "2px solid #045fc0");
