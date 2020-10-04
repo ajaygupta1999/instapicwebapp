@@ -75,9 +75,9 @@ app.use(apiRoutes);
 app.use(AdminRoleRoutes);
 
 // Sitemap page
-// app.get("/sitemap.xml" , function(req , res){
-// 	res.sendFile(__dirname +'/views/sitemap.xml');
-// });
+app.get("/sitemap.xml" , function(req , res){
+	res.sendFile(__dirname +'/views/sitemap.xml');
+});
 
 // Other than defined routers
 app.get('*', function (req, res) { 
