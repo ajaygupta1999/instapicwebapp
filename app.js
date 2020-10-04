@@ -74,6 +74,16 @@ app.use(apiRoutes);
 // Admin Routes
 app.use(AdminRoleRoutes);
 
+// Sitemap page
+// app.get("/sitemap.xml" , function(req , res){
+// 	res.sendFile(__dirname +'/views/sitemap.xml');
+// });
+
+// Other than defined routers
+app.get('*', function (req, res) { 
+    res.redirect("/instapic"); 
+});
+
 // Port setup
 app.listen(process.env.PORT || 9000 , function(){
 	console.log("server started of instapic app......");

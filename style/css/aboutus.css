@@ -1,0 +1,107 @@
+.about-page-session{
+	margin : 80px 8% 30px;
+	font-family: 'Poppins', sans-serif;	
+}
+
+.main-header-of-about-page .header-of-about-us h1{
+	font-size: 52px;
+    font-weight: 400;
+	letter-spacing: 1px;
+}
+
+.main-header-of-about-page{
+	margin-left : 5%;
+	margin-right : 5%;
+}
+
+.main-header-of-about-page .header-of-about-us p{
+	font-size: 16px;
+    font-weight: 300;
+}
+
+.header-of-about-us{
+	height : 100%;
+}
+
+.main-header-of-about-page .About-us-img-div img{
+	width : 60%;
+}
+
+
+.about-us-underline{
+	margin-top : 50px;
+}
+
+.about-us-underline .card-img-session-div #my-img {
+	height : 280px;
+	object-fit : cover;
+}
+
+.about-us-underline .card-img-session-div .card-title{
+	font-size : 24px !important;
+}
+
+.about-us-underline .card-img-session-div #my-intro{
+	font-size :14px;
+	font-weight : 300;
+}
+
+.about-us-underline .card-img-session-div .content-through-email{
+	font-size : 14px;
+	font-weight : 500 !important;
+	margin-bottom : 2px;
+}
+
+.about-us-underline .card-img-session-div .content-through-email .personal-email{
+	font-size : 14px;
+	color : #0000ffdb;
+	font-weight : 500 !important;
+}
+
+.about-us-underline .card-img-session-div .contact-through-social-media p{
+	margin : 0px;
+	margin-top: 10px;
+	margin-right :20px;
+}
+
+
+.about-us-underline .card-img-session-div .contact-through-social-media p i{
+	font-size : 24px;
+}
+
+.about-us-underline .card-img-session-div .contact-through-social-media .linkedin-account i{
+	color : #2867B2;
+}
+
+.about-us-underline .card-img-session-div .contact-through-social-media .twitter-account i{
+	color : #1DA1F2;
+}
+
+.about-us-underline .card-img-session-div .contact-through-social-media .facebook-account i{
+	color : #3b5998;
+}
+
+.hr-style-aboutus{
+	margin-top : 3px;
+	border: 0;
+    height: 0;
+    border-top: 3px solid rgb(0 36 255);
+    border-bottom: 2px solid rgb(0 38 255 / 0%);
+}
+
+.my-inner-about-us-div p{
+    margin: 0px;
+    font-size: 20px;
+    font-weight: 500;	
+}
+
+.description-of-website {
+	margin : 50px 15%;
+}
+
+.Website-full-decription{
+  font-size : 15px;
+  font-weight : 300;
+	
+}
+

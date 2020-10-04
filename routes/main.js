@@ -1172,10 +1172,9 @@ router.get("/notification/:id", middlewareobj.isloggedin , async function(req, r
   }
 });
 
-
 // CREATOR ROUTE
-router.get("/creator" , function(req ,res){
-	res.render("User-profile-pages/creator.ejs");
+router.get("/about" , function(req ,res){
+	res.render("User-profile-pages/aboutus.ejs");
 });
 
 
