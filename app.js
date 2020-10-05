@@ -15,12 +15,14 @@ var express                 = require("express"),
 	passportLocalMongoose   = require("passport-local-mongoose"),
     bodyParser              = require("body-parser"),
 	Comments                = require("./models/comments.js"),
+	compression             = require("compression"),
 	async                   = require("async");
 	
 
 app.use(express.static("style"));
 app.use(methodOverride("_method"));
 app.use(flash());
+app.use(compression());
 mongoose.connect(process.env.DATABASEURL, { useNewUrlParser: true  , useCreateIndex : true });
 app.use(bodyParser.urlencoded({ extended : true}));
 
