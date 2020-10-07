@@ -19,10 +19,10 @@ var express                 = require("express"),
 	async                   = require("async");
 	
 
+app.use(compression());
 app.use(express.static("style"));
 app.use(methodOverride("_method"));
 app.use(flash());
-app.use(compression());
 mongoose.connect(process.env.DATABASEURL, { useNewUrlParser: true  , useCreateIndex : true });
 app.use(bodyParser.urlencoded({ extended : true}));
 
