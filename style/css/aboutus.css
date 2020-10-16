@@ -102,6 +102,30 @@
 .Website-full-decription{
   font-size : 15px;
   font-weight : 300;
-	
 }
 
+/*********BIN MESSAGE*********/
+#our-login-page-content{
+	padding-top : 10px;
+}
+
+.bin-alert{
+	margin : 0px 2% 20px !important;
+}
+
+.alert-header-session{
+	font-weight : 900;
+	font-size : 22px;
+	color: #de0000 !important;
+}
+
+.bin-alert p{
+	font-size : 16px;
+	font-weight : 700;
+	margin : 0;
+	margin-bottom : 4px;
+}
+
+#bin-alert-close-button{
+	font-size : 30px;
+}

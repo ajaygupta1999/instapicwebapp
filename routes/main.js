@@ -21,6 +21,7 @@ var router                 = require("express").Router(),
 	crypto                  = require("crypto"),
 	twilio                  = require("twilio"),
 	sharp					= require("sharp"),
+	mailgun                 = require('nodemailer-mailgun-transport'),
 	Email                   = require("email-templates"),
     sizeOf 					= require('image-size');
 	
@@ -53,7 +54,12 @@ cloudinary.config({
 	  api_secret: process.env.CLOUDINARY_API_SECRET_KEY
 });
 
-
+const mailgunauth = {
+	auth: {
+       api_key: process.env.MAILGUN_API_KEY,
+       domain: process.env.MAILGUN_API_DOMAIN
+  }
+}
 // To convert into array of photos
 // router.get("/maintain" , async function(req,res){
 // 	try{
@@ -623,7 +629,7 @@ router.post("/instapic/:id/like" , middlewareobj.isloggedin , async function(req
 	}
 });
 
-
+// Sign up route
 router.get("/signup" , function(req ,res){
 	res.render("Auth-related-pages/signup.ejs");
 });
@@ -673,11 +679,19 @@ router.post("/signup" , async function(req , res){
 					} , 
 					function(token , user , done){
 							let verificationlink = process.env.WEBSITE_URL +  '/instapic/signup/verify/' + token;
-							let smtpTransport = nodemailer.createTransport(sendgridtransport({
-								auth : {
-									api_key : process.env.SENDGRID_APIKEY
-								},
-							}));
+							// let smtpTransport = nodemailer.createTransport(sendgridtransport({
+							// 	auth : {
+							// 		api_key : process.env.SENDGRID_APIKEY
+							// 	},
+							// }));
+							let smtpTransport = nodemailer.createTransport({
+								service : "Gmail",
+									auth : {
+										user : process.env.PERSONAL_EMAIL,
+										pass  : process.env.EMAIL_PASS
+									}
+							});
+						    // let smtpTransport = nodemailer.createTransport(mailgun(mailgunauth));
 
 							const email = new Email({
 							  views : { root : "./views/Email-templates" , options : { extension : "ejs" }}, 
@@ -810,11 +824,18 @@ router.post("/instapic/signup/verify/:token" , upload.single('image') , function
 				
 					let todaysDate = new Date().toDateString();
 					let profilelink = process.env.WEBSITE_URL + "/user/" + req.user._id;
-					let smtpTransport = nodemailer.createTransport(sendgridtransport({
-						auth : {
-							api_key : process.env.SENDGRID_APIKEY
-						},
-					}));
+					// let smtpTransport = nodemailer.createTransport(sendgridtransport({
+					// 	auth : {
+					// 		api_key : process.env.SENDGRID_APIKEY
+					// 	},
+					// }));
+				    let smtpTransport = nodemailer.createTransport({
+						service : "Gmail",
+							auth : {
+								user : process.env.PERSONAL_EMAIL,
+								pass  : process.env.EMAIL_PASS
+							}
+			        });
 
 					const email = new Email({
 					  views : { root : "./views/Email-templates" , options : { extension : "ejs" }}, 
@@ -1007,11 +1028,18 @@ router.put("/user/:id" , upload.single('image')  ,async function(req ,res){
 										} , 
 										function(token , user , done){
 												let verificationlink = process.env.WEBSITE_URL +  '/instapic/changeEmail/verify/' + token + "/email/" + req.body.email;
-												let smtpTransport = nodemailer.createTransport(sendgridtransport({
+												// let smtpTransport = nodemailer.createTransport(sendgridtransport({
+												// 	auth : {
+												// 		api_key : process.env.SENDGRID_APIKEY
+												// 	},
+												// }));
+											let smtpTransport = nodemailer.createTransport({
+												service : "Gmail",
 													auth : {
-														api_key : process.env.SENDGRID_APIKEY
-													},
-												}));
+														user : process.env.PERSONAL_EMAIL,
+														pass  : process.env.EMAIL_PASS
+													}
+											});
 
 												const email = new Email({
 												  views : { root : "./views/Email-templates" , options : { extension : "ejs" }}, 
@@ -1051,10 +1079,10 @@ router.put("/user/:id" , upload.single('image')  ,async function(req ,res){
 								req.flash("error" , "This Account is blocked from the admim. You can not access this account");
 		   						res.redirect("/instapic");
 							}
-						}
-				
-				         req.flash("success" , "Profile is Updated successfully");
-				         res.redirect("/user/" + founduser._id);
+						}else{
+							req.flash("success" , "Profile is Updated successfully");
+				            res.redirect("/user/" + founduser._id);
+						}       
 			}else{
 			  req.flash("error" , "This Account is blocked from the admim. You can not access this account");
 			   res.redirect("/instapic"); 

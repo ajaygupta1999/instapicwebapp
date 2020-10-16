@@ -11,8 +11,17 @@ var router                  = require("express").Router(),
 	async                   = require("async"),
 	Email                   = require("email-templates"),
 	sendgridtransport       = require("nodemailer-sendgrid-transport"),
+    mailgun 				= require('nodemailer-mailgun-transport'),
+	sendinBlue              = require('nodemailer-sendinblue-transport'),
 	crypto                  = require("crypto");
 	
+
+const mailgunauth = {
+	auth: {
+       api_key: process.env.MAILGUN_API_KEY,
+       domain: process.env.MAILGUN_API_DOMAIN
+  }
+}
 
 router.get("/login" , function(req,res){
 	 res.render("Auth-related-pages/login.ejs");
@@ -69,11 +78,19 @@ router.post("/instapic/forgot" , function(req ,res ,next){
 		} , 
 		function(token , user , done){
 			let verificationlink = process.env.WEBSITE_URL +  '/instapic/forgot/' + token;
-			let smtpTransport = nodemailer.createTransport(sendgridtransport({
-				auth : {
-					api_key : process.env.SENDGRID_APIKEY
-				},
-			}));
+			// let smtpTransport = nodemailer.createTransport(sendgridtransport({
+			// 	auth : {
+			// 		api_key : process.env.SENDGRID_APIKEY
+			// 	},
+			// }));
+			
+			let smtpTransport = nodemailer.createTransport({
+				service : "Gmail",
+					auth : {
+						user : process.env.PERSONAL_EMAIL,
+						pass  : process.env.EMAIL_PASS
+					}
+			});
 
 				const email = new Email({
 					 views : { root : "./views/Email-templates" , options : { extension : "ejs" }}, 
@@ -92,7 +109,12 @@ router.post("/instapic/forgot" , function(req ,res ,next){
 							link: verificationlink
 						 }
 				} , function(err){
-					done(err , "done");
+					if(err){
+						console.log(err.message)
+					} else{
+						done(err , "done");
+					}
+					
 				});
 						 
 				done(null , "done");
@@ -150,11 +172,18 @@ router.post("/instapic/forgot/:token" , function(req ,res){
 		    });	
 		} , 
 		function(user , done){
-			let smtpTransport = nodemailer.createTransport(sendgridtransport({
-				auth : {
-					api_key : process.env.SENDGRID_APIKEY
-				},
-			}));
+			// let smtpTransport = nodemailer.createTransport(sendgridtransport({
+			// 	auth : {
+			// 		api_key : process.env.SENDGRID_APIKEY
+			// 	},
+			// }));
+			let smtpTransport = nodemailer.createTransport({
+				service : "Gmail",
+					auth : {
+						user : process.env.PERSONAL_EMAIL,
+						pass  : process.env.EMAIL_PASS
+					}
+			});
 
 				const email = new Email({
 					 views : { root : "./views/Email-templates" , options : { extension : "ejs" }}, 
@@ -183,9 +212,7 @@ router.post("/instapic/forgot/:token" , function(req ,res){
 					req.flash("success" , "Password reset is successful. Please login with new credentials")
 					res.redirect("/login");
 				}
-			 
 	});	
-	
 });
 
 

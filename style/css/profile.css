@@ -63,18 +63,18 @@
 .userprofile .userdetails .profile_follow_btn
 {
 	color: #212529;
-    border: 1px solid #c0c0b0;
+    border: 1px solid #ffffff;
     border-radius: 3px;
-	margin-right : 2px;
-	font-size : 15px;
-	font-weight : 900;
-	background-color: #f1f1ea;
-	cursor : pointer;
+    margin-right: 2px;
+    font-size: 15px;
+    font-weight: 900;
+    background-color: #ececec;
+    cursor: pointer;
 }
 
 .userprofile .userdetails .profile_follow_btn:hover
 {
-	background-color : #e8e4da;
+	background-color: #d3d3d385;
 }
 
 #update-button
@@ -126,8 +126,8 @@
 }
 
 #uploadImgBox {
-  background-color : #d7d7d7;
-  border : 1px solid #358be8; 
+    background-color: #ececec;
+    border: 1px solid #358be8; 
 }
 
 #private-page-container

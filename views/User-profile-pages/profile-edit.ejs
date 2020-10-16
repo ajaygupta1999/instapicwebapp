@@ -1,6 +1,13 @@
 <% include ../partials/header %>
 
-<div class="our-login-page-content">
+<div id="our-login-page-content" class="our-login-page-content">
+	<div class="alert alert-danger bin-alert alert-dismissible fade show" role="alert">
+		  <h4 class="alert-heading alert-header-session"><strong>Verification mails can go to your bin!!</strong></h4>
+		  <p>Sometimes when we send mails it can go to your bin. So please check your bin if you are not getting mails in your inbox.</p>
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span id="bin-alert-close-button" aria-hidden="true">&times;</span>
+		</button>
+    </div>
 	<div id="login-container">
 		<div class="preloader-all-pages hide-loader-div">
 				<svg class="loading-box">
