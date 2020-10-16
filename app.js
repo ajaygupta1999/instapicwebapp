@@ -81,6 +81,11 @@ app.get("/sitemap.xml" , function(req , res){
 	res.sendFile(__dirname +'/views/sitemap.xml');
 });
 
+// SSL Certificate
+app.get("/.well-known/pki-validation/45797EF0012901992BDFA80F983861EC.txt" , function(req , res){
+	res.sendFile(__dirname +'/views/45797EF0012901992BDFA80F983861EC.txt');
+});
+
 // Other than defined routers
 app.get('*', function (req, res) { 
     res.redirect("/instapic"); 
