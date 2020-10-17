@@ -1,4 +1,4 @@
-// hidden file
+git // hidden file
 require('dotenv').config();
 var express                 = require("express"),
     app                     = express(),
@@ -29,7 +29,7 @@ app.use(bodyParser.urlencoded({ extended : true}));
 
 // AUTH CONFIG ==================================
 app.use(require("express-session")({
-	secret: "I am Ajay Gupta",
+	secret: process.env.SESSION_SECRECT,
 	resave : false,
 	saveUninitialized : false
 }));
@@ -43,10 +43,10 @@ passport.deserializeUser(User.deserializeUser());
 // =====================================
 
 // Helmet security =====================
-app.use(helmet({contentSecurityPolicy: false}));
+app.use(helmet({ contentSecurityPolicy: false }));
 
 
-// ===============
+// =====================================
 // This will allow these variables to accessble to all pages
 app.use(async function(req, res, next){
    res.locals.CurrentUser = req.user;
