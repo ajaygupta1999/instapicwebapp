@@ -6,7 +6,7 @@ var PROD_CLOUD_URL = "https://res.cloudinary.com/instapic-heroku-app/image/uploa
 
 var dataurl =  PROD_CLOUD_URL;
 var profileimages = document.querySelectorAll("[likesprof-src]");
-console.log(profileimages);
+
 imageset(profileimages);
 
 function imageset(profileimages){

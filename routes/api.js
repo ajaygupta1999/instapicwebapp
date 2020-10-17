@@ -22,7 +22,7 @@ var client = twilio(
 // GETTING USER'S DATA USING API.
 router.get("/instapic/api/users" , async function(req ,res){
 	try{
-		let users = await User.find({"isApproved" : true});
+		let users = await User.find({"isApproved" : true ,"isEmailVerified":true , "fullname" : {$ne:null}}); 
 	    res.json(users);
 	}catch(err){
 		console.log("something is went wrong with api");

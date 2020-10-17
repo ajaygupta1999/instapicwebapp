@@ -1,5 +1,5 @@
 var uploadform = document.querySelector(".upload-loader-form");
-console.log(uploadform);
+
 var screenblockelm = document.querySelector(".screen-blocker"); 
 if(uploadform){
 	uploadform.addEventListener("submit" , function(e){

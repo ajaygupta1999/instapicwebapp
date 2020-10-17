@@ -4,10 +4,11 @@ var matchlist = document.querySelector("#allmatches");
    const searchStates = async searchText => {
 	var res = await fetch("/instapic/api/users");
 	var states = await res.json();
-	
+
 	// find all match..
 	let matches = states.filter(state => {
-		const regex = new RegExp(`^${searchText}` , 'gi');
+		const regex = new RegExp(escapeRegex(searchText), 'gi');
+		// const regex = new RegExp(`^${searchText}` , 'gi');
 		console.log(regex);
 		return state.fullname.match(regex);
 	});
@@ -40,4 +41,30 @@ var updatesearchbox  = matches => {
 	}
 }
 
-search.addEventListener("input" , () => searchStates(search.value));
+// search.addEventListener("input" , () => searchStates(search.value));
+var flag= true;
+var pretime = "";
+var nexttime = "";
+var d = ""; 
+search.addEventListener("input" , function(e){
+	
+	if(pretime === ""){
+		pretime = new Date().getTime();
+	}
+	
+	nexttime = new Date().getTime();
+	if(nexttime - pretime > 1000){
+		searchStates(search.value)
+	} else {
+		clearTimeout(d);
+		d = setTimeout(function(){
+		    searchStates(search.value)
+		} , 1000); 
+	}
+	pretime = nexttime;
+});
+
+
+function escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};

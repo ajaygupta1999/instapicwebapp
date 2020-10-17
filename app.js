@@ -2,6 +2,7 @@
 require('dotenv').config();
 var express                 = require("express"),
     app                     = express(),
+	helmet                  = require("helmet"),
 	flash                   = require("connect-flash"),
 	methodOverride          = require("method-override"),
     mongoose                = require("mongoose"),
@@ -39,7 +40,64 @@ app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+// =====================================
 
+// Helmet security =====================
+app.use(helmet());
+
+const scriptSrcUrls = [
+	"https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js",
+	"https://unpkg.com/axios/dist/axios.min.js",
+	"https://code.jquery.com",
+	"https://code.jquery.com",
+	"https://cdnjs.cloudflare.com/ajax/libs/popper.js",
+	"https://cdnjs.cloudflare.com/ajax/libs/moment.js",
+    "https://api.tiles.mapbox.com/",
+    "https://kit.fontawesome.com/",
+    "https://cdnjs.cloudflare.com/",
+    "https://cdn.jsdelivr.net",
+];
+
+const styleSrcUrls = [
+    "https://kit-free.fontawesome.com/",
+    "https://stackpath.bootstrapcdn.com/",
+    "https://fonts.googleapis.com/",
+    "https://use.fontawesome.com/",
+];
+
+const connectSrcUrls = [
+];
+
+const fontSrcUrls = [
+	"https://fonts.gstatic.com/s/muli/",
+	"https://fonts.gstatic.com/s/raleway/",
+	"https://fonts.gstatic.com/s/poppins/",
+	"https://kit-free.fontawesome.com/"
+];
+
+app.use(
+    helmet.contentSecurityPolicy({
+        directives: {
+            defaultSrc: [],
+            connectSrc: ["'self'", ...connectSrcUrls],
+            scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
+            styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+            workerSrc: ["'self'", "blob:"],
+            objectSrc: [],
+            imgSrc: [
+                "'self'",
+                "blob:",
+                "data:",
+                "https://res.cloudinary.com/instapic-heroku-app/", 
+                "https://images.unsplash.com/",
+            ],
+            fontSrc: ["'self'", ...fontSrcUrls],
+        },
+    })
+);
+
+
+// ===============
 // This will allow these variables to accessble to all pages
 app.use(async function(req, res, next){
    res.locals.CurrentUser = req.user;
