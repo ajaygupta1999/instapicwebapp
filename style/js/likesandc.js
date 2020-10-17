@@ -6,10 +6,10 @@ var PROD_CLOUD_URL = "https://res.cloudinary.com/instapic-heroku-app/image/uploa
 
 var dataurl =  PROD_CLOUD_URL;
 var profileimages = document.querySelectorAll("[likesprof-src]");
+if(profileimages.length > 0){
+	imageset(profileimages);
 
-imageset(profileimages);
-
-function imageset(profileimages){
+    function imageset(profileimages){
 		 profileimages.forEach(function(image){
              var imgurl = image.getAttribute("likesprof-src");
              var lastdata = imgurl.substr(PROD_URL_LENGTH , imgurl.length);
@@ -20,3 +20,5 @@ function imageset(profileimages){
              image.setAttribute("src" , url); 
            });
 	}
+}
+
