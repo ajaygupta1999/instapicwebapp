@@ -77,6 +77,22 @@ label{
 	transition : all 0.3s ease;
 }
 
+
+/* .navbar a.navbar-brand img{
+	width: 30px;
+    margin-top: -10px;
+    margin-right: 3px;
+} */
+
+.my-logo-of-home-page{
+	width: 30px;
+    margin-top: -10px;
+	margin-right: 3px;
+	filter: drop-shadow(0px 0px 0px #1342ff);
+    -webkit-filter: drop-shadow(0px 0px 0px #1342ff);
+}
+
+
 .fa-user-circle , .fa-sign-in-alt , .fa-sign-out-alt {
 	margin-left: 5px;
 	color:#317fb6;
@@ -330,9 +346,17 @@ label{
     background: #ffffff;
 }
 
-#landing-instgram {
+/* #landing-instgram {
 	margin-right:12px;
-} 
+}  */
+
+.my-logo-of-home-page2{
+	width: 65px;
+    margin-top: -23px;
+	margin-right: 4px;
+	filter: drop-shadow(0px 0px 4px #1342ff);
+	-webkit-filter: drop-shadow(0px 0px 2px #1342ff);
+}
 
 #search-input-box{
 	border:1px solid #007bff;
@@ -478,7 +502,7 @@ label{
 	}
 	
 	#navbar{
-		padding: 0px 30px 0px 30px !important;
+		padding: 0px 20px 0px !important;
 	}
 	
 	.my-navlink-item{
@@ -498,7 +522,7 @@ label{
 	}
 	
 	#checkbox-for-settings:checked ~ .settings-container-session {
-	  right : 57px !important; 
+	  right : 47px !important; 
 	}
 }
 

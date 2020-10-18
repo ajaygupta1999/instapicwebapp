@@ -21,7 +21,6 @@ var router                 = require("express").Router(),
 	crypto                  = require("crypto"),
 	twilio                  = require("twilio"),
 	sharp					= require("sharp"),
-	mailgun                 = require('nodemailer-mailgun-transport'),
 	Email                   = require("email-templates"),
     sizeOf 					= require('image-size');
 	
@@ -48,8 +47,9 @@ var upload = multer({ storage: storage, fileFilter: imageFilter});
 
 // cloudinary config
 var cloudinary = require('cloudinary');
+const user = require('../models/user.js');
 cloudinary.config({ 
-	  cloud_name: "instapic-heroku-app", 
+	  cloud_name: process.env.Cloudinary_name, 
 	  api_key: process.env.CLOUDINARY_API_KEY, 
 	  api_secret: process.env.CLOUDINARY_API_SECRET_KEY
 });
@@ -60,6 +60,8 @@ const mailgunauth = {
        domain: process.env.MAILGUN_API_DOMAIN
   }
 }
+
+
 // To convert into array of photos
 // router.get("/maintain" , async function(req,res){
 // 	try{
@@ -141,6 +143,7 @@ const mailgunauth = {
 // 		console.log(err);
 // 	}
 // });
+
 
 // home page
 router.get("/" ,  async function(req ,res){
@@ -938,6 +941,28 @@ router.get("/user/:id", async function(req,res){
 
 
 
+// Update user profile data
+router.get("/user/:id/edit" , middlewareobj.isloggedin , async function(req , res){
+	try{
+		let founduser = await User.findById(req.params.id);
+		if(founduser.isApproved){
+			if(founduser._id.equals(req.user._id)){
+				res.render("User-profile-pages/profile-edit.ejs" , {user : founduser});
+			}else{
+				req.flash("error" , "You Don't have permission to change others profile data");
+				res.redirect("/user/" + req.params.id);
+			}
+		}else{
+			req.flash("error" , "This Account is blocked from the admim. You can not access this account");
+			res.redirect("/instapic");
+		}
+	}catch(err){
+		req.flash("error" , "Not able to update profile page");
+		res.redirect("/user/" + req.params.id);
+	}
+});
+
+
 // Update profile data of user
 router.put("/user/:id" , upload.single('image')  ,async function(req ,res){
 	   // getting data for upadation of profile
@@ -972,7 +997,6 @@ router.put("/user/:id" , upload.single('image')  ,async function(req ,res){
 
 							 var result = await uploadFromBuffer(buffdata);
 						}else{
-							 console.log("<1mb");
 							 var result = await upload_get_url(req.file.path);
 						 }
 
@@ -983,9 +1007,11 @@ router.put("/user/:id" , upload.single('image')  ,async function(req ,res){
 						} 
 						newuser.fullname = req.body.fullname;
 						newuser.description = req.body.description;
-
+                         
 						// find that user and then update data
+						
 						let updateduser = await User.findByIdAndUpdate(req.params.id , newuser);
+						
 						if(updateduser.fullname !== req.body.fullname){
 							let foundusercomment = await Comments.find({"author.id" : req.params.id}); 
 							foundusercomment.forEach(function(usercomment){
@@ -994,9 +1020,20 @@ router.put("/user/:id" , upload.single('image')  ,async function(req ,res){
 								usercomment.save();
 							});
 						}
+						
 						if(founduser.username !== req.body.email){
 							if(founduser.isApproved){
-								async.waterfall([
+								let isuserexist = false;
+								let allusesindb  = await User.find({});
+								console.log(allusesindb);
+								for(var p = 0 ; p < allusesindb.length ; p++){
+									if(allusesindb[p].username === req.body.email){
+										isuserexist = true;
+										break;
+									}
+								}
+								if(!isuserexist){
+									async.waterfall([
 										function(done){
 											crypto.randomBytes(20 , function(err , buf){
 												if(err){
@@ -1075,7 +1112,11 @@ router.put("/user/:id" , upload.single('image')  ,async function(req ,res){
 										}
 
 									});	
-							}else{
+								}else{
+									req.flash("error" , "User with this email address already exist. Please try different Email address");
+									res.redirect("/user/" + req.params.id + "/edit");
+								}
+								}else{
 								req.flash("error" , "This Account is blocked from the admim. You can not access this account");
 		   						res.redirect("/instapic");
 							}
@@ -1102,8 +1143,7 @@ router.get("/instapic/changeEmail/verify/:token/email/:email" , async function(r
 				 req.flash('error', 'Your email verification token has been expired. Please again create account.');
 				 return res.redirect('/instapic');
 			 }
-			 user.username = req.params.email;
-			 user.save();
+			 await User.findByIdAndUpdate(user._id , {username : req.params.email})
 			 req.flash("success",  "Your Email has been changed successfully");
 			 res.redirect("/login");
 		}else{
@@ -1116,27 +1156,6 @@ router.get("/instapic/changeEmail/verify/:token/email/:email" , async function(r
 	}
 });
 
-
-// Update user profile data
-router.get("/user/:id/edit" , middlewareobj.isloggedin , async function(req , res){
-		try{
-			let founduser = await User.findById(req.params.id);
-			if(founduser.isApproved){
-				if(founduser._id.equals(req.user._id)){
-					res.render("User-profile-pages/profile-edit.ejs" , {user : founduser});
-				}else{
-					req.flash("error" , "You Don't have permission to change others profile data");
-					res.redirect("/user/" + req.params.id);
-				}
-			}else{
-				req.flash("error" , "This Account is blocked from the admim. You can not access this account");
-		        res.redirect("/instapic");
-			}
-		}catch(err){
-			req.flash("error" , "Not able to update profile page");
-			res.redirect("/user/" + req.params.id);
-		}
-});
 
 
 // Follow user

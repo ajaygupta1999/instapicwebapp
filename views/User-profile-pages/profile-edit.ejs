@@ -1,9 +1,16 @@
 <% include ../partials/header %>
 
+	<title><%= user.fullname %> Profile Update | Instapic App</title> 
+	<meta name="title" content="<%= user.fullname %> Profile Update | Instapic App" />
+	<meta name="description" content="Do you want to change your profile details?. No problem, You can do it from this page. You can also change your Email address from this page."/>
+	<meta name="keywords" content="change, profile details, Email address" />
+	
+<% include ../partials/header-navbar %>
+
 <div id="our-login-page-content" class="our-login-page-content">
 	<div class="alert alert-danger bin-alert alert-dismissible fade show" role="alert">
-		  <h4 class="alert-heading alert-header-session"><strong>Verification mails can go to your bin!!</strong></h4>
-		  <p>Sometimes when we send mails it can go to your bin. So please check your bin if you are not getting mails in your inbox.</p>
+		  <h4 class="alert-heading alert-header-session"><strong>Verification mails can go to your bin/spam!!</strong></h4>
+		  <p>Sometimes when we send mails it can go to your bin/spam. So please check your bin/spam if you are not getting mails in your inbox.</p>
 		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 			<span id="bin-alert-close-button" aria-hidden="true">&times;</span>
 		</button>

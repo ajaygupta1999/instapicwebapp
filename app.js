@@ -1,4 +1,4 @@
-git // hidden file
+// hidden file
 require('dotenv').config();
 var express                 = require("express"),
     app                     = express(),
@@ -88,10 +88,6 @@ app.get("/sitemap.xml" , function(req , res){
 	res.sendFile(__dirname +'/views/sitemap.xml');
 });
 
-// SSL Certificate
-app.get("/.well-known/pki-validation/45797EF0012901992BDFA80F983861EC.txt" , function(req , res){
-	res.sendFile(__dirname +'/views/45797EF0012901992BDFA80F983861EC.txt');
-});
 
 // Other than defined routers
 app.get('*', function (req, res) { 
@@ -99,6 +95,6 @@ app.get('*', function (req, res) {
 });
 
 // Port setup
-app.listen(process.env.PORT || 9000 , function(){
+app.listen(process.env.PORT || 8080 , function(){
 	console.log("server started of instapic app......");
 });

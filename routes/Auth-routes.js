@@ -11,17 +11,8 @@ var router                  = require("express").Router(),
 	async                   = require("async"),
 	Email                   = require("email-templates"),
 	sendgridtransport       = require("nodemailer-sendgrid-transport"),
-    mailgun 				= require('nodemailer-mailgun-transport'),
-	sendinBlue              = require('nodemailer-sendinblue-transport'),
 	crypto                  = require("crypto");
 	
-
-const mailgunauth = {
-	auth: {
-       api_key: process.env.MAILGUN_API_KEY,
-       domain: process.env.MAILGUN_API_DOMAIN
-  }
-}
 
 router.get("/login" , function(req,res){
 	 res.render("Auth-related-pages/login.ejs");
