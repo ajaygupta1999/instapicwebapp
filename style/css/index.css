@@ -78,12 +78,12 @@ label{
 }
 
 
-.my-logo-of-home-page{
+/* .my-logo-of-home-page{
 	width: 30px;
     margin-top: -10px;
 	margin-right: 3px;
     -webkit-filter: drop-shadow(0px 0px 0px #1342ff);
-}
+} */
 
 
 .fa-user-circle , .fa-sign-in-alt , .fa-sign-out-alt {
@@ -340,12 +340,12 @@ label{
 }
 
 
-.my-logo-of-home-page2{
+/* .my-logo-of-home-page2{
 	width: 65px;
     margin-top: -23px;
 	margin-right: 4px;
 	-webkit-filter: drop-shadow(0px 0px 2px #1342ff);
-}
+} */
 
 #search-input-box{
 	border:1px solid #007bff;
