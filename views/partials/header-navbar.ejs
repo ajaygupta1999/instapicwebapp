@@ -78,7 +78,7 @@
 				  <% }else { %>
 					 <li class="nav-item d-flex align-items-center">
 						 <a class="nav-link" href="/user/<%= CurrentUser._id %>" id="login-link">
-							<img id="navbar-avatar" data-src="<%= CurrentUser.avatar  %>"><%= CurrentUser.fullname.substring(0 , 9) %>.						                      </a>
+							<img id="navbar-avatar" data-src="<%= CurrentUser.avatar  %>"><%= CurrentUser.fullname.substring(0 , 5) %>.						                      </a>
 					 </li>
 					 <li id="logout-button-nav-link-session" class="my-navlink-item nav-item d-flex align-items-center">
 						 <a id="logout-link" class="nav-link" href="/logout" id="login-link">Log out<i class="fas fa-sign-out-alt"></i>                        					 </a>
