@@ -1,4 +1,4 @@
-git // hidden file
+// hidden file
 require('dotenv').config();
 var express                 = require("express"),
     app                     = express(),
