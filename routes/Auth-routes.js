@@ -33,6 +33,8 @@ router.post("/login" , passport.authenticate("local" , {
 	failureRedirect : "/login",
 	failureFlash: true
 }),  function(req,res){
+	console.log("you are trying to login");
+	console.log(req.user);
 });
 
 router.get("/logout" , function(req,res){
