@@ -694,7 +694,6 @@ router.post("/signup" , async function(req , res){
 										pass  : process.env.EMAIL_PASS
 									}
 							});
-						    // let smtpTransport = nodemailer.createTransport(mailgun(mailgunauth));
 
 							const email = new Email({
 							  views : { root : "./views/Email-templates" , options : { extension : "ejs" }}, 
@@ -704,7 +703,7 @@ router.post("/signup" , async function(req , res){
 							  send: true,
 							  transport: smtpTransport,
 							});
-
+                            
 							email.send({
 								template: 'email-verification',
 								message: {
