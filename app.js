@@ -95,6 +95,6 @@ app.get('*', function (req, res) {
 });
 
 // Port setup
-app.listen(process.env.PORT || 8080 , function(){
+app.listen(process.env.PORT || 9000 , function(){
 	console.log("server started of instapic app......");
 });

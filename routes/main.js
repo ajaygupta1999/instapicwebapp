@@ -15,7 +15,6 @@ var router                 = require("express").Router(),
 	multer                  = require('multer'),
 	moment                  = require('moment'),
 	async                   = require("async"),
-    sendgridtransport       = require("nodemailer-sendgrid-transport"),
 	streamifier				= require('streamifier'),
 	nodemailer              = require("nodemailer"),
 	crypto                  = require("crypto"),
@@ -23,7 +22,18 @@ var router                 = require("express").Router(),
 	sharp					= require("sharp"),
 	Email                   = require("email-templates"),
     sizeOf 					= require('image-size');
-	
+
+
+// Google Oauth Setup ====================================
+const { google }            = require("googleapis");
+const oAuth2Client  = new google.auth.OAuth2(
+	process.env.GOOGLE_CLIENT_ID , 
+	process.env.GOOGLE_CLIENT_SECRET,
+	process.env.GOOGLE_REDIRECT_URL
+)
+
+oAuth2Client.setCredentials({ refresh_token : process.env.GOOGLE_REFRESH_TOKEN });
+// =======================================================
 
 
 // storage file name from multer 
@@ -641,96 +651,67 @@ router.get("/signup" , function(req ,res){
 router.post("/signup" , async function(req , res){
 	try{
 		if(req.body.password === req.body.confirmpassword){
-			var isadmin = true;
-			var newUser = new User({ 
-				username : req.body.username,
-				isadmin : isadmin	
-			 });
+				var isadmin = true;
+				var newUser = new User({ 
+					username : req.body.username,
+					isadmin : isadmin	
+				 });
 			// Create user  
-			let [user , userErr] = await handle(User.register(newUser , req.body.password));
-			if(userErr) throw new Error('User with this email address already exist');
-              // Send email confirmation mail
-				async.waterfall([
-					function(done){
-						crypto.randomBytes(20 , function(err , buf){
-							if(err){
-								req.flash("error" , "Something Went Wrong while registering user");
-								return res.redirect("/instapic/forgot");
-							}
-							  var token = buf.toString('hex');
-							  done(err , token);	
-						});
-					} ,
-					function(token , done){
-						User.findOne({username : req.body.username} , function(err , user){
-							if(err){
-								req.flash("error" , "Something Went Wrong while Reseting Password");
-								res.redirect("/instapic/forgot");
-							}else{
-								if(!user){
-								   req.flash("error" , "User with this Email Address does not exist");
-								   return res.redirect("/instapic/forgot");
-								}
+				let [user , userErr] = await handle(User.register(newUser , req.body.password));
+				if(userErr) throw new Error('User with this email address already exist');
+		
+			// Send email confirmation mail
+			let token = await crypto.randomBytes(20).toString('hex');
+			user.emailverificationToken = token;
+			user.emailverificationTokenExpires = Date.now() + 5400000;
+			user.save();
+			
+			let verificationlink = process.env.WEBSITE_URL +  '/instapic/signup/verify/' + token;
+			const accessToken = await oAuth2Client.getAccessToken();
+		
+			let smtpTransport = nodemailer.createTransport({
+				host: 'smtp.gmail.com',
+				port: 465,
+				secure: true,
+				service: 'gmail',
+				auth : {
+						type : "OAUTH2",
+						user : process.env.PERSONAL_EMAIL,
+						clientId: process.env.GOOGLE_CLIENT_ID,
+						clientSecret : process.env.GOOGLE_CLIENT_SECRET,
+						refreshToken : process.env.GOOGLE_REDIRECT_URL,
+						accessToken : accessToken.token
+				}
+			});
+			
+			
+			const email = new Email({
+			  views : { root : "./views/Email-templates" , options : { extension : "ejs" }}, 
+			  message: {
+				from: process.env.PERSONAL_EMAIL
+			  },
+			  send: true,
+			  transport: smtpTransport,
+			});
 
-								user.emailverificationToken = token;
-								user.emailverificationTokenExpires = Date.now() + 5400000;
-								user.save(function(err){
-									done(err , token , user);
-								});
-							}
-						})
-					} , 
-					function(token , user , done){
-							let verificationlink = process.env.WEBSITE_URL +  '/instapic/signup/verify/' + token;
-							// let smtpTransport = nodemailer.createTransport(sendgridtransport({
-							// 	auth : {
-							// 		api_key : process.env.SENDGRID_APIKEY
-							// 	},
-							// }));
-							let smtpTransport = nodemailer.createTransport({
-								service : "Gmail",
-									auth : {
-										user : process.env.PERSONAL_EMAIL,
-										pass  : process.env.EMAIL_PASS
-									}
-							});
-
-							const email = new Email({
-							  views : { root : "./views/Email-templates" , options : { extension : "ejs" }}, 
-							  message: {
-								from: process.env.PERSONAL_EMAIL
-							  },
-							  send: true,
-							  transport: smtpTransport,
-							});
-                            
-							email.send({
-								template: 'email-verification',
-								message: {
-								  to: req.body.username
-								},locals: {
-								  link: verificationlink
-								}
-							  } , function(err){
-								done(err , "done");
-							});
-						 
-						  done(null , "done");
-					}
-				], function(err){
-					if(err){
-						req.flash("error" , err.message);
-						res.render("Auth-related-pages/signup.ejs");	
-					}else{
-						req.flash("success" , "An verification email has been send to " + req.body.username + " with the futher Instructions to create account.");
-						res.redirect("/signup");
-					}
-
-			    });	
-		}else{
-			req.flash("error" , "Your confirm password and password do not match.");
+			email.send({
+				template: 'email-verification',
+				message: {
+				  to: req.body.username
+				},locals: {
+				  link: verificationlink
+				}
+			  } , function(err){
+				done(err , "done");
+			});
+			
+			req.flash("success" , "An verification email has been send to " + req.body.username + " with the futher Instructions to create account.");
 			res.redirect("/signup");
+		}else{
+			req.flash("error" , "Password do not match. please try again");
+		    return res.redirect("/signup");
 		}
+				
 	}catch(err){
 		req.flash("error" , err.message);
 		res.redirect("/signup");
@@ -757,134 +738,114 @@ router.get("/instapic/signup/verify/:token" , async function(req , res){
 });
 
 // For registering of user
-router.post("/instapic/signup/verify/:token" , upload.single('image') , function(req ,res){
+router.post("/instapic/signup/verify/:token" , upload.single('image') , async function(req ,res){
 	try{
-		async.waterfall([
-			function(done){
-			   User.findOne({ emailverificationToken : req.params.token , emailverificationTokenExpires: { $gt: Date.now() }} , async function(err, user){
-				   if(err){
-					   req.flash("error" , "Something went wrong while creating user.");
-				   	   res.redirect("back");
-				   }
+		
+		let user = await User.findOne({ emailverificationToken : req.params.token , emailverificationTokenExpires: { $gt: Date.now() }});
+		if(!user){
+		   req.flash('error', 'Password reset token is invalid or has expired.');
+		   return res.redirect('back');
+		}
+		
+		if(req.file.size > 1000000){
+			console.log(">1mb");
+			let buffdata;
+			let dimensions = sizeOf(req.file.path);
+			await sharp(req.file.path)
+			.resize({
+				width: Math.floor(dimensions.width*0.5),
+				height: Math.floor(dimensions.height*0.5),
+				fit: sharp.fit.cover,
+				position: sharp.strategy.entropy
+			})
+			.withMetadata()
+			.toFormat("jpeg")
+			.jpeg({ quality: 95 })
+			.toBuffer({ resolveWithObject: true })
+			.then(({ data, info }) => { 
+				buffdata = data; })
+			.catch(err => {
+				req.flash("error", "Something went wrong while compressing image");
+				res.redirect("back");
+				console.log(err); 
+			});
 
-				   if(!user){
-					   req.flash('error', 'Password reset token is invalid or has expired.');
-					   return res.redirect('back');
-					  }
-				   
-				   try{
-					 
-					   if(req.file.size > 1000000){
-						    console.log(">1mb");
-							let buffdata;
-							let dimensions = sizeOf(req.file.path);
-							await sharp(req.file.path)
-							.resize({
-								width: Math.floor(dimensions.width*0.5),
-								height: Math.floor(dimensions.height*0.5),
-								fit: sharp.fit.cover,
-								position: sharp.strategy.entropy
-							})
-							.withMetadata()
-							.toFormat("jpeg")
-							.jpeg({ quality: 95 })
-							.toBuffer({ resolveWithObject: true })
-							.then(({ data, info }) => { 
-								buffdata = data; })
-							.catch(err => {
-								req.flash("error", "Something went wrong while compressing image");
-								res.redirect("back");
-								console.log(err); 
-							});
+			var result = await uploadFromBuffer(buffdata);
+		}else{
+			console.log("<1mb");
+			var result = await upload_get_url(req.file.path);
+		}
 
-							var result = await uploadFromBuffer(buffdata);
-						}else{
-							console.log("<1mb");
-							var result = await upload_get_url(req.file.path);
-						}
+	   // let result = await upload_get_url(req.file.path);
+	   user.angle = middlewareobj.getAngle(result.exif.Orientation);
+	   user.fullname = req.body.fullname;
+	   user.avatar = result.secure_url;
+	   user.avatarId = result.public_id;
+	   user.description = req.body.description;
+	   user.isApproved = true;
+	   await user.save();
+	   
+	   let todaysDate = new Date().toDateString();
+	   let profilelink = process.env.WEBSITE_URL + "/user/" + user._id;
+		
+		const accessToken = await oAuth2Client.getAccessToken();
+		
+		let smtpTransport = nodemailer.createTransport({
+			host: 'smtp.gmail.com',
+			port: 465,
+			secure: true,
+			service: 'gmail',
+			auth : {
+					type : "OAUTH2",
+					user : process.env.PERSONAL_EMAIL,
+					clientId: process.env.GOOGLE_CLIENT_ID,
+					clientSecret : process.env.GOOGLE_CLIENT_SECRET,
+					refreshToken : process.env.GOOGLE_REDIRECT_URL,
+					accessToken : accessToken.token
+			}
+		});
+		
+		const email = new Email({
+		  views : { root : "./views/Email-templates" , options : { extension : "ejs" }}, 
+		  message: {
+			from: process.env.PERSONAL_EMAIL
+		  },
+		  send: true,
+		  transport: smtpTransport,
+		});
 
-					   // let result = await upload_get_url(req.file.path);
-					   user.angle = middlewareobj.getAngle(result.exif.Orientation);
-				       user.fullname = req.body.fullname;
-					   user.avatar = result.secure_url;
-					   user.avatarId = result.public_id;
-				       user.description = req.body.description;
-					   user.isApproved = true;
-					  await user.save();
-				       req.login(user , function(err){
-						   if(err) done(err , user);
-					   });
-					   done(null, user);
-				    }catch(err){
-						console.log(err.message);
-						req.flash("error" , "Something went wrong while creating Account");
-						res.redirect("back");
-					}
-				});	
-			} , 
-			function(user , done){
-				
-					let todaysDate = new Date().toDateString();
-					let profilelink = process.env.WEBSITE_URL + "/user/" + req.user._id;
-					// let smtpTransport = nodemailer.createTransport(sendgridtransport({
-					// 	auth : {
-					// 		api_key : process.env.SENDGRID_APIKEY
-					// 	},
-					// }));
-				    let smtpTransport = nodemailer.createTransport({
-						service : "Gmail",
-							auth : {
-								user : process.env.PERSONAL_EMAIL,
-								pass  : process.env.EMAIL_PASS
-							}
-			        });
-
-					const email = new Email({
-					  views : { root : "./views/Email-templates" , options : { extension : "ejs" }}, 
-					  message: {
-						from: process.env.PERSONAL_EMAIL
-					  },
-					  send: true,
-					  transport: smtpTransport,
-					});
-
-					email.send({
-						template: 'New-User',
-						message: {
-						  to: process.env.PERSONAL_EMAIL
-						},
-						locals : {
-							imgurl : req.user.avatar,
-							fullname : req.user.fullname,
-							date : todaysDate,
-							description : req.user.description,
-							profilelink : profilelink
-						}
-					  } , function(err){
-						  if(err) done(err , "done");
-					  });
-					
-					 done(null , "done");
-			  }
-			] , function(err){
-				  if(err){
-					  console.log(err.message);
-					  req.flash("error" ,  "Something went wrong. Please again provide Account details");
-					  return res.redirect("/instapic/signup/verify/" + req.params.token);
-				  }
-				  
-			      req.user.emailverificationToken = undefined;
-				  req.user.emailverificationTokenExpires = undefined;
-				  req.user.save();
-				  req.flash("success" , "Welcome " + req.user.fullname);
-				  res.redirect("/instapic");
-			   });	
+		let response = await email.send({
+			template: 'New-User',
+			message: {
+			  to: process.env.PERSONAL_EMAIL
+			},
+			locals : {
+				imgurl : user.avatar,
+				fullname : user.fullname,
+				date : todaysDate,
+				description : user.description,
+				profilelink : profilelink
+			}
+		  });
+		
+		req.login(user , function(err , user){
+		   if(err) { 
+		      req.flash("error" , err.message);
+		      return res.redirect("/instapic/signup/verify/"  + req.params.token);
+		   }
+			req.user.emailverificationToken = undefined;
+			req.user.emailverificationTokenExpires = undefined;
+			req.user.save();
+			req.flash("success" , "Welcome " + req.user.fullname);
+			res.redirect("/instapic");
+	   });
+		
+		
 	}catch(err){
 		req.flash("error" , err.message);
 		res.redirect("/instapic/signup/verify/"  + req.params.token);
 	}
 });
-
 
 
 // User profile route
@@ -1022,99 +983,58 @@ router.put("/user/:id" , upload.single('image')  ,async function(req ,res){
 						
 						if(founduser.username !== req.body.email){
 							if(founduser.isApproved){
-								let isuserexist = false;
-								let allusesindb  = await User.find({});
-								console.log(allusesindb);
-								for(var p = 0 ; p < allusesindb.length ; p++){
-									if(allusesindb[p].username === req.body.email){
-										isuserexist = true;
-										break;
+								let newrequesteduser = await User.findOne({ username : req.body.email });
+							    if(newrequesteduser){
+									req.flash("error" , "User with this email already exist");
+									return res.redirect("back");
+								 }
+								let token = crypto.randomBytes(20).toString('hex');
+								updateduser.emailverificationToken = token;
+								updateduser.emailverificationTokenExpires = Date.now() + 5400000;
+								updateduser.save();
+								
+								
+								// Sending mail to user
+								let verificationlink = process.env.WEBSITE_URL +  '/instapic/changeEmail/verify/' + token + "/email/" + req.body.email;
+								const accessToken = await oAuth2Client.getAccessToken();
+		
+								let smtpTransport = nodemailer.createTransport({
+									host: 'smtp.gmail.com',
+									port: 465,
+									secure: true,
+									service: 'gmail',
+									auth : {
+											type : "OAUTH2",
+											user : process.env.PERSONAL_EMAIL,
+											clientId: process.env.GOOGLE_CLIENT_ID,
+											clientSecret : process.env.GOOGLE_CLIENT_SECRET,
+											refreshToken : process.env.GOOGLE_REDIRECT_URL,
+											accessToken : accessToken.token
 									}
-								}
-								if(!isuserexist){
-									async.waterfall([
-										function(done){
-											crypto.randomBytes(20 , function(err , buf){
-												if(err){
-													req.flash("error" , "Something Went Wrong while registering user");
-													return res.redirect("/user/" + updateduser._id);
-												}
-												  var token = buf.toString('hex');
-												  done(err , token);	
-											});
-										} ,
-										function(token , done){
-											User.findById(updateduser._id , function(err , user){
-												if(err){
-													req.flash("error" , "Something Went Wrong while Reseting Password");
-													res.redirect("/instapic");
-												}else{
-													if(!user){
-													   req.flash("error" , "User with this Email Address does not exist");
-													   return res.redirect("/instapic");
-													}
+								});
+								
+								const email = new Email({
+								  views : { root : "./views/Email-templates" , options : { extension : "ejs" }}, 
+								  message: {
+									from: process.env.PERSONAL_EMAIL
+								  },
+								  send: true,
+								  transport: smtpTransport,
+								});
 
-													user.emailverificationToken = token;
-													user.emailverificationTokenExpires = Date.now() + 5400000;
-													user.save(function(err){
-														done(err , token , user);
-													});
-												}
-											})
-										} , 
-										function(token , user , done){
-												let verificationlink = process.env.WEBSITE_URL +  '/instapic/changeEmail/verify/' + token + "/email/" + req.body.email;
-												// let smtpTransport = nodemailer.createTransport(sendgridtransport({
-												// 	auth : {
-												// 		api_key : process.env.SENDGRID_APIKEY
-												// 	},
-												// }));
-											let smtpTransport = nodemailer.createTransport({
-												service : "Gmail",
-													auth : {
-														user : process.env.PERSONAL_EMAIL,
-														pass  : process.env.EMAIL_PASS
-													}
-											});
+								let response = await email.send({
+									template: 'change-email',
+									message: {
+									  to: req.body.email
+									},locals: {
+									  link: verificationlink
+									}
+								  });
 
-												const email = new Email({
-												  views : { root : "./views/Email-templates" , options : { extension : "ejs" }}, 
-												  message: {
-													from: process.env.PERSONAL_EMAIL
-												  },
-												  send: true,
-												  transport: smtpTransport,
-												});
-
-												email.send({
-													template: 'change-email',
-													message: {
-													  to: req.body.email
-													},locals: {
-													  link: verificationlink
-													}
-												  } , function(err){
-													console.log(err);
-													done(err , "done");
-												});
-
-											  done(null , "done");
-										}
-									], function(err){
-										if(err){
-											req.flash("error" , err.message);
-											res.render("back");	
-										}else{
-											req.logout();
-											req.flash("success" , "An verification email has been send to " + req.body.email + " with the futher Instructions to change your account email address.");
-											res.redirect("/instapic");
-										}
-
-									});	
-								}else{
-									req.flash("error" , "User with this email address already exist. Please try different Email address");
-									res.redirect("/user/" + req.params.id + "/edit");
-								}
+								req.logout();
+								req.flash("success" , "An verification email has been send to " + req.body.email + " with the futher Instructions to change your account email address.");
+								res.redirect("/instapic");
+							
 								}else{
 								req.flash("error" , "This Account is blocked from the admim. You can not access this account");
 		   						res.redirect("/instapic");
